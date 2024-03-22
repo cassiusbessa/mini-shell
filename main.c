@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:42:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/21 21:15:41 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:30:06 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(void)
 		printf("instrução: %s\n", cmd->instruction);
 		printf("flags: %s\n", cmd->flags->head->value);
 		printf("flags: %s\n", cmd->flags->tail->value);
-		printf("args: %s\n", cmd->args);
+		printf("args: %s\n", cmd->args->head->value);
 		printf("separator: %s\n", cmd->separator);
 		add_history(input);
 		rl_on_new_line();
