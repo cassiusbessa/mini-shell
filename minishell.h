@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/22 15:29:31 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:50:53 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,17 @@ typedef struct s_command
  * @return A pointer to the newly created command structure, or NULL on error.
  */
 t_command	*build_command(char **input);
+
+typedef struct s_cmd_lst
+{
+	t_command	*head;
+	t_command	*tail;
+}	t_cmd_lst;
+
+
+
+
+void		add_command(t_command *cmd, t_cmd_lst *new_cmd);
 
 
 
