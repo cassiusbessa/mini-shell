@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:46:14 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/22 15:58:54 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/22 16:06:28 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_cmd_lst	*new_cmd_lst(void)
 
 void	add_cmd(t_command *cmd, t_cmd_lst **lst)
 {
-	if (!*lst || !lst)
+	if (!cmd || !*lst || !lst)
 		return ;
 	if (!(*lst)->head)
 	{
