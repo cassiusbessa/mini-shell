@@ -14,21 +14,24 @@
 
 int	main(void)
 {
-	char        *input;
+	char        *read;
+  char        *bkp;
+  t_cmd_lst   *cmd_lst;
 	t_command   *cmd;
-	input = readline("minishell% ");
-	while (input)
+  cmd_lst = new_cmd_lst();
+	read = readline("minishell% ");
+  bkp = read;
+	while (read)
 	{
-		cmd = build_command(&input);
-		printf("instrução: %s\n", cmd->instruction);
-		printf("flags: %s\n", cmd->flags->head->value);
-		printf("flags: %s\n", cmd->flags->tail->value);
-		printf("args: %s\n", cmd->args->head->value);
-		printf("separator: %s\n", cmd->separator);
-		add_history(input);
+		cmd = build_command(&read);
+		add_history(bkp);
+    add_cmd(cmd, &cmd_lst);
 		rl_on_new_line();
-		input = readline("minishell% ");
+    free(bkp);
+		read = readline("minishell% ");
+    bkp = read;
 	}
+  destroy_cmd_lst(cmd_lst);
 	rl_clear_history();
 	return (0);
 }

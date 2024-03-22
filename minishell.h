@@ -30,7 +30,6 @@
  * @return A pointer to the extracted word.
  */
 char		*get_next_word(char **input);
-
 typedef struct	s_node
 {
 	char			*value;
@@ -46,15 +45,16 @@ typedef struct s_list
 }	t_list;
 
 t_list		*new_lst(void);
-void		add_back(t_node *n, t_list **lst);
+void		  add_back(t_node *n, t_list **lst);
+void      destroy_list(t_list *lst);
 
 typedef struct s_command
 {
 	char				*instruction;
 	t_list				*flags;
 	t_list				*args;
-	struct s_command	*next;
 	char				*separator;
+	struct s_command	*next;
 }	t_command;
 
 t_command	*build_command(char **input);
@@ -65,7 +65,8 @@ typedef struct s_cmd_lst
 	t_command	*tail;
 }	t_cmd_lst;
 
-t_list		*new_lst(void);
-void		add_cmd(t_command *cmd, t_cmd_lst **lst);
+t_cmd_lst *new_cmd_lst(void);
+void		  add_cmd(t_command *cmd, t_cmd_lst **lst);
+void      destroy_cmd_lst(t_cmd_lst *lst);
 
 #endif

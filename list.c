@@ -41,3 +41,19 @@ void	add_back(t_node *n, t_list **lst)
 		(*lst)->tail = n;
 	}
 }
+
+void	destroy_list(t_list *lst)
+{
+	t_node	*current;
+	t_node	*next;
+
+	current = lst->head;
+	while (current)
+	{
+		next = current->next;
+		free(current->value);
+		free(current);
+		current = next;
+	}
+  free(lst);
+}

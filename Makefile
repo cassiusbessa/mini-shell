@@ -19,7 +19,8 @@ CURSIVE		=	\e[33;3m
 SRCS =		main.c\
 			parser_input_helpers.c\
 			list.c\
-			command.c
+			command.c\
+			command_list.c
 
 LIBFT = utils/libft/libft.a
 

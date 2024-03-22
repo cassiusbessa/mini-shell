@@ -32,3 +32,22 @@ void	add_cmd(t_command *cmd, t_cmd_lst **lst)
 		(*lst)->tail = cmd;
 	}
 }
+
+void  destroy_cmd_lst(t_cmd_lst *lst)
+{
+  t_command *current;
+  t_command *next;
+
+  current = lst->head;
+  while (current)
+  {
+    next = current->next;
+    destroy_list(current->args);
+    destroy_list(current->flags);
+    free(current->instruction);
+    free(current->separator);
+    free(current);
+    current = next;
+  }
+  free(lst);
+}

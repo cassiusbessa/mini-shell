@@ -27,7 +27,6 @@ static t_list	*build_args(char **input)
 	t_list	*args;
 
 	args = new_lst();
-	args = new_lst();
 	while (**input)
 		add_back(new_node(get_next_word(input)), &args);
 	return (args);
@@ -38,6 +37,11 @@ t_command	*build_command(char **input)
 	t_command	*cmd;
 
 	cmd = (t_command *)ft_calloc(1, sizeof (t_command));
+  cmd->args = NULL;
+  cmd->flags = NULL;
+  cmd->instruction = NULL;
+  cmd->separator = NULL;
+  cmd->next = NULL;
 	if (!cmd)
 		return (NULL);
 	cmd->instruction = get_next_word(input);
