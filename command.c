@@ -16,6 +16,8 @@ static t_list	*build_flags(char **input)
 {
 	t_list	*flags;
 
+  if (!input || *input)
+    return (NULL);
 	flags = new_lst();
 	while (**input == '-' && **input)
 		add_back(new_node(get_next_word(input)), &flags);
@@ -26,6 +28,8 @@ static t_list	*build_args(char **input)
 {
 	t_list	*args;
 
+  if (!input || *input)
+    return (NULL);
 	args = new_lst();
 	while (**input)
 		add_back(new_node(get_next_word(input)), &args);

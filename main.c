@@ -17,20 +17,21 @@ int	main(void)
 	char        *read;
   char        *bkp;
   t_cmd_lst   *cmd_lst;
-	t_command   *cmd;
+
   cmd_lst = new_cmd_lst();
 	read = readline("minishell% ");
   bkp = read;
 	while (read)
 	{
-		cmd = build_command(&read);
 		add_history(bkp);
-    add_cmd(cmd, &cmd_lst);
+    while (*read)
+      add_cmd(build_command(&read), &cmd_lst);
 		rl_on_new_line();
     free(bkp);
 		read = readline("minishell% ");
     bkp = read;
 	}
+  ft_printf("%s\n", cmd_lst->tail->args);
   destroy_cmd_lst(cmd_lst);
 	rl_clear_history();
 	return (0);
