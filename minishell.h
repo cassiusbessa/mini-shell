@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/22 16:14:25 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/25 20:49:49 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-
+# define CH_SEP "&><|!();"
 /**
  * @brief Extracts the next word from a string and updates the input pointer.
  *

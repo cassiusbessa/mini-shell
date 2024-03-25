@@ -6,12 +6,25 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:48:15 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/22 15:58:30 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/25 20:58:05 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
+static t_command	*new_cmd(void)
+{
+	t_command	*cmd;
+
+	cmd = (t_command *)ft_calloc(1, sizeof (t_command));
+  cmd->args = NULL;
+  cmd->flags = NULL;
+  cmd->instruction = NULL;
+  cmd->separator = NULL;
+  cmd->next = NULL;
+	return (cmd);
+}
 static t_list	*build_flags(char **input)
 {
 	t_list	*flags;
@@ -40,7 +53,7 @@ t_command	*build_command(char **input)
 {
 	t_command	*cmd;
 
-	cmd = (t_command *)ft_calloc(1, sizeof (t_command));
+	cmd = new_cmd();
   cmd->args = NULL;
   cmd->flags = NULL;
   cmd->instruction = NULL;
