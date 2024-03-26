@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:48:15 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/26 16:47:48 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:56:22 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,6 @@ t_command	*build_command(char **input)
 	t_command	*cmd;
 
 	cmd = new_cmd();
-	cmd->args = NULL;
-  cmd->flags = NULL;
-  cmd->instruction = NULL;
-  cmd->separator = NULL;
-  cmd->next = NULL;
 	if (!cmd)
 		return (NULL);
 	cmd->instruction = get_next_word(input);
