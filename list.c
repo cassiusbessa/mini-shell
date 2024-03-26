@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 22:18:32 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/22 15:59:54 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:51:04 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	destroy_list(t_list *lst)
 	t_node	*current;
 	t_node	*next;
 
+	if (!lst)
+		return ;
 	current = lst->head;
 	while (current)
 	{

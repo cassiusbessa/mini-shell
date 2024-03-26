@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/25 20:49:49 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/25 21:07:01 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # define CH_SEP "&><|!();"
+
 /**
  * @brief Extracts the next word from a string and updates the input pointer.
  *
@@ -30,6 +31,19 @@
  * @return A pointer to the extracted word.
  */
 char		*get_next_word(char **input);
+
+/**
+ * @brief Finds the index position of the first character separator.
+ *
+ * This function searches for the first occurrence of any character
+ * separator in the input string pointed to by the input
+ *
+ * @param input Pointer to a pointer to the input string.
+ * @return The index position of the first character separator found,
+ *         or -1 if no separator is found.
+ */
+int	find_separators(char *input);
+
 typedef struct	s_node
 {
 	char			*value;

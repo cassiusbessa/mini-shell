@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:48:15 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/25 20:58:05 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:47:48 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,13 @@ static t_command	*new_cmd(void)
   cmd->next = NULL;
 	return (cmd);
 }
+
 static t_list	*build_flags(char **input)
 {
 	t_list	*flags;
 
-  if (!input || *input)
-    return (NULL);
+  if (!input || !*input)
+	return (NULL);
 	flags = new_lst();
 	while (**input == '-' && **input)
 		add_back(new_node(get_next_word(input)), &flags);
@@ -41,11 +42,13 @@ static t_list	*build_args(char **input)
 {
 	t_list	*args;
 
-  if (!input || *input)
-    return (NULL);
+  if (!input || !*input)
+	return (NULL);
 	args = new_lst();
 	while (**input)
+	{
 		add_back(new_node(get_next_word(input)), &args);
+	}
 	return (args);
 }
 
@@ -54,7 +57,7 @@ t_command	*build_command(char **input)
 	t_command	*cmd;
 
 	cmd = new_cmd();
-  cmd->args = NULL;
+	cmd->args = NULL;
   cmd->flags = NULL;
   cmd->instruction = NULL;
   cmd->separator = NULL;
