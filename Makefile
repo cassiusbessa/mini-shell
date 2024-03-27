@@ -6,7 +6,7 @@
 #    By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/20 19:50:42 by caqueiro          #+#    #+#              #
-#    Updated: 2024/03/25 20:33:47 by caqueiro         ###   ########.fr        #
+#    Updated: 2024/03/26 20:04:25 by caqueiro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ CURSIVE		=	\e[33;3m
 
 SRCS =		main.c\
 			get_next_word.c\
+			find_separators.c\
 			list.c\
 			command.c\
 			command_list.c

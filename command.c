@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:48:15 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/26 16:56:22 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/27 19:53:30 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,36 @@ static t_list	*build_args(char **input)
 	return (NULL);
 	args = new_lst();
 	while (**input)
-	{
 		add_back(new_node(get_next_word(input)), &args);
-	}
 	return (args);
 }
 
 t_command	*build_command(char **input)
 {
 	t_command	*cmd;
+	int				sep;
+	char			*until_separator;
+	char			*bkp;
 
+	sep = find_separators(*input);
+	until_separator = *input;
+	bkp = NULL;
+	if (sep >= 0)
+	{
+		until_separator = ft_substr(*input, 0, sep);
+		*input += sep + 1;
+		bkp	=	until_separator;
+	}
+	else
+		*input += ft_strlen(*input);
 	cmd = new_cmd();
 	if (!cmd)
 		return (NULL);
-	cmd->instruction = get_next_word(input);
-	if (**input == '-')
-		cmd->flags = build_flags(input);
-	cmd->args = build_args(input);
-	cmd->separator = get_next_word(input);
+	cmd->instruction = get_next_word(&until_separator);
+	if (*until_separator == '-')
+		cmd->flags = build_flags(&until_separator);
+	cmd->args = build_args(&until_separator);
+	cmd->separator = get_next_word(&until_separator);
+	free(bkp);
 	return (cmd);
 }
