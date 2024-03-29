@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:48:15 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/27 19:53:30 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/28 22:58:16 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,25 +50,52 @@ static t_list	*build_args(char **input)
 	return (args);
 }
 
+static char	*build_separator(char **input, int sep_index)
+{
+	int		i;
+	char	*str;
+	int first_sep_index;
+	char *sep;
+
+	str = *input;
+	first_sep_index = find_first_separator(str);
+	if (first_sep_index != sep_index)
+	{
+		sep = ft_substr(str, first_sep_index, sep_index);
+		*input = ft_substr(str, 0, first_sep_index);
+		ft_printf("%s\n", *input);
+		return (sep);
+	}
+	else
+	{
+		sep = ft_substr(str, sep_index, sep_index); 
+		*input = ft_substr(str, 0, sep_index);
+		ft_printf("%s\n", *input);
+		return (sep);
+	}
+	return (NULL);
+}
+
 t_command	*build_command(char **input)
 {
 	t_command	*cmd;
-	int				sep;
-	char			*until_separator;
-	char			*bkp;
+	int			sep_index;
+	char		*until_separator;
+	char		*bkp;
 
-	sep = find_separators(*input);
+	sep_index = find_separators(*input);
 	until_separator = *input;
 	bkp = NULL;
-	if (sep >= 0)
+	cmd = new_cmd();
+	if (sep_index >= 0)
 	{
-		until_separator = ft_substr(*input, 0, sep);
-		*input += sep + 1;
-		bkp	=	until_separator;
+		until_separator = ft_substr(*input, 0, sep_index + 1);
+		cmd->separator = build_separator(&until_separator, sep_index);
+		*input += sep_index + 1;
+		bkp	= until_separator;
 	}
 	else
 		*input += ft_strlen(*input);
-	cmd = new_cmd();
 	if (!cmd)
 		return (NULL);
 	cmd->instruction = get_next_word(&until_separator);
