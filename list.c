@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 22:18:32 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/26 16:51:04 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/29 20:19:32 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,18 @@ void	destroy_list(t_list *lst)
 		current = next;
 	}
   free(lst);
+}
+
+void	print_list(t_list *lst)
+{
+	t_node *current;
+
+	if (!lst)
+		return ;
+	current = lst->head;
+	while (current != NULL)
+	{
+		ft_printf("%s\n", current->value);
+		current = current->next;
+	}
 }

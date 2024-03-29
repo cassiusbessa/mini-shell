@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:46:14 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/22 16:06:28 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/29 20:25:37 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,23 @@ void  destroy_cmd_lst(t_cmd_lst *lst)
     current = next;
   }
   free(lst);
+}
+
+void  print_all_commands(t_cmd_lst *lst)
+{
+  t_command *current;
+  t_command *next;
+
+  current = lst->head;
+  while (current)
+  {
+    next = current->next;
+    ft_printf("instruction:%s\n", current->instruction);
+    ft_printf("separador:%s\n", current->separator);
+    ft_printf("flags:\n");
+    print_list(current->flags);
+    ft_printf("args:\n");
+    print_list(current->args);
+    current = next;
+  }
 }

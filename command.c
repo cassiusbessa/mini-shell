@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:48:15 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/28 22:58:16 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/29 20:07:54 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ static t_command	*new_cmd(void)
 	t_command	*cmd;
 
 	cmd = (t_command *)ft_calloc(1, sizeof (t_command));
-  cmd->args = NULL;
-  cmd->flags = NULL;
-  cmd->instruction = NULL;
-  cmd->separator = NULL;
-  cmd->next = NULL;
+	cmd->args = NULL;
+	cmd->flags = NULL;
+	cmd->instruction = NULL;
+	cmd->separator = NULL;
+	cmd->next = NULL;
 	return (cmd);
 }
 
@@ -30,7 +30,7 @@ static t_list	*build_flags(char **input)
 {
 	t_list	*flags;
 
-  if (!input || !*input)
+	if (!input || !*input)
 	return (NULL);
 	flags = new_lst();
 	while (**input == '-' && **input)
@@ -42,7 +42,7 @@ static t_list	*build_args(char **input)
 {
 	t_list	*args;
 
-  if (!input || !*input)
+	if (!input || !*input)
 	return (NULL);
 	args = new_lst();
 	while (**input)
@@ -53,24 +53,25 @@ static t_list	*build_args(char **input)
 static char	*build_separator(char **input, int sep_index)
 {
 	int		i;
-	char	*str;
-	int first_sep_index;
-	char *sep;
+	int 	first_sep_index;
+	char 	*sep;
+	char	*new_input;
 
-	str = *input;
-	first_sep_index = find_first_separator(str);
+	first_sep_index = find_first_separator(*input);
 	if (first_sep_index != sep_index)
 	{
-		sep = ft_substr(str, first_sep_index, sep_index);
-		*input = ft_substr(str, 0, first_sep_index);
-		ft_printf("%s\n", *input);
+		sep = ft_substr(*input, first_sep_index, sep_index);
+		new_input = ft_substr(*input, 0, first_sep_index);
+		free(*input);
+		*input = new_input;
 		return (sep);
 	}
 	else
 	{
-		sep = ft_substr(str, sep_index, sep_index); 
-		*input = ft_substr(str, 0, sep_index);
-		ft_printf("%s\n", *input);
+		sep = ft_substr(*input, sep_index, sep_index);
+		new_input = ft_substr(*input, 0, sep_index);
+		free(*input);
+		*input = new_input;
 		return (sep);
 	}
 	return (NULL);
@@ -79,9 +80,9 @@ static char	*build_separator(char **input, int sep_index)
 t_command	*build_command(char **input)
 {
 	t_command	*cmd;
-	int			sep_index;
-	char		*until_separator;
-	char		*bkp;
+	int				sep_index;
+	char			*until_separator;
+	char			*bkp;
 
 	sep_index = find_separators(*input);
 	until_separator = *input;
@@ -102,7 +103,6 @@ t_command	*build_command(char **input)
 	if (*until_separator == '-')
 		cmd->flags = build_flags(&until_separator);
 	cmd->args = build_args(&until_separator);
-	cmd->separator = get_next_word(&until_separator);
 	free(bkp);
 	return (cmd);
 }

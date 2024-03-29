@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:42:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/27 19:46:09 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/29 20:17:06 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ int	main(void)
 		read = readline("minishell% ");
     bkp = read;
 	}
-  // ft_printf("%s %s\n", cmd_lst->head->instruction, cmd_lst->head->flags->head->value);
-  // ft_printf("%s\n", cmd_lst->tail->instruction);
+  print_all_commands(cmd_lst);
   destroy_cmd_lst(cmd_lst);
 	rl_clear_history();
 	return (0);

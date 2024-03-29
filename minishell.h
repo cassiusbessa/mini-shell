@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/28 22:22:39 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/03/29 20:17:19 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,18 @@
 char		*get_next_word(char **input);
 
 /**
- * @brief Finds the index position of the first character separator.
+ * @brief Finds the index position of the last character separator.
  *
- * This function searches for the first occurrence of any character
+ * This function searches for the last occurrence of any character
  * separator in the input string pointed to by the input
  *
  * @param input Pointer to a pointer to the input string.
- * @return The index position of the first character separator found,
+ * @return The index position of the last character separator found,
  *         or -1 if no separator is found.
  */
 int	find_separators(char *input);
+
+int	find_first_separator(char *input);
 
 typedef struct	s_node
 {
@@ -58,9 +60,10 @@ typedef struct s_list
 	t_node	*tail;	
 }	t_list;
 
-t_list		*new_lst(void);
-void		  add_back(t_node *n, t_list **lst);
-void      destroy_list(t_list *lst);
+t_list	*new_lst(void);
+void		add_back(t_node *n, t_list **lst);
+void    destroy_list(t_list *lst);
+void		print_list(t_list *lst);
 
 typedef struct s_command
 {
@@ -82,6 +85,6 @@ typedef struct s_cmd_lst
 t_cmd_lst *new_cmd_lst(void);
 void		  add_cmd(t_command *cmd, t_cmd_lst **lst);
 void      destroy_cmd_lst(t_cmd_lst *lst);
-int	find_first_separator(char *input);
+void 			print_all_commands(t_cmd_lst *lst);
 
 #endif
