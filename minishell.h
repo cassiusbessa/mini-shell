@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/29 20:17:19 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/01 22:10:34 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,16 @@ t_node		*new_node(char *value);
 typedef struct s_list
 {
 	t_node	*head;
-	t_node	*tail;	
+	t_node	*tail;
+	size_t	size;
 }	t_list;
 
 t_list	*new_lst(void);
 void		add_back(t_node *n, t_list **lst);
 void    destroy_list(t_list *lst);
 void		print_list(t_list *lst);
+char	**list_to_args(t_list *lst);
+void	print_double_pointer(char **arr);
 
 typedef struct s_command
 {

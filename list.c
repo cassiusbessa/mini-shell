@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 22:18:32 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/03/29 20:19:32 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/01 21:23:37 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,13 @@ t_node	*new_node(char *value)
 
 t_list	*new_lst(void)
 {
-	return ((t_list *)ft_calloc(1, sizeof (t_list)));
+	t_list	*lst;
+
+	lst = (t_list *)ft_calloc(1, sizeof (t_list));
+	lst->head = NULL;
+	lst->tail = NULL;
+	lst->size = 0;
+	return (lst);
 }
 
 void	add_back(t_node *n, t_list **lst)
@@ -40,6 +46,7 @@ void	add_back(t_node *n, t_list **lst)
 		(*lst)->tail->next = n;
 		(*lst)->tail = n;
 	}
+	(*lst)->size++;
 }
 
 void	destroy_list(t_list *lst)

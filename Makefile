@@ -6,7 +6,7 @@
 #    By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/20 19:50:42 by caqueiro          #+#    #+#              #
-#    Updated: 2024/03/29 19:49:38 by caqueiro         ###   ########.fr        #
+#    Updated: 2024/04/01 22:10:58 by caqueiro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ SRCS =		main.c\
 			find_separators.c\
 			list.c\
 			command.c\
-			command_list.c
+			command_list.c\
+			get.c
 
 LIBFT = utils/libft/libft.a
 
