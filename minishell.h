@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/01 22:10:34 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:23:10 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "utils/libft/libft.h"
 # include <stdio.h>
+# include <sys/types.h>
 # include <readline/readline.h>
 # include <stdlib.h>
 # include <readline/readline.h>
@@ -65,7 +66,6 @@ t_list	*new_lst(void);
 void		add_back(t_node *n, t_list **lst);
 void    destroy_list(t_list *lst);
 void		print_list(t_list *lst);
-char	**list_to_args(t_list *lst);
 void	print_double_pointer(char **arr);
 
 typedef struct s_command
@@ -78,6 +78,7 @@ typedef struct s_command
 }	t_command;
 
 t_command	*build_command(char **input);
+char		**list_to_args(t_command *lst);
 
 typedef struct s_cmd_lst
 {

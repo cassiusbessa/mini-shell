@@ -1,29 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get.c                                              :+:      :+:    :+:   */
+/*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/01 22:15:02 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:54:41 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**list_to_args(t_list *lst)
+static int	args_size(t_command *cmd)
+{
+	int	size;
+
+	if (!cmd)
+		return (0);
+	size = 0;
+	if (cmd->args)
+		size += cmd->args->size;
+	if (cmd->flags)
+		size += cmd->flags->size;
+	return (size);
+}
+char	**list_to_args(t_command *cmd)
 {
 	char		**args;
+	int			size;
 	int			i;
-	t_node	*current;
+	t_node		*current;
 
-	if (!lst || !lst->head)
+	size = args_size(cmd);
+	if (!cmd || !size)
 		return (NULL);
-	current = lst->head;
+	current = cmd->flags->head;
 	i = 0;
-	args = ft_calloc(lst->size + 1, sizeof (char *));
-	while (current && i < lst->size)
+	args = ft_calloc(size + 1, sizeof (char *));
+	while (current && i < cmd->flags->size)
+	{
+		args[i] = current->value;
+		current = current->next;
+		i++;
+	}
+	current = cmd->args->head;
+	while (current && i < cmd->flags->size + cmd->args->size)
 	{
 		args[i] = current->value;
 		current = current->next;
