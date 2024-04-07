@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/03 19:54:41 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/07 16:27:56 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ char	**list_to_args(t_command *cmd)
 		return (NULL);
 	current = cmd->flags->head;
 	i = 0;
-	args = ft_calloc(size + 1, sizeof (char *));
-	while (current && i < cmd->flags->size)
+	args = ft_calloc(size + 2, sizeof (char *));
+	args[i] = cmd->instruction;
+	i++;
+	while (current && i <= cmd->flags->size)
 	{
 		args[i] = current->value;
 		current = current->next;
@@ -67,4 +69,16 @@ void	print_double_pointer(char **arr)
 		ft_printf("%s ", arr[i]);
 		i++;
 	}
+	ft_printf("\n");
+}
+
+void	exec_command(t_command *cmd)
+{
+	char	**args;
+	if (!cmd)
+		return ;
+	args = list_to_args(cmd);
+	print_double_pointer(args);
+	execve("/usr/bin/ls", args, NULL);
+	free(args);
 }

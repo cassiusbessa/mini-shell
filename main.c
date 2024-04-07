@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:42:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/03 19:45:36 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:12:52 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	main(void)
 	char        *read;
   char        *bkp;
   t_cmd_lst   *cmd_lst;
-  char        **arr;
 
   cmd_lst = new_cmd_lst();
   read = readline("minishell% ");
@@ -32,16 +31,11 @@ int	main(void)
     read = readline("minishell% ");
     bkp = read;
   }
-  print_all_commands(cmd_lst);
-  arr = list_to_args(cmd_lst->head);
-  print_double_pointer(arr);
+  exec_command(cmd_lst->head);
   destroy_cmd_lst(cmd_lst);
-  free(arr);
   rl_clear_history();
-
 	return (0);
 }
-
 // #include <stdio.h>
 // #include <stdlib.h>
 // #include <unistd.h>

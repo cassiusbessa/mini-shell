@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/03 19:23:10 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/03 21:07:10 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_command
 
 t_command	*build_command(char **input);
 char		**list_to_args(t_command *lst);
+void		exec_command(t_command *cmd);
 
 typedef struct s_cmd_lst
 {
