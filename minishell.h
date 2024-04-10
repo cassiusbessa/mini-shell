@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/03 21:07:10 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/09 21:45:12 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 # include "utils/libft/libft.h"
 # include <stdio.h>
+# include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <stdlib.h>
 # include <readline/readline.h>
@@ -43,9 +45,9 @@ char		*get_next_word(char **input);
  * @return The index position of the last character separator found,
  *         or -1 if no separator is found.
  */
-int	find_separators(char *input);
+int		find_separators(char *input);
 
-int	find_first_separator(char *input);
+int		find_first_separator(char *input);
 
 typedef struct	s_node
 {
@@ -74,9 +76,11 @@ typedef struct s_command
 	t_list				*flags;
 	t_list				*args;
 	char				*separator;
+	char				*path;
 	struct s_command	*next;
 }	t_command;
 
+void		set_cmd_path(t_command *cmd);
 t_command	*build_command(char **input);
 char		**list_to_args(t_command *lst);
 void		exec_command(t_command *cmd);
