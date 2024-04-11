@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/07 16:27:56 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/11 20:23:29 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,26 @@ char	**list_to_args(t_command *cmd)
 	size = args_size(cmd);
 	if (!cmd || !size)
 		return (NULL);
-	current = cmd->flags->head;
+	args = (char **)ft_calloc(size + 2, sizeof (char *));
 	i = 0;
-	args = ft_calloc(size + 2, sizeof (char *));
-	args[i] = cmd->instruction;
-	i++;
-	while (current && i <= cmd->flags->size)
+	args[i++] = cmd->instruction;
+	if (cmd->flags)
 	{
-		args[i] = current->value;
-		current = current->next;
-		i++;
+		current = cmd->flags->head;
+		while (current)
+		{
+			args[i++] = current->value;
+			current = current->next;
+		}
 	}
-	current = cmd->args->head;
-	while (current && i < cmd->flags->size + cmd->args->size)
+	if (cmd->args)
 	{
-		args[i] = current->value;
-		current = current->next;
-		i++;
+		current = cmd->args->head;
+		while (current)
+		{
+			args[i++] = current->value;
+			current = current->next;
+		}
 	}
 	args[i] = NULL;
 	return (args);
@@ -64,6 +67,7 @@ void	print_double_pointer(char **arr)
 	i = 0;
 	if (arr == NULL)
 		return ;
+	ft_printf("args:\n");
 	while (arr[i])
 	{
 		ft_printf("%s ", arr[i]);
@@ -79,6 +83,7 @@ void	exec_command(t_command *cmd)
 		return ;
 	args = list_to_args(cmd);
 	print_double_pointer(args);
-	execve("/usr/bin/ls", args, NULL);
+	set_cmd_path(cmd);
+	execve(cmd->path, args, NULL);
 	free(args);
 }

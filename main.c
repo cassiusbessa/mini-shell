@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:42:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/09 21:47:28 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/11 17:56:54 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ int	main(void)
       bkp = read;
     }
   }
-  set_cmd_path(cmd_lst->tail);
-  ft_printf("%s\n", cmd_lst->tail->path);
   destroy_cmd_lst(cmd_lst);
   rl_clear_history();
 	return (0);

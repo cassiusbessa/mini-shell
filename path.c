@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 19:37:54 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/09 21:46:41 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/11 18:28:40 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	set_cmd_path(t_command *cmd)
 {
 	char				**env_path;
 	char				*cmd_path;
-	struct stat file_stat;
+	struct stat 		file_stat;
 	int					i;
 
 	i = 0;

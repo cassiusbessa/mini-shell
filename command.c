@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:48:15 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/09 21:43:22 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/11 20:10:59 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static t_list	*build_flags(char **input)
 {
 	t_list	*flags;
 
-	if (!input || !*input)
+	if (!input || !*input || !**input)
 	return (NULL);
 	flags = new_lst();
 	while (**input == '-' && **input)
@@ -43,7 +43,7 @@ static t_list	*build_args(char **input)
 {
 	t_list	*args;
 
-	if (!input || !*input)
+	if (!input || !*input || !**input)
 	return (NULL);
 	args = new_lst();
 	while (**input)
