@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/11 20:23:29 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/11 20:39:44 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,6 @@ char	**list_to_args(t_command *cmd)
 	}
 	args[i] = NULL;
 	return (args);
-}
-
-void	print_double_pointer(char **arr)
-{
-	int	i;
-
-	i = 0;
-	if (arr == NULL)
-		return ;
-	ft_printf("args:\n");
-	while (arr[i])
-	{
-		ft_printf("%s ", arr[i]);
-		i++;
-	}
-	ft_printf("\n");
 }
 
 void	exec_command(t_command *cmd)
