@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/09 21:45:12 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/12 21:23:08 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,7 @@ t_cmd_lst *new_cmd_lst(void);
 void		  add_cmd(t_command *cmd, t_cmd_lst **lst);
 void      destroy_cmd_lst(t_cmd_lst *lst);
 void 			print_all_commands(t_cmd_lst *lst);
+void		exec_all_commands(t_cmd_lst *lst);
+
 
 #endif
