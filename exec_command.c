@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/12 21:37:53 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/20 20:25:19 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	exec_command(t_command *cmd)
 	if (!cmd)
 		return ;
 	args = list_to_args(cmd);
-	print_double_pointer(args);
 	set_cmd_path(cmd);
 	execve(cmd->path, args, NULL);
 	free(args);
@@ -76,13 +75,21 @@ void	exec_all_commands(t_cmd_lst *lst)
 {
 	t_command	*current;
 	pid_t		pid;
+	int			fd[2];
 
+	if (pipe(fd) == -1)
+		return ;
 	current = lst->head;
 	while (current)
 	{
 		pid = fork();
 		if (pid == 0)
 		{
+			close(fd[0]);
+			if (current->next)
+				dup2(fd[1], 1);
+			else
+				dup2(1, fd[1]);
 			exec_command(current);
 			exit(1);
 		}
@@ -90,4 +97,5 @@ void	exec_all_commands(t_cmd_lst *lst)
 			waitpid(pid, NULL, 0);
 		current = current->next;
 	}
+	close(fd[1]);
 }
