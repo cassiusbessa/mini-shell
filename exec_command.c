@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/09 23:12:58 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/10 18:06:19 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ void exec_all_commands(t_cmd_lst *lst) {
 
             // Executa o comando
             exec_command(current);
-        } else 
+        } 
+		else 
 		{
             // Pai espera pelo filho
             waitpid(pid, NULL, 0);
