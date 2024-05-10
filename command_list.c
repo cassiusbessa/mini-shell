@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:46:14 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/11 20:40:29 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:53:00 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	add_cmd(t_command *cmd, t_cmd_lst **lst)
 	else
 	{
 		(*lst)->tail->next = cmd;
+    cmd->prev = (*lst)->tail;
 		(*lst)->tail = cmd;
 	}
 }

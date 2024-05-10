@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_command.c                                     :+:      :+:    :+:   */
+/*   exec_command2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/09 23:12:58 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/09 20:30:33 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void exec_all_commands(t_cmd_lst *lst) {
 		{
             // Pai espera pelo filho
             waitpid(pid, NULL, 0);
-            // close(prev_fd); // Fecha o descritor de arquivo usado no loop anterior
+            close(prev_fd); // Fecha o descritor de arquivo usado no loop anterior
             prev_fd = fd[0]; // Salva o descritor de arquivo de leitura para o próximo loop
             close(fd[1]); // Feche o descritor de arquivo de gravação no processo pai
         }

@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:48:15 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/11 20:10:59 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:43:07 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static t_command	*new_cmd(void)
 	t_command	*cmd;
 
 	cmd = (t_command *)ft_calloc(1, sizeof (t_command));
+	cmd->prev = NULL;
 	cmd->args = NULL;
 	cmd->flags = NULL;
 	cmd->instruction = NULL;

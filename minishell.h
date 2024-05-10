@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/12 21:23:08 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/03 20:47:57 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	print_double_pointer(char **arr);
 
 typedef struct s_command
 {
+	struct s_command	*prev;
 	char				*instruction;
 	t_list				*flags;
 	t_list				*args;
@@ -83,7 +84,6 @@ typedef struct s_command
 void		set_cmd_path(t_command *cmd);
 t_command	*build_command(char **input);
 char		**list_to_args(t_command *lst);
-void		exec_command(t_command *cmd);
 
 typedef struct s_cmd_lst
 {
