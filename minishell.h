@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/03 20:47:57 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/14 22:30:09 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+#include <fcntl.h>
 # define CH_SEP "&><|!();"
 
 /**
@@ -51,7 +52,7 @@ int		find_first_separator(char *input);
 
 typedef struct	s_node
 {
-	char			*value;
+	void			*value;
 	struct s_node	*next;
 }	t_node;
 
@@ -96,6 +97,15 @@ void		  add_cmd(t_command *cmd, t_cmd_lst **lst);
 void      destroy_cmd_lst(t_cmd_lst *lst);
 void 			print_all_commands(t_cmd_lst *lst);
 void		exec_all_commands(t_cmd_lst *lst);
+// void		exec_command(t_command *cmd);
+
+
+
+void	handle_pipe(t_command *cmd, int fd[2]);
+void	handle_output_redirect(t_command *cmd, char *filename);
+void	handle_output_append(t_command *cmd, char *filename);
+void	handle_output_redirect(t_command *cmd, char *filename);
+void	handle_input_redirect(t_command *cmd, char *filename);
 
 
 #endif

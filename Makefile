@@ -6,7 +6,7 @@
 #    By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/20 19:50:42 by caqueiro          #+#    #+#              #
-#    Updated: 2024/04/11 20:42:19 by caqueiro         ###   ########.fr        #
+#    Updated: 2024/05/13 23:14:30 by caqueiro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,9 @@ SRCS =		main.c\
 			command_list.c\
 			exec_command.c\
 			path.c\
+			args.c\
+			pipe.c\
+			redirect.c\
 			print.c
 
 LIBFT = utils/libft/libft.a
