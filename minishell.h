@@ -50,6 +50,8 @@ int		find_separators(char *input);
 
 int		find_first_separator(char *input);
 
+char	*parse_word(char **input);
+
 typedef struct	s_node
 {
 	void			*value;
