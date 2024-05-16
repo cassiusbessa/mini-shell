@@ -6,12 +6,11 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:48:15 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/23 18:43:07 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:43:24 by gamoraes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 static t_command	*new_cmd(void)
 {
@@ -33,7 +32,7 @@ static t_list	*build_flags(char **input)
 	t_list	*flags;
 
 	if (!input || !*input || !**input)
-	return (NULL);
+		return (NULL);
 	flags = new_lst();
 	while (**input == '-' && **input)
 		add_back(new_node(get_next_word(input)), &flags);
@@ -45,7 +44,7 @@ static t_list	*build_args(char **input)
 	t_list	*args;
 
 	if (!input || !*input || !**input)
-	return (NULL);
+		return (NULL);
 	args = new_lst();
 	while (**input)
 		add_back(new_node(get_next_word(input)), &args);
@@ -55,8 +54,8 @@ static t_list	*build_args(char **input)
 static char	*build_separator(char **input, int sep_index)
 {
 	int		i;
-	int 	first_sep_index;
-	char 	*sep;
+	int		first_sep_index;
+	char	*sep;
 	char	*new_input;
 
 	first_sep_index = find_first_separator(*input);
@@ -82,9 +81,9 @@ static char	*build_separator(char **input, int sep_index)
 t_command	*build_command(char **input)
 {
 	t_command	*cmd;
-	int				sep_index;
-	char			*until_separator;
-	char			*bkp;
+	int			sep_index;
+	char		*until_separator;
+	char		*bkp;
 
 	sep_index = find_separators(*input);
 	until_separator = *input;
@@ -95,7 +94,7 @@ t_command	*build_command(char **input)
 		until_separator = ft_substr(*input, 0, sep_index + 1);
 		cmd->separator = build_separator(&until_separator, sep_index);
 		*input += sep_index + 1;
-		bkp	= until_separator;
+		bkp = until_separator;
 	}
 	else
 		*input += ft_strlen(*input);

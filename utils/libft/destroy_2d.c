@@ -11,13 +11,14 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+
 void	destroy_2d(void **array)
 {
 	int	i;
 
 	i = 0;
 	if (!array)
-		return;
+		return ;
 	while (array[i])
 		free(array[i++]);
 	free(array);

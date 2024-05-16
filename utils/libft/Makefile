@@ -38,7 +38,8 @@ SRCS = ft_isalpha.c\
 	  ft_printf.c\
 	  get_next_line_bonus.c\
 	  get_next_line_utils_bonus.c\
-	  destroy_2d.c
+	  destroy_2d.c\
+		ft_strndup.c
 
 BONUS = ft_lstnew_bonus.c\
 	ft_lstadd_front_bonus.c\
