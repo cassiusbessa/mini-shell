@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 20:39:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/11 20:40:52 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/16 19:12:30 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	print_double_pointer(char **arr)
 	ft_printf("\n");
 }
 
-void  print_all_commands(t_cmd_lst *lst)
+void	print_all_commands(t_cmd_lst *lst)
 {
   t_command *current;
   t_command *next;
@@ -37,15 +37,21 @@ void  print_all_commands(t_cmd_lst *lst)
   while (current)
   {
     next = current->next;
-    ft_printf("instruction:%s\n", current->instruction);
-    ft_printf("flags:\n");
-    print_list(current->flags);
-    ft_printf("args:\n");
-    print_list(current->args);
-    ft_printf("separator:%s\n", current->separator);
-    ft_printf("path:%s\n", current->path);
+	print_command(current);
     current = next;
   }
+}
+
+void	print_command(t_command *cmd)
+{
+	ft_printf("instruction:%s\n", cmd->instruction);
+    ft_printf("flags:\n");
+    print_list(cmd->flags);
+    ft_printf("args:\n");
+    print_list(cmd->args);
+    ft_printf("separator:%s\n", cmd->separator);
+    ft_printf("path:%s\n", cmd->path);
+
 }
 
 void	print_list(t_list *lst)

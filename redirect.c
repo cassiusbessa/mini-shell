@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:04:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/14 22:19:06 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/16 20:58:39 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	handle_output_redirect(t_command *cmd, char *filename)
 	close(fd);
 }
 
-void handle_input_redirect(t_command *cmd, char *filename)
+void	handle_input_redirect(t_command *cmd, char *filename)
 {
     int fd;
 
@@ -47,4 +47,9 @@ void handle_input_redirect(t_command *cmd, char *filename)
     }
     dup2(fd, STDIN_FILENO);
     close(fd);
+}
+
+void	here_doc_redirec(t_command *cmd, char *eof)
+{
+	
 }

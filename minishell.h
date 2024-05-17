@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/14 22:30:09 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/16 20:56:23 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_cmd_lst
 t_cmd_lst *new_cmd_lst(void);
 void		  add_cmd(t_command *cmd, t_cmd_lst **lst);
 void      destroy_cmd_lst(t_cmd_lst *lst);
+void		print_command(t_command *cmd);
 void 			print_all_commands(t_cmd_lst *lst);
 void		exec_all_commands(t_cmd_lst *lst);
 // void		exec_command(t_command *cmd);
