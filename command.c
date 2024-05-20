@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:48:15 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/23 18:43:07 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:31:17 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static t_command	*new_cmd(void)
 	cmd->args = NULL;
 	cmd->flags = NULL;
 	cmd->instruction = NULL;
+	cmd->doc = NULL;
 	cmd->separator = NULL;
 	cmd->path = NULL;
 	cmd->next = NULL;
@@ -95,6 +96,11 @@ t_command	*build_command(char **input)
 		until_separator = ft_substr(*input, 0, sep_index + 1);
 		cmd->separator = build_separator(&until_separator, sep_index);
 		*input += sep_index + 1;
+		if (check_separator(">", cmd) || check_separator(">>", cmd) || check_separator("<", cmd) || check_separator("<<", cmd))
+		{
+			ft_printf("entreeeeeeei:%s\n", cmd->separator);
+			cmd->doc = get_next_word(input);
+		}
 		bkp	= until_separator;
 	}
 	else

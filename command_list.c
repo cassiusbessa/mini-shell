@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:46:14 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/23 18:53:00 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:37:32 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void  destroy_cmd_lst(t_cmd_lst *lst)
     destroy_list(current->flags);
     free(current->instruction);
     free(current->separator);
+    free(current->doc);
     free(current->path);
     free(current);
     current = next;

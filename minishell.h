@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/16 20:56:23 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:28:02 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_command
 	t_list				*flags;
 	t_list				*args;
 	char				*separator;
+	char				*doc;
 	char				*path;
 	struct s_command	*next;
 }	t_command;
@@ -85,6 +86,7 @@ typedef struct s_command
 void		set_cmd_path(t_command *cmd);
 t_command	*build_command(char **input);
 char		**list_to_args(t_command *lst);
+int	check_separator(char *sep, t_command *cmd);
 
 typedef struct s_cmd_lst
 {
@@ -107,6 +109,7 @@ void	handle_output_redirect(t_command *cmd, char *filename);
 void	handle_output_append(t_command *cmd, char *filename);
 void	handle_output_redirect(t_command *cmd, char *filename);
 void	handle_input_redirect(t_command *cmd, char *filename);
+void	here_doc_redirect(t_command *cmd, char *eof);
 
 
 #endif

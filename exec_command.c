@@ -6,17 +6,18 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/14 22:35:20 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:40:52 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_separator(char *sep, t_command *cmd)
+int	check_separator(char *sep, t_command *cmd)
 {
-	if (!cmd)
+	// ft_printf("entrei com sep:%s, instruction: %s, cmdsep: %s\n", sep, cmd->instruction, cmd->separator);
+	if (!cmd || !cmd->separator)
 		return (0);
-	return (cmd->next && ft_strncmp(sep, cmd->separator,
+	return (ft_strncmp(sep, cmd->separator,
 			ft_strlen(cmd->separator)) == 0);
 }
 
@@ -35,11 +36,13 @@ static void	handle_child_process(t_command *cmd, int fd[2], int prev_fd)
 	if (check_separator("|", cmd))  
 		handle_pipe(cmd, fd);
 	else if (check_separator(">", cmd))
-		handle_output_redirect(cmd, cmd->next->instruction);
+		handle_output_redirect(cmd, cmd->doc);
 	else if (check_separator(">>", cmd))
-		handle_output_append(cmd, cmd->next->instruction);
+		handle_output_append(cmd, cmd->doc);
 	else if (check_separator("<", cmd))
-		handle_input_redirect(cmd, cmd->next->instruction);
+		handle_input_redirect(cmd, cmd->doc);
+	else if (check_separator("<<", cmd))
+		here_doc_redirect(cmd, cmd->doc);
 	else 
 	{
 		close(fd[0]);
@@ -74,8 +77,6 @@ void exec_all_commands(t_cmd_lst *lst) {
 			handle_child_process(current, fd, prev_fd);
 		else 
 			handle_main_process(fd, &prev_fd);
-		if (check_separator(">", current) || check_separator(">>", current) || check_separator("<", current))
-			current = current->next;
         current = current->next;
     }
 	while (wait(NULL) > 0);

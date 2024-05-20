@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:04:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/16 20:58:39 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:36:02 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,27 @@ void	handle_input_redirect(t_command *cmd, char *filename)
     close(fd);
 }
 
-void	here_doc_redirec(t_command *cmd, char *eof)
+void	here_doc_redirect(t_command *cmd, char *eof)
 {
-	
+	char	*line;
+	int		fd[2];
+
+	if (pipe(fd) == -1)
+		return ;
+	while (42)
+	{
+		line = readline(">");
+		if (!ft_strcmp(line, eof))
+		{
+			free(line);
+			break ;
+		}
+		write(fd[1], line, ft_strlen(line));
+		write(fd[1], "\n", 1);
+		free(line);
+	}
+	close(fd[1]);
+	dup2(fd[0], STDIN_FILENO);
+	// close(fd[0]);
 }
+
