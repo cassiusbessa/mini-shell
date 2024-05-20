@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:48:15 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/20 18:31:17 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:57:18 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static t_list	*build_args(char **input)
 
 static char	*build_separator(char **input, int sep_index)
 {
-	int		i;
 	int 	first_sep_index;
 	char 	*sep;
 	char	*new_input;
@@ -63,7 +62,7 @@ static char	*build_separator(char **input, int sep_index)
 	first_sep_index = find_first_separator(*input);
 	if (first_sep_index != sep_index)
 	{
-		sep = ft_substr(*input, first_sep_index, sep_index);
+		sep = ft_substr(*input, first_sep_index, sep_index + 1);
 		new_input = ft_substr(*input, 0, first_sep_index);
 		free(*input);
 		*input = new_input;
@@ -71,7 +70,7 @@ static char	*build_separator(char **input, int sep_index)
 	}
 	else
 	{
-		sep = ft_substr(*input, sep_index, sep_index);
+		sep = ft_substr(*input, sep_index, sep_index + 1);
 		new_input = ft_substr(*input, 0, sep_index);
 		free(*input);
 		*input = new_input;
@@ -82,7 +81,7 @@ static char	*build_separator(char **input, int sep_index)
 
 t_command	*build_command(char **input)
 {
-	t_command	*cmd;
+	t_command		*cmd;
 	int				sep_index;
 	char			*until_separator;
 	char			*bkp;
@@ -97,10 +96,7 @@ t_command	*build_command(char **input)
 		cmd->separator = build_separator(&until_separator, sep_index);
 		*input += sep_index + 1;
 		if (check_separator(">", cmd) || check_separator(">>", cmd) || check_separator("<", cmd) || check_separator("<<", cmd))
-		{
-			ft_printf("entreeeeeeei:%s\n", cmd->separator);
 			cmd->doc = get_next_word(input);
-		}
 		bkp	= until_separator;
 	}
 	else

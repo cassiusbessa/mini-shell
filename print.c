@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 20:39:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/16 19:12:30 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:38:58 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	print_command(t_command *cmd)
     ft_printf("args:\n");
     print_list(cmd->args);
     ft_printf("separator:%s\n", cmd->separator);
+	ft_printf("doc:%s\n", cmd->doc);
     ft_printf("path:%s\n", cmd->path);
 
 }
