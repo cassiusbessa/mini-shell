@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/20 20:41:44 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/20 21:05:53 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,3 +91,4 @@ void exec_all_commands(t_cmd_lst *lst) {
     }
 	while (wait(NULL) > 0);
 }
+
