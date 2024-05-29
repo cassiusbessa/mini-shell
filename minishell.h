@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/20 20:37:13 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/29 19:13:21 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,6 @@ void	handle_output_redirect(t_command *cmd, char *filename);
 void	handle_output_append(t_command *cmd, char *filename);
 void	handle_output_redirect(t_command *cmd, char *filename);
 void	handle_input_redirect(t_command *cmd, char *filename);
-void here_doc_redirect(t_command *cmd, char *eof, int here_doc_fd[2]);
+// int 	here_doc_redirect(t_command *cmd, char *eof);
 
 #endif
