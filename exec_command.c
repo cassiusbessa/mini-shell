@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/29 19:15:03 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/29 21:16:13 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ static void handle_child_process(t_command *cmd, int fd[2], int prev_fd)
         handle_output_append(cmd, cmd->doc);
     else if (check_separator("<", cmd))
         handle_input_redirect(cmd, cmd->doc);
-    // dup2(prev_fd, STDIN_FILENO);
+    if (!check_separator("<<", cmd) || check_separator("<", cmd))
+        dup2(prev_fd, STDIN_FILENO);
     close(fd[0]);
     close(fd[1]);
     close(prev_fd);
@@ -58,7 +59,8 @@ static void	handle_main_process(int fd[2], int *prev_fd)
 	close(fd[1]);
 }
 
-void exec_all_commands(t_cmd_lst *lst) {
+void exec_all_commands(t_cmd_lst *lst)
+{
     t_command *current;
     pid_t pid;
     int fd[2];
