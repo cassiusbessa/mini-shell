@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/29 21:32:53 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:01:47 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,16 @@ static void exec_command(t_command *cmd) {
 
 static void handle_child_process(t_command *cmd, int fd[2], int prev_fd)
 {
-    if (check_separator("<<", cmd))
+    if (check_separator("<<", cmd) || check_separator("<", cmd))
         handle_input_redirect(cmd, cmd->doc);
-    else if (check_separator("|", cmd))
-        handle_pipe(cmd, fd);
-    else if (check_separator(">", cmd))
+    else
+        dup2(prev_fd, STDIN_FILENO);
+    if (check_separator(">", cmd))
         handle_output_redirect(cmd, cmd->doc);
     else if (check_separator(">>", cmd))
         handle_output_append(cmd, cmd->doc);
-    else if (check_separator("<", cmd))
-        handle_input_redirect(cmd, cmd->doc);
-    if (!check_separator("<<", cmd) || check_separator("<", cmd))
-        dup2(prev_fd, STDIN_FILENO);
+    if (check_separator("|", cmd))
+        handle_pipe(cmd, fd);
     close(fd[0]);
     close(fd[1]);
     close(prev_fd);

@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:04:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/29 19:20:57 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/30 18:26:29 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,34 +44,24 @@ int here_doc_redirect(t_command *cmd, char *eof)
 
     if (pipe(here_doc_fd) == -1)
         perror("pipe");
-    pid = fork();
-    if (pid == 0)
+    while (1)
     {
-        close(here_doc_fd[0]);
-        while (1)
+        line = readline(">");
+        if (!line)
+            exit(EXIT_FAILURE);
+        if (!ft_strcmp(line, eof))
         {
-            line = readline(">");
-            if (!line)
-                exit(EXIT_FAILURE);
-            if (!ft_strcmp(line, eof))
-            {
-                free(line);
-                break;
-            }
-            write(here_doc_fd[1], line, ft_strlen(line));
-            write(here_doc_fd[1], "\n", 1);
             free(line);
+            break;
         }
-        close(here_doc_fd[1]);
-        exit(EXIT_SUCCESS);
+        write(here_doc_fd[1], line, ft_strlen(line));
+        write(here_doc_fd[1], "\n", 1);
+        free(line);
     }
-    else
-    {
-        close(here_doc_fd[1]);
-        waitpid(pid, NULL, 0);
-        // dup2(here_doc_fd[0], STDIN_FILENO);
-        return(here_doc_fd[0]);
-    }
+
+    close(here_doc_fd[1]);
+    // dup2(here_doc_fd[0], STDIN_FILENO);
+    return(here_doc_fd[0]);
 }
 
 
