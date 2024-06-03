@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 22:18:32 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/11 20:40:48 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/06/03 20:20:25 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,36 @@ void	destroy_list(t_list *lst)
 	{
 		next = current->next;
 		free(current->value);
+		current->value = NULL;
 		free(current);
 		current = next;
 	}
   free(lst);
+  lst = NULL;
+}
+
+t_list	*copy_lst(t_list *lst)
+{
+	t_list	*n_lst;
+	t_node	*n_node;
+	t_node	*current;
+
+    if (!lst)
+        return NULL;
+	n_lst = new_lst();
+    if (!new_lst)
+        return NULL;
+    current = lst->head;
+    while (current)
+    {
+        n_node = new_node(ft_strdup(current->value));
+        if (!n_node)
+        {
+			destroy_list(n_lst);
+			return NULL;
+        }
+		add_back(n_node, &n_lst);
+		current = current->next;
+    }
+    return n_lst;
 }

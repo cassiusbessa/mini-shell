@@ -6,33 +6,44 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:04:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/30 18:26:29 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/06/03 20:34:08 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
-void	handle_output_append(t_command *cmd, char *filename)
+void    handle_output_append(t_command **cmd)
 {
 	int fd;
 
-	fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	if (fd == -1)
-		exit(EXIT_FAILURE);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+    if (check_separator(">>", (*cmd)))
+	    fd = open((*cmd)->doc, O_CREAT | O_WRONLY | O_APPEND, 0644);
+    else
+        fd = open((*cmd)->doc, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    while ((*cmd) && (check_separator(">>", (*cmd)->next) || check_separator(">", (*cmd)->next)))
+    {
+        if (check_separator(">>", (*cmd)))
+	        fd = open((*cmd)->next->doc, O_CREAT | O_WRONLY | O_APPEND, 0644);
+        else
+            fd = open((*cmd)->next->doc, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+        if (fd == -1)
+            exit(EXIT_FAILURE);
+        (*cmd)->next->instruction = ft_strdup((*cmd)->instruction);
+        (*cmd)->next->args = copy_lst((*cmd)->args);
+        (*cmd) = (*cmd)->next;
+    }
+	(*cmd)->fd[1] = fd;
 }
 
-void	handle_output_redirect(t_command *cmd, char *filename)
+int	handle_output_redirect(t_command *cmd)
 {
 	int fd;
 
-	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	fd = open(cmd->doc, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 		exit(EXIT_FAILURE);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	return (fd);
 }
 
 int here_doc_redirect(t_command *cmd, char *eof)
@@ -81,7 +92,7 @@ void	handle_input_redirect(t_command *cmd, char *filename)
             exit(EXIT_FAILURE);
         }
     }
-    dup2(fd, STDIN_FILENO);
+    dup2(fd, cmd->fd[0]);
     close(fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 20:39:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/20 19:38:58 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/06/03 18:29:53 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	print_all_commands(t_cmd_lst *lst)
 
 void	print_command(t_command *cmd)
 {
+	if (!cmd)
+		ft_printf("null cmd\n");
 	ft_printf("instruction:%s\n", cmd->instruction);
     ft_printf("flags:\n");
     print_list(cmd->flags);
@@ -52,6 +54,7 @@ void	print_command(t_command *cmd)
     ft_printf("separator:%s\n", cmd->separator);
 	ft_printf("doc:%s\n", cmd->doc);
     ft_printf("path:%s\n", cmd->path);
+	ft_printf("fd[0]:%d, fd[1]:%d\n", cmd->fd[0], cmd->fd[1]);
 
 }
 

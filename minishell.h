@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/29 19:13:21 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/06/03 20:26:51 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,9 @@ typedef struct s_list
 t_list	*new_lst(void);
 void		add_back(t_node *n, t_list **lst);
 void    destroy_list(t_list *lst);
-void		print_list(t_list *lst);
+void	print_list(t_list *lst);
 void	print_double_pointer(char **arr);
+t_list	*copy_lst(t_list *lst);
 
 typedef struct s_command
 {
@@ -80,6 +81,7 @@ typedef struct s_command
 	char				*separator;
 	char				*doc;
 	char				*path;
+	int					fd[2];
 	struct s_command	*next;
 }	t_command;
 
@@ -96,7 +98,7 @@ typedef struct s_cmd_lst
 
 t_cmd_lst *new_cmd_lst(void);
 void		  add_cmd(t_command *cmd, t_cmd_lst **lst);
-void      destroy_cmd_lst(t_cmd_lst *lst);
+void      destroy_cmd_lst(t_cmd_lst **lst);
 void		print_command(t_command *cmd);
 void 			print_all_commands(t_cmd_lst *lst);
 void		exec_all_commands(t_cmd_lst *lst);
@@ -105,9 +107,8 @@ void		exec_all_commands(t_cmd_lst *lst);
 
 
 void	handle_pipe(t_command *cmd, int fd[2]);
-void	handle_output_redirect(t_command *cmd, char *filename);
-void	handle_output_append(t_command *cmd, char *filename);
-void	handle_output_redirect(t_command *cmd, char *filename);
+void	handle_output_append(t_command **cmd);
+int		handle_output_redirect(t_command *cmd);
 void	handle_input_redirect(t_command *cmd, char *filename);
 // int 	here_doc_redirect(t_command *cmd, char *eof);
 

@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:48:15 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/05/20 19:57:18 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/05/31 20:17:33 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static t_command	*new_cmd(void)
 	cmd->separator = NULL;
 	cmd->path = NULL;
 	cmd->next = NULL;
+	cmd->fd[0] = STDIN_FILENO;
+	cmd->fd[1] = STDOUT_FILENO;
 	return (cmd);
 }
 
