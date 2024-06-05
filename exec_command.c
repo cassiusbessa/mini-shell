@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/06/03 19:37:28 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/06/05 19:25:51 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,29 @@ int	check_separator(char *sep, t_command *cmd)
 static void exec_command(t_command *cmd) {
     char **args;
 
-    if (!cmd)
+    if (!cmd || !cmd->instruction)
         return;
     args = list_to_args(cmd);
     set_cmd_path(cmd);
     if (!cmd->path && !cmd->doc)
         exit(EXIT_FAILURE);
     if (cmd->fd[0] != STDIN_FILENO)
+    {
         dup2(cmd->fd[0], STDIN_FILENO);
+        close(cmd->fd[0]);
+    }
     if (cmd->fd[1] != STDOUT_FILENO)
+    {
         dup2(cmd->fd[1], STDOUT_FILENO);
+        close(cmd->fd[1]);
+    }
 	execve(cmd->path, args, NULL);
 }
 
 static void handle_fds(t_command **cmd)
 {
-    if (check_separator(">>", *cmd))
-        handle_output_append(cmd);
+    if (check_separator(">>", *cmd) || check_separator(">", *cmd) || check_separator("<", *cmd))
+        handle_output_redirect(cmd);
 }
 
 static void	handle_main_process(t_command *cmd)
@@ -55,15 +61,18 @@ void exec_all_commands(t_cmd_lst *lst)
     pid_t pid;
 
     current = lst->head;
+    handle_fds(&current);
     while (current) 
 	{
-        handle_fds(&current);
-        pid = fork();
-        if (pid == 0) 
-			exec_command(current);
-		else 
+        if (current->instruction)
         {
-		    handle_main_process(current);
+            pid = fork();
+            if (pid == 0) 
+                exec_command(current);
+            else 
+            {
+                handle_main_process(current);
+            }
         }
         if (!current)
             break ;
