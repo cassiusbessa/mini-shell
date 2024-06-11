@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:46:14 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/06/03 20:29:42 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/06/07 21:00:32 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@ void	add_cmd(t_command *cmd, t_cmd_lst **lst)
 	}
 }
 
+void static close_files(t_command *cmd)
+{
+    if (!cmd)
+        return ;
+    if (cmd->fd[1] != STDOUT_FILENO)
+        close (cmd->fd[1]);
+    if (cmd->fd[0] != STDIN_FILENO)
+        close (cmd->fd[0]);
+}
+
+
 void  destroy_cmd_lst(t_cmd_lst **lst)
 {
   t_command *current;
@@ -44,11 +55,12 @@ void  destroy_cmd_lst(t_cmd_lst **lst)
   {
     next = current->next;
     free(current->instruction);
+    destroy_list(current->flags);
+    destroy_list(current->args);
     free(current->separator);
     free(current->doc);
     free(current->path);
-    destroy_list(current->args);
-    destroy_list(current->flags);
+    close_files(current);
     free(current);
     current = next;
   }

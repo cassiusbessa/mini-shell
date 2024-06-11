@@ -6,7 +6,7 @@
 #    By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/20 19:50:42 by caqueiro          #+#    #+#              #
-#    Updated: 2024/05/20 18:07:01 by caqueiro         ###   ########.fr        #
+#    Updated: 2024/06/06 22:13:09 by caqueiro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ LIBFT = utils/libft/libft.a
 
 MINISHELL = minishell
 
-CC	= cc
+CC	= cc -g
 RM	= rm -f
 
 CFLAGS	= -Wall -Wextra -Werror

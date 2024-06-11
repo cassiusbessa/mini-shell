@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/06/05 19:25:51 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/06/07 22:47:38 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void exec_command(t_command *cmd) {
     set_cmd_path(cmd);
     if (!cmd->path && !cmd->doc)
         exit(EXIT_FAILURE);
+    print_command(cmd);
     if (cmd->fd[0] != STDIN_FILENO)
     {
         dup2(cmd->fd[0], STDIN_FILENO);
@@ -43,7 +44,6 @@ static void exec_command(t_command *cmd) {
 
 static void handle_fds(t_command **cmd)
 {
-    if (check_separator(">>", *cmd) || check_separator(">", *cmd) || check_separator("<", *cmd))
         handle_output_redirect(cmd);
 }
 
@@ -61,12 +61,13 @@ void exec_all_commands(t_cmd_lst *lst)
     pid_t pid;
 
     current = lst->head;
-    handle_fds(&current);
     while (current) 
 	{
         if (current->instruction)
         {
             pid = fork();
+            handle_pipe(&current);
+            handle_fds(&current);
             if (pid == 0) 
                 exec_command(current);
             else 

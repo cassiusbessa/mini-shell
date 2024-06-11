@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/06/04 21:31:43 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/06/06 20:30:27 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,9 @@ void		exec_all_commands(t_cmd_lst *lst);
 
 
 
-void	handle_pipe(t_command *cmd, int fd[2]);
+void	handle_pipe(t_command **cmd);
 void		handle_output_redirect(t_command **cmd);
-void	handle_input_redirect(t_command **cmd);
+// void	handle_input_redirect(t_command **cmd);
 // int 	here_doc_redirect(t_command *cmd, char *eof);
 
 #endif
