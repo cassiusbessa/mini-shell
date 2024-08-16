@@ -17,7 +17,6 @@ int	main(int argc, char **argv, char **envp)
 	char        *read;
   char        *bkp;
   t_cmd_lst   *cmd_lst;
-  pid_t       pid;
 
   cmd_lst = new_cmd_lst();
   read = readline("minishell% ");

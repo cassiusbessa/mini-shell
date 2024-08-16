@@ -15,6 +15,7 @@
 void handle_pipe(t_command **cmd)
 {
     t_command *current;
+    int temp_fd[2];
 
     current = *cmd;
     while (current)
@@ -22,21 +23,25 @@ void handle_pipe(t_command **cmd)
         if (current->next && check_separator("|", current))
         {
             // Cria o pipe
-            if (pipe(current->fd) == -1)
+            if (pipe(temp_fd) == -1)
             {
                 perror("pipe");
                 exit(EXIT_FAILURE);
             }
-			dup2(current->fd[1], STDOUT_FILENO);
-			close(current->fd[0]);
-			close(current->fd[1]);
+
             // Configura os descritores de arquivo para os comandos
-            current->next->fd[0] = current->fd[0]; // O próximo comando lê do pipe
-            current->next->fd[1] = STDOUT_FILENO; // Garantindo que o próximo comando tenha o stdout padrão, se não for sobrescrito
+            // futuramente vai dar bug!
+            current->fd[1] = temp_fd[1];
+            current->next->fd[0] = temp_fd[0]; // O próximo comando lê do pipe
+            //current->next->fd[1] = STDOUT_FILENO; // Garantindo que o próximo comando tenha o stdout padrão, se não for sobrescrito
+
         }
         current = current->next;
     }
 }
+
+// [Saída = 3] (3/4) [Entrada = 4/ Saída 5] (5/6) [Entrada = 6] []
+
 
 // void	handle_pipe(t_command *cmd, int fd[2])
 // {

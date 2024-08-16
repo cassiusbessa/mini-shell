@@ -19,6 +19,7 @@ t_node	*new_node(char *value)
 	nd = ft_calloc(1, sizeof (t_node));
 	nd->value = value;
 	nd->next = NULL;
+	return (nd);
 }
 
 t_list	*new_lst(void)
@@ -78,8 +79,8 @@ t_list	*copy_lst(t_list *lst)
     if (!lst)
         return NULL;
 	n_lst = new_lst();
-    if (!new_lst)
-        return NULL;
+    // if (!new_lst)
+    //     return (NULL);
     current = lst->head;
     while (current)
     {
@@ -92,5 +93,5 @@ t_list	*copy_lst(t_list *lst)
 		add_back(n_node, &n_lst);
 		current = current->next;
     }
-    return n_lst;
+    return (n_lst);
 }

@@ -60,7 +60,7 @@ void  destroy_cmd_lst(t_cmd_lst **lst)
     free(current->separator);
     free(current->doc);
     free(current->path);
-    close_files(current);
+    // close_files(current);
     free(current);
     current = next;
   }
