@@ -58,7 +58,14 @@ void handle_output_redirect(t_command **cmd)
         if (check_separator(">>", current_cmd))
             fd_out = open(current_cmd->doc, O_CREAT | O_WRONLY | O_APPEND, 0644);
         else if (check_separator(">", current_cmd))
+        {
             fd_out = open(current_cmd->doc, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+            if (current_cmd->fd[0] != STDIN_FILENO)
+                close(current_cmd->fd[0]);
+            if (current_cmd->fd[1] != STDOUT_FILENO)
+                close(current_cmd->fd[1]);
+
+        }
         else if (check_separator("<<", current_cmd))
             fd_in = here_doc_redirect(current_cmd->doc);
         else if (check_separator("<", current_cmd))

@@ -74,3 +74,24 @@ void	print_list(t_list *lst)
 		current = current->next;
 	}
 }
+
+void	print_token(t_token *token)
+{
+	ft_printf("word:%s\n", token->word);
+	ft_printf("type:%d\n", token->type);
+	ft_printf("fd[0]:%d, fd[1]:%d\n", token->fd[0], token->fd[1]);
+}
+
+void	print_token_lst(t_token_lst *lst)
+{
+	t_token *current;
+	t_token *next;
+
+  current = lst->head;
+  while (current)
+  {
+    next = current->next;
+	print_token(current);
+    current = next;
+  }
+}

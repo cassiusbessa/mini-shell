@@ -33,6 +33,9 @@ void handle_pipe(t_command **cmd)
             // futuramente vai dar bug!
             current->fd[1] = temp_fd[1];
             current->next->fd[0] = temp_fd[0]; // O próximo comando lê do pipe
+            print_command(current);
+            print_command(current->next);
+
             //current->next->fd[1] = STDOUT_FILENO; // Garantindo que o próximo comando tenha o stdout padrão, se não for sobrescrito
 
         }

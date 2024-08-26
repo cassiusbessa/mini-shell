@@ -17,24 +17,29 @@ int	main(int argc, char **argv, char **envp)
 	char        *read;
   char        *bkp;
   t_cmd_lst   *cmd_lst;
+  t_token_lst *token_lst;
 
   cmd_lst = new_cmd_lst();
+  token_lst = new_token_lst();
   read = readline("minishell% ");
   bkp = read;
   while (read)
   {
     add_history(bkp);
     while (*read)
-      add_cmd(build_command(&read), &cmd_lst);
-    exec_all_commands(cmd_lst);
-    rl_on_new_line();
-    free(bkp);
-    read = readline("minishell% ");
-    bkp = read;
-    destroy_cmd_lst(&cmd_lst);
-    cmd_lst = new_cmd_lst();
+      add_token(new_token(get_next_token(&read)), &token_lst); 
+    print_token_lst(token_lst);
+    break;
+    //   add_cmd(build_command(&read), &cmd_lst);
+    // exec_all_commands(cmd_lst);
+    // rl_on_new_line();
+    // free(bkp);
+    // read = readline("minishell% ");
+    // bkp = read;
+    // destroy_cmd_lst(&cmd_lst);
+    // cmd_lst = new_cmd_lst();
   }
-  destroy_cmd_lst(&cmd_lst);
+  // destroy_cmd_lst(&cmd_lst);
   rl_clear_history();
 	return (0);
 }

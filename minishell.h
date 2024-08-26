@@ -36,6 +36,8 @@
  */
 char		*get_next_word(char **input);
 
+char *get_next_token(char **input);
+
 /**
  * @brief Finds the index position of the last character separator.
  *
@@ -72,6 +74,46 @@ void	print_list(t_list *lst);
 void	print_double_pointer(char **arr);
 t_list	*copy_lst(t_list *lst);
 
+typedef enum e_word_type {
+
+	UNKNOWN = 0,
+	PIPE = 1,
+	REDIR_OUT = 2,
+	REDIR_IN = 3,
+	HERE_DOC = 4,
+	APPEND = 5,
+	COMMAND = 6,
+	DOCUMENT = 7,
+	HERE_DOC_EOF = 8,
+	ARGUMMENT = 9
+} t_word_type;
+
+typedef struct s_token
+{
+	struct	s_token	*prev;
+	char			*word;
+	t_word_type		type;
+	int				fd[2];
+	struct	s_token	*next;
+
+} t_token;
+
+t_token	*new_token(char *word);
+
+typedef struct s_token_lst
+{
+	t_token	*head;
+	t_token	*tail;
+}	t_token_lst;
+
+t_token_lst *new_token_lst(void);
+void    	add_token(t_token *token, t_token_lst **lst);
+void		print_token_lst(t_token_lst *lst);
+void		destroy_token_lst(t_token_lst **lst);
+
+
+
+
 typedef struct s_command
 {
 	struct s_command	*prev;
@@ -84,6 +126,7 @@ typedef struct s_command
 	int					fd[2];
 	struct s_command	*next;
 }	t_command;
+
 
 void		set_cmd_path(t_command *cmd);
 t_command	*build_command(char **input);

@@ -27,7 +27,9 @@ SRCS =		main.c\
 			args.c\
 			pipe.c\
 			redirect.c\
-			print.c
+			print.c\
+			token_lst.c\
+			token.c
 
 LIBFT = utils/libft/libft.a
 

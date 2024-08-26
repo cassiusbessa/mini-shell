@@ -28,7 +28,6 @@ static void exec_command(t_command *cmd) {
     set_cmd_path(cmd);
     if (!cmd->path && !cmd->doc)
         exit(EXIT_FAILURE);
-    print_command(cmd);
 	execve(cmd->path, args, NULL);
 }
 
@@ -53,7 +52,6 @@ void exec_all_commands(t_cmd_lst *lst)
 
     current = lst->head;
     handle_pipe(&current);
-    print_all_commands(lst);
     handle_fds(&current);
 
     while (current)
@@ -74,7 +72,6 @@ void exec_all_commands(t_cmd_lst *lst)
                         close(temp->fd[0]);
                     if (temp->fd[1] != STDOUT_FILENO)
                     {
-                        print_command(temp);
                         close(temp->fd[1]);
                     }
                     temp = temp->next;
