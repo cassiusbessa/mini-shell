@@ -27,7 +27,8 @@ int	main(int argc, char **argv, char **envp)
   {
     add_history(bkp);
     while (*read)
-      add_token(new_token(get_next_token(&read)), &token_lst); 
+      add_token(new_token(get_next_token(&read)), &token_lst);
+    // type_specials_token(token_lst);
     print_token_lst(token_lst);
     break;
     //   add_cmd(build_command(&read), &cmd_lst);

@@ -110,6 +110,7 @@ t_token_lst *new_token_lst(void);
 void    	add_token(t_token *token, t_token_lst **lst);
 void		print_token_lst(t_token_lst *lst);
 void		destroy_token_lst(t_token_lst **lst);
+void    type_specials_token(t_token_lst *lst);
 
 
 

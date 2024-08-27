@@ -5,7 +5,8 @@
     "minishell.h": "c",
     "history.h": "c",
     "stdio.h": "c",
-    "libft.h": "c"
+    "libft.h": "c",
+    "ranges": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
