@@ -45,12 +45,11 @@ static int	find_space_or_sep(char *input)
 	if (!input[space])
 		space = -1;
 	sep = find_first_separator(input);
-	if (space < 0 && sep < 0)
-		return (ft_strlen(input));
-	ft_printf("space:%d, sep:%d, input:%s\n", space, sep, input);
-	if (space >= sep)
+	if (space >= 0 && (space <= sep || sep < 0))
 		return (space);
-	return (sep);
+	if (sep >= 0 && (sep <= space || space < 0))
+		return (sep);
+	return (ft_strlen(input));
 }
 
 char *get_next_token(char **input)
@@ -60,7 +59,6 @@ char *get_next_token(char **input)
 
 	skip_spaces(input);
 	token_index = find_space_or_sep(*input);
-	ft_printf("token_index:%d, input:%s\n", token_index, input);
 	if (token_index == 0)
 		token_index++;
 	token = ft_substr(*input, 0, token_index);

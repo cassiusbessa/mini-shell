@@ -76,15 +76,15 @@ t_list	*copy_lst(t_list *lst);
 
 typedef enum e_word_type {
 
-	UNKNOWN = 0,
-	PIPE = 1,
-	REDIR_OUT = 2,
-	REDIR_IN = 3,
-	HERE_DOC = 4,
-	APPEND = 5,
+	UNKNOWN = 0, //
+	PIPE = 1, //
+	REDIR_OUT = 2, //
+	REDIR_IN = 3, //
+	HERE_DOC = 4, //
+	APPEND = 5, //
 	COMMAND = 6,
-	DOCUMENT = 7,
-	HERE_DOC_EOF = 8,
+	DOCUMENT = 7, //
+	HERE_DOC_EOF = 8, //
 	ARGUMMENT = 9
 } t_word_type;
 
