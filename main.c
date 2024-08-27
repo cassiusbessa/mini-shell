@@ -19,7 +19,6 @@ int	main(int argc, char **argv, char **envp)
   t_cmd_lst   *cmd_lst;
   t_token_lst *token_lst;
 
-  cmd_lst = new_cmd_lst();
   token_lst = new_token_lst();
   read = readline("minishell% ");
   bkp = read;
@@ -30,11 +29,12 @@ int	main(int argc, char **argv, char **envp)
       add_token(new_token(get_next_token(&read)), &token_lst);
     type_specials_token(token_lst);
     print_token_lst(token_lst);
+    destroy_token_lst(&token_lst);
+    free(bkp);
     break;
     //   add_cmd(build_command(&read), &cmd_lst);
     // exec_all_commands(cmd_lst);
     // rl_on_new_line();
-    // free(bkp);
     // read = readline("minishell% ");
     // bkp = read;
     // destroy_cmd_lst(&cmd_lst);

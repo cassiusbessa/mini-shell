@@ -32,6 +32,7 @@ void  destroy_token_lst(t_token_lst **lst)
   {
     next = current->next;
     free(current->word);
+    free(current);
     current = next;
   }
   free((*lst));
