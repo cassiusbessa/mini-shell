@@ -52,6 +52,8 @@ int		find_separators(char *input);
 
 int		find_first_separator(char *input);
 
+int	is_separator(char c);
+
 typedef struct	s_node
 {
 	void			*value;

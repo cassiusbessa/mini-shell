@@ -55,3 +55,17 @@ int	find_first_separator(char *input)
 	}
 	return (-1);
 }
+
+int	is_separator(char c)
+{
+	int	i;
+
+	i = 0;
+	while (CH_SEP[i])
+	{
+		if (c == CH_SEP[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
