@@ -50,7 +50,7 @@ char *get_next_token(char **input);
  */
 int		find_separators(char *input);
 
-int		find_first_separator(char *input);
+int		find_first_separator(char *input, int start);
 
 int	is_separator(char c);
 
@@ -108,6 +108,7 @@ typedef struct s_token_lst
 	t_token	*tail;
 }	t_token_lst;
 
+
 t_token_lst *new_token_lst(void);
 void    	add_token(t_token *token, t_token_lst **lst);
 void		print_token_lst(t_token_lst *lst);
@@ -115,6 +116,13 @@ void		destroy_token_lst(t_token_lst **lst);
 void    type_specials_token(t_token_lst *lst);
 
 
+typedef struct s_part
+{
+	int	start;
+	int	end;
+}	t_part;
+
+t_part	quotes(char *input);
 
 
 typedef struct s_command

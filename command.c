@@ -61,7 +61,7 @@ static char	*build_separator(char **input, int sep_index)
 	char 	*sep;
 	char	*new_input;
 
-	first_sep_index = find_first_separator(*input);
+	first_sep_index = find_first_separator(*input, 0);
 	if (first_sep_index != sep_index)
 	{
 		sep = ft_substr(*input, first_sep_index, sep_index + 1);
