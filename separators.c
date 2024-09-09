@@ -94,33 +94,37 @@ t_part	quotes(char *input)
 	{
 		if (input[i] == 34 && d > 0 && s == 0)
 		{
-			if (!input[i + 1] || (input[i + 1] && (input[i + 1] == ' ' || is_separator(input[i + 1]))))
-			{
-				quotes.end = i;
-				d = 0;
-			}
-			else if (input[i + 1] && input[i + 1] == 39)
+			quotes.end = i;
+			if (input[i + 1] && input[i + 1] == 39)
 			{
 				quotes.end = -1;
-				s = 1;
 				d = 0;
-				i++;
-			}
-		}
-		else if (input[i] == 39 && s > 0 && d == 0)
-		{
-			if (!input[i + 1] || (input[i + 1] && (input[i + 1] == ' ' || is_separator(input[i + 1]))))
-			{
-				quotes.end = i;
-				s = 0;
+				s = 1;
 			}
 			else if (input[i + 1] && input[i + 1] == 34)
 			{
 				quotes.end = -1;
 				d = 1;
 				s = 0;
-				i++;
 			}
+			i++;
+		}
+		else if (input[i] == 39 && s > 0 && d == 0)
+		{
+			quotes.end = i;
+			if (input[i + 1] && input[i + 1] == 34)
+			{
+				quotes.end = -1;
+				d = 1;
+				s = 0;
+			}
+			else if (input[i + 1] && input[i + 1] == 34)
+			{
+				quotes.end = -1;
+				d = 0;
+				s = 1;
+			}
+			i++;
 		}
 		if (quotes.start != -1 && quotes.end != -1)
 			return (quotes);
