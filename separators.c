@@ -82,13 +82,25 @@ t_part	quotes(char *input)
 	i = 0;
 	d = 0;
 	s = 0;
-	if (input[i] != 34 && input[i] != 39)
-		return (quotes);
 	quotes.start = i;
-	if (input[i] == 34 && d == 0 && s == 0)
-		d = 1;
-	else if (input[i] == 39 && s == 0 && d == 0)
-		s = 1;
+	while (input[i])
+	{
+		if (input[i] == 34)
+		{
+			quotes.start = i;
+			d = 1;
+			break ;
+		}
+		else if (input[i] == 39)
+		{
+			quotes.start = i;
+			s = 1;
+			break ;
+		}
+		i++;
+	}
+	if (!input[i])
+		return quotes;
 	i++;
 	while (input[i])
 	{
