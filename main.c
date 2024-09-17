@@ -30,13 +30,12 @@ int	main(int argc, char **argv, char **envp)
       add_token(new_token(str), &token_lst); 
       str = get_next_token2(read);
     }
-    free(read);
     type_specials_token(token_lst);
     print_token_lst(token_lst);
-    // exec_all_commands(cmd_lst);
     rl_on_new_line();
-    read = readline("minishell% ");
     destroy_token_lst(&token_lst);
+    free(read);
+    read = readline("minishell% ");
     token_lst = new_token_lst();
   }
   destroy_token_lst(&token_lst);

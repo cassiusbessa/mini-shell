@@ -10,11 +10,6 @@ char    *get_next_token2(char *input)
     static t_part		part;
     char                *token_str;
 
-    if (!input || !cmp || cmp != input)
-    {
-		cmp = input;
-		ft_memset(&part, 0, sizeof(part));
-    }
 	if (!input)
 		return (NULL);
     // pular espaços
@@ -36,12 +31,15 @@ char    *get_next_token2(char *input)
         
     // Pegar nova string
     token_str = ft_substr(input, part.start, (part.end - part.start));
+    // ft_printf ("FOUND PART (%d) ~ (%d): [%s]\n", part.start, part.end, token_str);
     
     // Caso encontre string vazia (final da string)
     if (part.start == part.end)
+    {
         free(token_str);
-    if (part.start == part.end)
         token_str = NULL;
+        ft_memset(&part, 0, sizeof(part));
+    }
 
     // Atualizar start para quando chamar de novo
     part.start = part.end;
