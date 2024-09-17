@@ -27,6 +27,9 @@ void  destroy_token_lst(t_token_lst **lst)
   t_token *current;
   t_token *next;
 
+  if (*lst == NULL)
+    return ;
+
   current = (*lst)->head;
   while (current)
   {

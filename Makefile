@@ -30,7 +30,8 @@ SRCS =		main.c\
 			print.c\
 			token_lst.c\
 			token.c\
-			token_type.c
+			token_type.c\
+			parser.c
 
 LIBFT = utils/libft/libft.a
 
@@ -53,6 +54,7 @@ $(MINISHELL):
 
 all: $(MINISHELL)
 
+
 clean:
 		@make fclean -C utils/libft
 		${RM} ${OBJS}
@@ -69,3 +71,7 @@ re:	fclean all
 	@printf "$(GREEN)    - Makefile recompiled.$(RESET)\n"
 
 .PHONY:	all clean fclean re
+
+shit: re
+	  clear
+	  ./minishell

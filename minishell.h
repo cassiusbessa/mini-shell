@@ -36,7 +36,8 @@
  */
 char		*get_next_word(char **input);
 
-char *get_next_token(char **input);
+// char *get_next_token(char **input);
+char	*get_next_token2(char *input);
 
 /**
  * @brief Finds the index position of the last character separator.

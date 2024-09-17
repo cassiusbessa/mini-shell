@@ -68,24 +68,24 @@ static t_part	choose_index(char *input, t_part q, int token_index)
 	
 }
 
-char *get_next_token(char **input)
-{
-	int			token_index;
-	char		*token;
-	t_part	q;
-	t_part	p;
+// char *get_next_token(char **input)
+// {
+// 	int			token_index;
+// 	char		*token;
+// 	t_part	q;
+// 	t_part	p;
 
-	skip_spaces(input);
-	q = quotes(*input);
-	token_index = find_space_or_sep(*input, 0);
-	if (token_index == 0)
-		token_index++;
-	p = choose_index(*input, q, token_index);
-	ft_printf("start:%d, end:%d, choose:%d\n", q.start, q.end, p.end);
-	token = ft_substr(*input, p.start, p.end - p.start);
-	(*input) += p.end;
-	return (token);
-}
+// 	skip_spaces(input);
+// 	q = quotes(*input);
+// 	token_index = find_space_or_sep(*input, 0);
+// 	if (token_index == 0)
+// 		token_index++;
+// 	p = choose_index(*input, q, token_index);
+// 	ft_printf("start:%d, end:%d, choose:%d\n", q.start, q.end, p.end);
+// 	token = ft_substr(*input, p.start, p.end - p.start);
+// 	(*input) += p.end;
+// 	return (token);
+// }
 
 char *get_next_word(char **input)
 {

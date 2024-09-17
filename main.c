@@ -15,32 +15,31 @@
 int	main(int argc, char **argv, char **envp)
 {
 	char        *read;
-  char        *bkp;
   t_cmd_lst   *cmd_lst;
   t_token_lst *token_lst;
+  char        *str;
 
   token_lst = new_token_lst();
   read = readline("minishell% ");
-  bkp = read;
   while (read)
   {
-    add_history(bkp);
-    while (*read)
-      add_token(new_token(get_next_token(&read)), &token_lst);
+    add_history(read);
+    str = get_next_token2(read);
+    while (str != NULL)
+    {
+      add_token(new_token(str), &token_lst); 
+      str = get_next_token2(read);
+    }
+    free(read);
     type_specials_token(token_lst);
     print_token_lst(token_lst);
-    destroy_token_lst(&token_lst);
-    free(bkp);
-    break;
-    //   add_cmd(build_command(&read), &cmd_lst);
     // exec_all_commands(cmd_lst);
-    // rl_on_new_line();
-    // read = readline("minishell% ");
-    // bkp = read;
-    // destroy_cmd_lst(&cmd_lst);
-    // cmd_lst = new_cmd_lst();
+    rl_on_new_line();
+    read = readline("minishell% ");
+    destroy_token_lst(&token_lst);
+    token_lst = new_token_lst();
   }
-  // destroy_cmd_lst(&cmd_lst);
+  destroy_token_lst(&token_lst);
   rl_clear_history();
 	return (0);
 }
