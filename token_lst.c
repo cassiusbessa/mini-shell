@@ -7,7 +7,7 @@ t_token_lst *new_token_lst(void)
 
 void    add_token(t_token *token, t_token_lst **lst)
 {
-  if (!token || !*lst || !lst)
+  if (!token && !*lst || !lst)
     return ;
   if (!(*lst)->head)
   {
@@ -40,4 +40,39 @@ void  destroy_token_lst(t_token_lst **lst)
   }
   free((*lst));
   (*lst) = NULL;
+}
+
+static int  is_separator_type(t_token *t)
+{
+  return (t->type == REDIR_IN || t->type == REDIR_OUT || t->type == HERE_DOC || 
+      t->type == PIPE || t->type == APPEND);
+}
+
+// redirect precisa ter documento depois X
+// não pode ter dois separadores juntos X
+// separadores não podem iniciar comandos X
+// pipes precisam ter comandos antes e depois X
+
+int sintax_validation(t_token_lst lst)
+{
+  t_token *t;
+
+  t = lst.head;
+  if (is_separator_type(t))
+    return (0);
+  while(t != NULL)
+  {
+    if ((is_separator_type(t)) && 
+        (!t->next || (t->next->type != DOCUMENT && t->next->type != HERE_DOC_EOF && t->next->type != COMMAND)))
+      return (0);
+    if (t->type == PIPE)
+    {
+      if (t->prev == NULL)
+        return (0);
+      if (t->next == NULL)
+        return (0);
+    }
+    t = t->next;    
+  }
+  return (1);
 }

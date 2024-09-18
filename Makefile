@@ -31,7 +31,8 @@ SRCS =		main.c\
 			token_lst.c\
 			token.c\
 			token_type.c\
-			parser.c
+			parser.c\
+			quotes.c
 
 LIBFT = utils/libft/libft.a
 

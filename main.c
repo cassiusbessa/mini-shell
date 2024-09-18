@@ -31,6 +31,7 @@ int	main(int argc, char **argv, char **envp)
       str = get_next_token2(read);
     }
     type_specials_token(token_lst);
+    ft_printf("valido:%d\n", sintax_validation(*token_lst));
     print_token_lst(token_lst);
     rl_on_new_line();
     destroy_token_lst(&token_lst);

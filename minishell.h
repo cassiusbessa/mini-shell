@@ -114,7 +114,8 @@ t_token_lst *new_token_lst(void);
 void    	add_token(t_token *token, t_token_lst **lst);
 void		print_token_lst(t_token_lst *lst);
 void		destroy_token_lst(t_token_lst **lst);
-void    type_specials_token(t_token_lst *lst);
+void    	type_specials_token(t_token_lst *lst);
+int 		sintax_validation(t_token_lst lst);
 
 
 typedef struct s_part
@@ -123,7 +124,6 @@ typedef struct s_part
 	int	end;
 }	t_part;
 
-t_part	quotes(char *input);
 
 
 typedef struct s_command
@@ -159,7 +159,7 @@ void 			print_all_commands(t_cmd_lst *lst);
 void		exec_all_commands(t_cmd_lst *lst);
 // void		exec_command(t_command *cmd);
 
-
+int 	validate_quotes(char *w);
 
 void	handle_pipe(t_command **cmd);
 void		handle_output_redirect(t_command **cmd);
