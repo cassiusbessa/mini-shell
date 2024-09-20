@@ -13,6 +13,8 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
+#define TABLE_SIZE 100
+
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdarg.h>
@@ -85,5 +87,21 @@ int			print_itoa(long n, int base, int upper);
 int			print_pointer(void *p, int base);
 int			prefix_pointer(void);
 int			print_utoa(unsigned long long n, int base, int upper);
+
+
+typedef struct  s_key_value
+{
+    char    *key;
+    char    *value;
+    struct  s_key_value *next;
+}   t_key_value;
+
+typedef struct  s_hashmap
+{
+    t_key_value **table;
+}   t_hashmap;
+
+void        destroy_pair(t_key_value *p);
+t_key_value *create_pair(const char *key, const char *value);
 
 #endif
