@@ -20,6 +20,7 @@ int	main(int argc, char **argv, char **envp)
   t_hashmap   *envs;
 
   envs = build_envs(envp);
+  print_hashmap(*envs);
   destroy_hashmap(envs);
   token_lst = new_token_lst();
   read = readline("minishell% ");

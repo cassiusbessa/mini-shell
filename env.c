@@ -21,6 +21,29 @@ t_hashmap   *build_envs(char **envp)
     return (envs);
 }
 
+static char *build_line(t_key_value *kv)
+{
+    char    *env;
+
+    env = NULL;
+
+    if (kv->value)
+    {
+        env = ft_calloc(ft_strlen(kv->key) + ft_strlen(kv->value) + 2, sizeof(char));
+
+        ft_strlcpy(env, kv->key, ft_strlen(kv->key) + 1);
+        ft_strlcat(env, "=", ft_strlen(env) + 2);
+        ft_strlcat(env, kv->value, ft_strlen(env) + ft_strlen(kv->value) + 1);
+    }
+    else
+    {
+        env = ft_calloc(ft_strlen(kv->key) + 2, sizeof(char));
+        ft_strlcpy(env, kv->key, ft_strlen(kv->key) + 1);
+        ft_strlcat(env, "=", ft_strlen(env) + 2);
+    }
+    return (env);
+}
+
 char    **to_envp(t_hashmap map)
 {
     char    **envp;
@@ -43,27 +66,4 @@ char    **to_envp(t_hashmap map)
     }
     envp[i.end] = NULL;
     return (envp);
-}
-
-static char *build_line(t_key_value *kv)
-{
-    char    *env;
-
-    env = NULL;
-
-    if (kv->value)
-    {
-        env = ft_calloc(ft_strlen(kv->key) + ft_strlen(kv->value) + 2, sizeof(char));
-
-        ft_strlcpy(env, kv->key, ft_strlen(kv->key) + 1);
-        ft_strlcat(env, "=", ft_strlen(env) + 2);
-        ft_strlcat(env, kv->value, ft_strlen(env) + ft_strlen(kv->value) + 1);
-    }
-    else
-    {
-        env = ft_calloc(ft_strlen(kv->key) + 2, sizeof(char));
-        ft_strlcpy(env, kv->key, ft_strlen(kv->key) + 1);
-        ft_strlcat(env, "=", ft_strlen(env) + 2);
-    }
-    return (env);
 }
