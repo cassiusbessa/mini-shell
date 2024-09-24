@@ -166,4 +166,7 @@ void		handle_output_redirect(t_command **cmd);
 // void	handle_input_redirect(t_command **cmd);
 // int 	here_doc_redirect(t_command *cmd, char *eof);
 
+t_hashmap   *build_envs(char **envp);
+char    	**to_envp(t_hashmap map);
+
 #endif

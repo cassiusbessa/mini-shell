@@ -15,10 +15,12 @@
 int	main(int argc, char **argv, char **envp)
 {
 	char        *read;
-  t_cmd_lst   *cmd_lst;
   t_token_lst *token_lst;
   char        *str;
+  t_hashmap   *envs;
 
+  envs = build_envs(envp);
+  destroy_hashmap(envs);
   token_lst = new_token_lst();
   read = readline("minishell% ");
   while (read)

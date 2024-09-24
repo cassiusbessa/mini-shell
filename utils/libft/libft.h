@@ -96,12 +96,23 @@ typedef struct  s_key_value
     struct  s_key_value *next;
 }   t_key_value;
 
+void        destroy_pair(t_key_value *p);
+t_key_value *create_pair(const char *key, const char *value);
+void        print_pair(t_key_value p);
+
 typedef struct  s_hashmap
 {
     t_key_value **table;
+    int         size;
 }   t_hashmap;
 
-void        destroy_pair(t_key_value *p);
-t_key_value *create_pair(const char *key, const char *value);
+t_hashmap    *create_hash_map(void);
+void         insert_pair(t_hashmap **map, t_key_value *p);
+char        *get_value(t_hashmap *map, const char *key);
+void         remove_key(t_hashmap **map, const char *key);
+void         destroy_hashmap(t_hashmap *map);
+void        print_hashmap(t_hashmap map);
+
+
 
 #endif

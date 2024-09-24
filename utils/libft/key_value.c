@@ -2,6 +2,7 @@
 
 t_key_value *create_pair(const char *key, const char *value);
 void        destroy_pair(t_key_value *p);
+void        print_pair(t_key_value p);
 
 t_key_value *create_pair(const char *key, const char *value)
 {
@@ -20,5 +21,6 @@ void    destroy_pair(t_key_value *p)
         return ;
     free(p->key);
     free(p->value);
+    free(p);
     p = NULL;
 }

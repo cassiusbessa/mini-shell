@@ -58,18 +58,18 @@ int sintax_validation(t_token_lst lst)
   t_token *t;
 
   t = lst.head;
-  if (is_separator_type(t))
-    return (0);
+  // if (is_separator_type(t) && (t->type != HERE_DOC && t->type != REDIR_OUT && t->type != APPEND))
+  //   return (0);
   while(t != NULL)
   {
-    if ((is_separator_type(t)) && 
+    if ((is_separator_type(t)) && (t->type != PIPE) &&
         (!t->next || (t->next->type != DOCUMENT && t->next->type != HERE_DOC_EOF && t->next->type != COMMAND)))
       return (0);
     if (t->type == PIPE)
     {
       if (t->prev == NULL)
         return (0);
-      if (t->next == NULL)
+      if (t->next == NULL || t->next->type == PIPE)
         return (0);
     }
     t = t->next;    

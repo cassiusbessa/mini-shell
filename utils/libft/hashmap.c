@@ -1,9 +1,11 @@
 #include "libft.h"
 
 static unsigned int hash(const char *key);
-static t_hashmap    *create_hash_map(void);
-static void         insert(t_hashmap *map, t_key_value *p);
-static void         remove_key(t_hashmap *map, const char *key);
+t_hashmap    *create_hash_map(void);
+void         insert_pair(t_hashmap **map, t_key_value *p);
+void         remove_key(t_hashmap **map, const char *key);
+void         destroy_hashmap(t_hashmap *map);
+char        *get_value(t_hashmap *map, const char *key);
 
 
 static unsigned int hash(const char *key)
@@ -12,9 +14,7 @@ static unsigned int hash(const char *key)
 
     hash = 0;
     while (*key)
-    {
         hash = (hash * 31) + *key++;
-    }
     return (hash % TABLE_SIZE);
 }
 
@@ -28,19 +28,23 @@ t_hashmap  *create_hash_map(void)
     i = 0;
     while (i < TABLE_SIZE)
         map->table[i++] = NULL;
-    
+    map->size = 0;
     return (map);
 }
 
-void    insert(t_hashmap *map, t_key_value *p)
+void    insert_pair(t_hashmap **map, t_key_value *p)
 {
     unsigned int    index;
     t_key_value     *current;
 
     index = hash(p->key);
-    current = map->table[index];
+    current = (*map)->table[index];
     if (!current)
-        return (map->table[index] = p);
+    {
+        (*map)->table[index] = p;
+        (*map)->size++;
+        return ;
+    }
     while (current)
     {
         if (ft_strcmp(current->key, p->key) == 0)
@@ -52,14 +56,14 @@ void    insert(t_hashmap *map, t_key_value *p)
         if (current->next == NULL)
         {
             current->next = p;
+            (*map)->size++;
             return ;
         }
         current = current->next;
     }
-
 }
 
-char    *get(t_hashmap *map, const char *key)
+char    *get_value(t_hashmap *map, const char *key)
 {
     unsigned int    index;
     t_key_value     *current;
@@ -76,33 +80,52 @@ char    *get(t_hashmap *map, const char *key)
 }
 
 
-static void remove_key(t_hashmap *map, const char *key)
+void    remove_key(t_hashmap **map, const char *key)
 {
     unsigned int    index;
     t_key_value     *current;
     t_key_value     *previous;
-    const char      *test = "cassius";
-    char const*    test2 = "Oi bb";
-
 
     index = hash(key);
-    current = map->table[index];
-
+    previous = NULL;
+    current = (*map)->table[index];
     while (current)
     {
         if (ft_strcmp(current->key, key) == 0)
         {
             if (previous == NULL)
-                map->table[index] = current->next;
+                (*map)->table[index] = current->next;
             else
-                previous->next;
+                previous->next = current->next;
             destroy_pair(current);
+            (*map)->size--;
+            return ;
         }
+        previous = current;
         current = current->next;
     }
-    
-    
 }
 
+void    destroy_hashmap(t_hashmap *map)
+{
+    int             i;
+    t_key_value     *current;
+    t_key_value     *temp;
 
-
+    i = 0;
+    temp = NULL;
+    current = NULL;
+    while (i < TABLE_SIZE)
+    {
+        current = map->table[i];
+        while (current)
+        {
+            temp = current;
+            current = current->next;
+            destroy_pair(temp);
+        }
+        i++;
+    }
+    free(map->table);
+    free(map);
+} 
