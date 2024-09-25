@@ -4,7 +4,7 @@ static int    skip_quote2(const char *str, int *i);
 
 static void    skip_spaces2(const char *str, int *i);
 
-char    *get_next_token2(char *input)
+char    *get_next_token(char *input)
 {
     static char			*cmp;
     static t_part		part;

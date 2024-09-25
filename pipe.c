@@ -12,36 +12,36 @@
 
 #include "minishell.h"
 
-void handle_pipe(t_command **cmd)
-{
-    t_command *current;
-    int temp_fd[2];
+// void handle_pipe(t_command **cmd)
+// {
+//     t_command *current;
+//     int temp_fd[2];
 
-    current = *cmd;
-    while (current)
-    {
-        if (current->next && check_separator("|", current))
-        {
-            // Cria o pipe
-            if (pipe(temp_fd) == -1)
-            {
-                perror("pipe");
-                exit(EXIT_FAILURE);
-            }
+//     current = *cmd;
+//     while (current)
+//     {
+//         if (current->next && check_separator("|", current))
+//         {
+//             // Cria o pipe
+//             if (pipe(temp_fd) == -1)
+//             {
+//                 perror("pipe");
+//                 exit(EXIT_FAILURE);
+//             }
 
-            // Configura os descritores de arquivo para os comandos
-            // futuramente vai dar bug!
-            current->fd[1] = temp_fd[1];
-            current->next->fd[0] = temp_fd[0]; // O próximo comando lê do pipe
-            print_command(current);
-            print_command(current->next);
+//             // Configura os descritores de arquivo para os comandos
+//             // futuramente vai dar bug!
+//             current->fd[1] = temp_fd[1];
+//             current->next->fd[0] = temp_fd[0]; // O próximo comando lê do pipe
+//             print_command(current);
+//             print_command(current->next);
 
-            //current->next->fd[1] = STDOUT_FILENO; // Garantindo que o próximo comando tenha o stdout padrão, se não for sobrescrito
+//             //current->next->fd[1] = STDOUT_FILENO; // Garantindo que o próximo comando tenha o stdout padrão, se não for sobrescrito
 
-        }
-        current = current->next;
-    }
-}
+//         }
+//         current = current->next;
+//     }
+// }
 
 // [Saída = 3] (3/4) [Entrada = 4/ Saída 5] (5/6) [Entrada = 6] []
 

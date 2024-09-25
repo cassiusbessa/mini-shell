@@ -17,14 +17,8 @@ RESET		=	\e[0m
 CURSIVE		=	\e[33;3m
 
 SRCS =		main.c\
-			get_next_word.c\
-			separators.c\
-			list.c\
-			command.c\
-			command_list.c\
 			exec_command.c\
 			path.c\
-			args.c\
 			pipe.c\
 			redirect.c\
 			print.c\
