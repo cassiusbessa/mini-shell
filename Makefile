@@ -42,7 +42,7 @@ MINISHELL = minishell
 CC	= cc -g
 RM	= rm -f
 
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -ggdb3 -g
 
 OBJS	= ${SRCS:.c=.o}
 

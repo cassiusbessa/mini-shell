@@ -2,23 +2,44 @@
 
 t_hashmap   *build_envs(char **envp);
 static char *build_line(t_key_value *kv);
+static int  find_equals(char *s);
 
 t_hashmap   *build_envs(char **envp)
 {
-    char        **env_split;
+    int         i;
     t_hashmap   *envs;
+    char        *k;
+    char        *v;
 
     envs = create_hash_map();
+    i = 0;
+    k = NULL;
+    v = NULL;
     while (*envp)
     {
-        env_split = ft_split(*envp, '=');
-        insert_pair(&envs, create_pair(env_split[0], env_split[1]));
-        free(env_split[0]);
-        free(env_split[1]);
-        free(env_split);
+        i = find_equals(*envp);
+        k = ft_substr(*envp, 0, i);
+        v = ft_substr(*envp, i + 1, ft_strlen(*envp) - (i + 1));
+        insert_pair(&envs, create_pair(k, v));
+        free(k);
+        free(v);
         envp++;
     }
     return (envs);
+}
+
+static int  find_equals(char *s)
+{
+    int     i;
+
+    i = 0;
+    while (s[i])
+    {
+        if (s[i] == '=')
+            return (i);
+        i++;
+    }
+    return (i);
 }
 
 static char *build_line(t_key_value *kv)
