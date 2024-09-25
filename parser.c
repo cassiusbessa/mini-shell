@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-static int    skip_quote2(const char *str, int *i);
+static int    skip_quote(const char *str, int *i);
 
-static void    skip_spaces2(const char *str, int *i);
+static void    skip_spaces(const char *str, int *i);
 
 char    *get_next_token(char *input)
 {
@@ -13,12 +13,12 @@ char    *get_next_token(char *input)
 	if (!input)
 		return (NULL);
     // pular espaços
-    skip_spaces2(input, &part.start);
+    skip_spaces(input, &part.start);
     part.end = part.start;
     
     // andar até encontrar um caracter de "finalização"
     while (*(input + part.end) && (!ft_strchr(" \t\n<>|", *(input + part.end))))
-        if (!skip_quote2(input, &part.end))
+        if (!skip_quote(input, &part.end))
             part.end++;
             
     // caso encontre '<', '>', '|'
@@ -46,7 +46,7 @@ char    *get_next_token(char *input)
     return (token_str);
 }
 
-static int    skip_quote2(const char *str, int *i)
+static int    skip_quote(const char *str, int *i)
 {
     char    quote;
 
@@ -61,7 +61,7 @@ static int    skip_quote2(const char *str, int *i)
     return (1);
 }
 
-static void    skip_spaces2(const char *str, int *i)
+static void    skip_spaces(const char *str, int *i)
 {
     if (!str)
         return ;
