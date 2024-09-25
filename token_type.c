@@ -53,7 +53,7 @@ void  type_document_argumment(t_token_lst *lst)
 
 }
 
-void    type_specials_token(t_token_lst *lst)
+void    type_tokens(t_token_lst *lst)
 {
     t_token *current;
     t_token *next;
