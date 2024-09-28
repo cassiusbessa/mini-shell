@@ -1,8 +1,9 @@
 #include "minishell.h"
 
 t_hashmap   *build_envs(char **envp);
-static char *build_line(t_key_value *kv);
 static int  find_equals(char *s);
+static char *build_line(t_key_value *kv);
+char        **to_envp(t_hashmap map);
 
 t_hashmap   *build_envs(char **envp)
 {

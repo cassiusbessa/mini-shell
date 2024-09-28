@@ -91,3 +91,8 @@
 //     while (wait(NULL) > 0);
 // }
 
+void    exec_command(t_token_lst *lst)
+{
+    
+}
+

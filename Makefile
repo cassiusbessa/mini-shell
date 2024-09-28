@@ -27,7 +27,8 @@ SRCS =		main.c\
 			token_type.c\
 			parser.c\
 			quotes.c\
-			env.c
+			env.c\
+			expand_env.c
 
 LIBFT = utils/libft/libft.a
 

@@ -69,7 +69,7 @@ void		print_token_lst(t_token_lst *lst);
 void		destroy_token_lst(t_token_lst **lst);
 void    	type_tokens(t_token_lst *lst);
 int 		sintax_validation(t_token_lst lst);
-int 	validate_quotes(char *w);
+int 		validate_quotes(char *w);
 
 t_hashmap   *build_envs(char **envp);
 char    	**to_envp(t_hashmap map);
@@ -79,5 +79,7 @@ typedef struct s_part
 	int	start;
 	int	end;
 }	t_part;
+
+t_part	find_env(char *w);
 
 #endif
