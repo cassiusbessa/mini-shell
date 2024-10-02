@@ -1,27 +1,8 @@
 #include "minishell.h"
 
-static int size_without_quotes(const char *w)
-{
-    int size;
-    int i;
-    int type;
-
-    size = 0;
-    i = 0;
-    type = 0;
-    while (w[i])
-    {
-        if ((w[i] == 34 || w[i] == 39) && type == 0)
-            type = w[i];
-        else if (w[i] == type)
-            type = 0;
-        else
-            size++;
-        i++;
-    }
-    return (size);
-}
-
+static int size_without_quotes(const char *w);
+int validate_quotes(char *w);
+char    *unquotes_word(t_token t);
 
 char    *unquotes_word(t_token t)
 {
@@ -46,6 +27,28 @@ char    *unquotes_word(t_token t)
         i++;
     }
     return (w);
+}
+
+static int size_without_quotes(const char *w)
+{
+    int size;
+    int i;
+    int type;
+
+    size = 0;
+    i = 0;
+    type = 0;
+    while (w[i])
+    {
+        if ((w[i] == 34 || w[i] == 39) && type == 0)
+            type = w[i];
+        else if (w[i] == type)
+            type = 0;
+        else
+            size++;
+        i++;
+    }
+    return (size);
 }
 
 int validate_quotes(char *w)

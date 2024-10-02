@@ -82,6 +82,6 @@ typedef struct s_part
 
 t_part	find_env(char *w);
 char    *get_env_key(char *w, t_part p);
-void    expand_env(t_hashmap *map, char *key, t_part p, char *w);
+void  expand_all_envs(t_hashmap *envs, t_token_lst *lst);
 
 #endif

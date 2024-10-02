@@ -6,7 +6,7 @@
 // 3 - mallocar de novo com o tamanho total
 // 4 - copiar mudando o valor
 
-int handle_quotes(char c, int quotes)
+static int handle_quotes(char c, int quotes)
 {
     if (c == '\'' && quotes == 0)
         return c;
@@ -15,7 +15,7 @@ int handle_quotes(char c, int quotes)
     return quotes;
 }
 
-t_part find_variable_brackets(char *w, int *i)
+static t_part find_variable_brackets(char *w, int *i)
 {
     t_part p;
 
@@ -27,7 +27,7 @@ t_part find_variable_brackets(char *w, int *i)
     return p;
 }
 
-t_part find_variable_name(char *w, int *i)
+static t_part find_variable_name(char *w, int *i)
 {
     t_part p;
 

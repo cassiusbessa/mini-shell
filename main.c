@@ -20,7 +20,6 @@ int	main(int argc, char **argv, char **envp)
   t_hashmap   *envs;
 
   envs = build_envs(envp);
-  // destroy_hashmap(envs);
   token_lst = new_token_lst();
   read = readline("minishell% ");
   while (read)
@@ -33,8 +32,7 @@ int	main(int argc, char **argv, char **envp)
       str = get_next_token(read);
     }
     type_tokens(token_lst);
-    t_part p = find_env(token_lst->head->word);
-    expand_env(envs, get_env_key(token_lst->head->word, p), p, token_lst->head->word);
+    expand_all_envs(envs, token_lst);
     ft_printf("valido:%d\n", sintax_validation(*token_lst));
     print_token_lst(token_lst);
     rl_on_new_line();
@@ -44,6 +42,7 @@ int	main(int argc, char **argv, char **envp)
     token_lst = new_token_lst();
   }
   destroy_token_lst(&token_lst);
+  destroy_hashmap(envs);
   rl_clear_history();
 	return (0);
 }
