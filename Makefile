@@ -28,7 +28,9 @@ SRCS =		main.c\
 			parser.c\
 			quotes.c\
 			env.c\
+			get_env_key.c\
 			expand_env.c
+
 
 LIBFT = utils/libft/libft.a
 
