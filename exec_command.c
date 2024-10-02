@@ -91,8 +91,40 @@
 //     while (wait(NULL) > 0);
 // }
 
-void    exec_command(t_token_lst *lst)
+void    exec_all_commands(t_token_lst *lst, t_hashmap *envs)
 {
-    
+
+  t_token *t;
+  pid_t   pid;
+  
+  t = lst->head;
+  while (t)
+  {
+    if (t->type == COMMAND)
+    {
+      pid = fork();
+      if (pid == 0)
+      {
+        exec_command(t, envs);
+      }
+      else
+      {
+        wait(NULL);
+      }
+    }
+    t = t->next; 
+  }  
+}
+
+static void exec_command(t_token *t, t_hashmap *envs)
+{
+  char **args;
+  char *path;
+
+  args = list_to_args(t);
+  path = get_value(envs, t->word);
+  if (!path)
+    exit(EXIT_FAILURE);
+  execve(path, args, to_envp(*envs));
 }
 
