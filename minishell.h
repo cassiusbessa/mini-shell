@@ -55,6 +55,7 @@ typedef struct s_token
 } t_token;
 
 t_token	*new_token(char *word);
+char	*find_cmd_path(t_token *cmd, t_hashmap *envs);
 
 typedef struct s_token_lst
 {
@@ -70,6 +71,7 @@ void		destroy_token_lst(t_token_lst **lst);
 void    	type_tokens(t_token_lst *lst);
 int 		sintax_validation(t_token_lst lst);
 int 		validate_quotes(char *w);
+void		exec_all_commands(t_token_lst *lst, t_hashmap *envs);
 
 t_hashmap   *build_envs(char **envp);
 char    	**to_envp(t_hashmap map);
@@ -82,6 +84,6 @@ typedef struct s_part
 
 t_part	find_env(char *w);
 char    *get_env_key(char *w, t_part p);
-void  expand_all_envs(t_hashmap *envs, t_token_lst *lst);
+void	expand_all_envs(t_hashmap *envs, t_token_lst *lst);
 
 #endif
