@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+static void exec_command(t_token_lst *l, t_hashmap *envs);
+static char  **build_args(t_token_lst l);
+
 // int	check_separator(char *sep, t_command *cmd)
 // {
 // 	if (!cmd || !cmd->separator)
@@ -98,7 +101,11 @@ void    exec_all_commands(t_token_lst *lst, t_hashmap *envs)
   pid_t   pid;
   
   t = lst->head;
-  ft_printf("%s\n",find_cmd_path(t, envs));
+  pid = fork();
+  if (pid == 0)
+    exec_command(lst, envs);
+  else
+    wait(NULL);
   // while (t)
   // {
   //   if (t->type == COMMAND)
@@ -117,15 +124,46 @@ void    exec_all_commands(t_token_lst *lst, t_hashmap *envs)
   // }  
 }
 
-// static void exec_command(t_token *t, t_hashmap *envs)
-// {
-//   char **args;
-//   char *path;
+static void exec_command(t_token_lst *l, t_hashmap *envs)
+{
+  char **args;
+  char *path;
+  int   i;
+  args = build_args(*l);
+  path = find_cmd_path(l->head, envs);
+  i = 0;
+  ft_printf("path: %s\n", path);
+  while (args[i])
+    i++;  
+  if (!path)
+    exit(EXIT_FAILURE);
+  execve(path, args, to_envp(*envs));
+}
 
-//   args = list_to_args(t);
-//   path = get_value(envs, t->word);
-//   if (!path)
-//     exit(EXIT_FAILURE);
-//   execve(path, args, to_envp(*envs));
-// }
+static char  **build_args(t_token_lst l)
+{
+  t_token *tmp;
+  int     i;
+  char    **args;
+
+  i = 0;
+  tmp = l.head;
+    while (tmp && tmp->type != PIPE )
+    {
+        if (tmp->type == COMMAND || tmp->type == ARGUMMENT)
+          i++;
+        tmp = tmp->next;
+    }
+  args = malloc(sizeof(char *) * (i + 1));
+  i = 0;
+  tmp = l.head;
+  while (tmp && tmp->type != PIPE)
+  {
+    if (tmp->type == COMMAND || tmp->type == ARGUMMENT)
+      args[i++] = tmp->word;
+    tmp = tmp->next;
+  }
+  args[i] = NULL;
+  return (args);
+}
 

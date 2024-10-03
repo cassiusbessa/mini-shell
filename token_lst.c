@@ -48,18 +48,11 @@ static int  is_separator_type(t_token *t)
       t->type == PIPE || t->type == APPEND);
 }
 
-// redirect precisa ter documento depois X
-// não pode ter dois separadores juntos X
-// separadores não podem iniciar comandos X
-// pipes precisam ter comandos antes e depois X
-
 int sintax_validation(t_token_lst lst)
 {
   t_token *t;
 
   t = lst.head;
-  // if (is_separator_type(t) && (t->type != HERE_DOC && t->type != REDIR_OUT && t->type != APPEND))
-  //   return (0);
   while(t != NULL)
   {
     if ((is_separator_type(t)) && (t->type != PIPE) &&

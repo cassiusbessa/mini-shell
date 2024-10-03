@@ -33,6 +33,7 @@ int	main(int argc, char **argv, char **envp)
     }
     type_tokens(token_lst);
     expand_all_envs(envs, token_lst);
+    print_token_lst(token_lst);
     exec_all_commands(token_lst, envs);
     rl_on_new_line();
     destroy_token_lst(&token_lst);
