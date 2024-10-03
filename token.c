@@ -1,7 +1,10 @@
 #include "minishell.h"
 
-static int     size_without_quotes(const char *w);
+static int      size_without_quotes(const char *w);
+static void     remove_token(t_token *token);
 char           *unquotes_word(t_token t);
+void            consume_token(t_token_lst *lst, t_token *t);
+
 
 t_token *new_token(char *word)
 {
@@ -16,4 +19,23 @@ t_token *new_token(char *word)
     token->fd[1] = STDOUT_FILENO;
     token->type = UNKNOWN;
     return (token);
+}
+
+void consume_token(t_token_lst *lst, t_token *t)
+{
+    if (lst->head == t)
+        lst->head = t->next;
+    if (lst->tail == t)
+        lst->tail = lst->tail->prev;
+    remove_token(t);
+}
+
+static void  remove_token(t_token *token)
+{
+  if (token->prev)
+      token->prev->next = token->next;
+  if (token->next)
+      token->next->prev = token->prev;
+  free(token->word);
+  free(token);
 }

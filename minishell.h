@@ -72,6 +72,7 @@ void    	type_tokens(t_token_lst *lst);
 int 		sintax_validation(t_token_lst lst);
 int 		validate_quotes(char *w);
 void		exec_all_commands(t_token_lst *lst, t_hashmap *envs);
+void    consume_token(t_token_lst *lst, t_token *t);
 
 t_hashmap   *build_envs(char **envp);
 char    	**to_envp(t_hashmap map);

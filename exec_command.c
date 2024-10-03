@@ -15,113 +15,47 @@
 static void exec_command(t_token_lst *l, t_hashmap *envs);
 static char  **build_args(t_token_lst l);
 
-// int	check_separator(char *sep, t_command *cmd)
-// {
-// 	if (!cmd || !cmd->separator)
-// 		return (0);
-// 	return (!ft_strcmp(sep, cmd->separator));
-// }
-
-// static void exec_command(t_command *cmd) {
-//     char **args;
-
-//     if (!cmd || !cmd->instruction)
-//         return;
-//     args = list_to_args(cmd);
-//     set_cmd_path(cmd);
-//     if (!cmd->path && !cmd->doc)
-//         exit(EXIT_FAILURE);
-// 	execve(cmd->path, args, NULL);
-// }
-
-// static void handle_fds(t_command **cmd)
-// {
-//         handle_output_redirect(cmd);
-// }
-
-// static void	handle_main_process(t_command *cmd)
-// {
-//     if (cmd->fd[0] != STDIN_FILENO)
-//         close(cmd->fd[0]);
-//     if (cmd->fd[0] != STDOUT_FILENO)
-//         close(cmd->fd[1]);
-// }
-
-// void exec_all_commands(t_cmd_lst *lst)
-// {
-//     t_command *current;
-//     pid_t pid;
-//     t_command *temp;
-
-//     current = lst->head;
-//     handle_pipe(&current);
-//     handle_fds(&current);
-
-//     while (current)
-//     {
-//         if (current->instruction)
-//         {
-//             pid = fork();
-//             if (pid == 0) 
-//             {  // Processo filho
-//                 if (current->fd[0] != STDIN_FILENO)
-//                     dup2(current->fd[0], STDIN_FILENO);
-//                 if (current->fd[1] != STDOUT_FILENO)
-//                     dup2(current->fd[1], STDOUT_FILENO);
-//                 temp = lst->head;
-//                 while (temp)
-//                 {
-//                     if (temp->fd[0] != STDIN_FILENO)
-//                         close(temp->fd[0]);
-//                     if (temp->fd[1] != STDOUT_FILENO)
-//                     {
-//                         close(temp->fd[1]);
-//                     }
-//                     temp = temp->next;
-//                 }
-//                 exec_command(current);
-//             } 
-//             else
-//             { // Pai
-//                 if (current->fd[0] != STDIN_FILENO)
-//                     close(current->fd[0]);
-//                 if (current->fd[1] != STDOUT_FILENO)
-//                     close(current->fd[1]);
-//             }
-//         }
-//         current = current->next;
-//     }
-//     while (wait(NULL) > 0);
-// }
-
-void    exec_all_commands(t_token_lst *lst, t_hashmap *envs)
+static void handle_main_process(t_token **t, t_token_lst *lst)
 {
+  t_token *tmp;
 
+  wait(NULL);
+  tmp = (*t)->next;
+  consume_token(lst, *t);
+  *t = tmp;
+  while (*t && (*t)->type != COMMAND)
+  {
+      tmp = (*t)->next;
+      consume_token(lst, *t);
+      *t = tmp;
+  }
+  print_token_lst(lst);
+}
+
+
+void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
+{
   t_token *t;
-  pid_t   pid;
-  
+  t_token *tmp;
+  pid_t pid;
+
   t = lst->head;
-  pid = fork();
-  if (pid == 0)
-    exec_command(lst, envs);
-  else
-    wait(NULL);
-  // while (t)
-  // {
-  //   if (t->type == COMMAND)
-  //   {
-  //     pid = fork();
-  //     if (pid == 0)
-  //     {
-  //       exec_command(t, envs);
-  //     }
-  //     else
-  //     {
-  //       wait(NULL);
-  //     }
-  //   }
-  //   t = t->next; 
-  // }  
+  while (t)
+  {
+    if (t->type == COMMAND)
+    {
+      pid = fork();
+      if (pid == 0)
+      {
+          exec_command(lst, envs);
+          exit(0);
+      }
+      else
+        handle_main_process(&t, lst);
+    }
+    else
+        t = t->next;
+  }
 }
 
 static void exec_command(t_token_lst *l, t_hashmap *envs)
@@ -132,7 +66,6 @@ static void exec_command(t_token_lst *l, t_hashmap *envs)
   args = build_args(*l);
   path = find_cmd_path(l->head, envs);
   i = 0;
-  ft_printf("path: %s\n", path);
   while (args[i])
     i++;  
   if (!path)
@@ -148,12 +81,12 @@ static char  **build_args(t_token_lst l)
 
   i = 0;
   tmp = l.head;
-    while (tmp && tmp->type != PIPE )
-    {
-        if (tmp->type == COMMAND || tmp->type == ARGUMMENT)
-          i++;
-        tmp = tmp->next;
-    }
+  while (tmp && tmp->type != PIPE )
+  {
+    if (tmp->type == COMMAND || tmp->type == ARGUMMENT)
+      i++;
+    tmp = tmp->next;
+  }
   args = malloc(sizeof(char *) * (i + 1));
   i = 0;
   tmp = l.head;
