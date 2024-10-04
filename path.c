@@ -45,7 +45,7 @@ char	*find_cmd_path(t_token *cmd, t_hashmap *envs)
 {
 	char				**env_path;
 	char				*cmd_path;
-	struct stat file_stat;
+	struct stat 		file_stat;
 	int					i;
 
 	i = 0;
