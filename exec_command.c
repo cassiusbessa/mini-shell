@@ -16,6 +16,7 @@ static void exec_command(t_token_lst *l, t_hashmap *envs);
 static char **build_args(t_token_lst l);
 static void handle_main_process(t_token **t, t_token_lst *lst);
 static void pipe_next_cmd(t_token_lst *lst);
+static void redir_next_cmd(t_token_lst *lst);
 
 void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
 {
@@ -27,6 +28,9 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
   while (t)
   {
     pipe_next_cmd(lst);
+    print_token_lst(lst);
+    redir_next_cmd(lst);
+    print_token_lst(lst);
     if (t->type == COMMAND)
     {
       pid = fork();
@@ -58,6 +62,8 @@ static void exec_command(t_token_lst *l, t_hashmap *envs)
   char *path;
   int   i;
 
+  if (l->head->type != COMMAND)
+    return ;
   args = build_args(*l);
   path = find_cmd_path(l->head, envs);
   i = 0;
@@ -103,6 +109,42 @@ static void pipe_next_cmd(t_token_lst *lst)
     pipe(fd);
     curr_command->fd[1] = fd[1];
     nxt_command->fd[0] = fd[0];
+  }
+}
+
+static void redir_next_cmd(t_token_lst *lst)
+{
+  t_token *curr;
+  t_token *nxt_cmd;
+  t_token *curr_cmd;
+
+  curr = lst->head;
+  if (!curr)
+    return ;
+  curr_cmd = NULL;
+  while (curr && !nxt_cmd)
+  {
+    if (curr->type == COMMAND && !curr_cmd)
+      curr_cmd = curr;
+    if (curr_cmd && curr->type == COMMAND && curr_cmd != curr)
+      nxt_cmd = curr;
+    if (curr->type == DOCUMENT)
+    {
+      if (curr_cmd->fd[0] != STDIN_FILENO)
+      {
+        dup2(curr_cmd->fd[0], STDIN_FILENO);
+        close(curr_cmd->fd[0]);
+      }
+      if (curr_cmd->fd[1] != STDOUT_FILENO)
+      {
+        dup2(curr_cmd->fd[1], STDOUT_FILENO);
+        close(curr_cmd->fd[1]);   
+      }
+      if (curr->prev->type == REDIR_OUT)
+        curr_cmd->fd[1] = open(curr->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
+      break ;
+    }
+    curr = curr->next;
   }
 }
 
