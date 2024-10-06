@@ -18,6 +18,7 @@ t_token *new_token(char *word)
     token->fd[0] = STDIN_FILENO;
     token->fd[1] = STDOUT_FILENO;
     token->type = UNKNOWN;
+    token->piped = 0;
     return (token);
 }
 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+         #
+#    By: cassius <cassius@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/20 19:50:42 by caqueiro          #+#    #+#              #
-#    Updated: 2024/06/06 22:13:09 by caqueiro         ###   ########.fr        #
+#    Updated: 2024/10/05 23:53:17 by cassius          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ CURSIVE		=	\e[33;3m
 SRCS =		main.c\
 			exec_command.c\
 			path.c\
-			pipe.c\
 			redirect.c\
 			print.c\
 			token_lst.c\
@@ -28,6 +27,7 @@ SRCS =		main.c\
 			parser.c\
 			quotes.c\
 			env.c\
+			args.c\
 			get_env_key.c\
 			expand_env.c
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/06/06 20:30:27 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/10/06 01:07:20 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_token
 	char			*word;
 	t_word_type		type;
 	int				fd[2];
+  int       piped;
 	struct	s_token	*next;
 
 } t_token;
@@ -86,5 +87,10 @@ typedef struct s_part
 t_part	find_env(char *w);
 char    *get_env_key(char *w, t_part p);
 void	expand_all_envs(t_hashmap *envs, t_token_lst *lst);
+
+char  **build_args(t_token_lst l);
+void pipe_next_cmd(t_token_lst *lst);
+void redir_next_cmd(t_token_lst *lst);
+void  close_not_used_fd(t_token *t);
 
 #endif

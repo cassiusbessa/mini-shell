@@ -1,89 +1,126 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   redirect.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 23:04:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/06/07 20:56:51 by caqueiro         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-// int here_doc_redirect(char *eof)
-// {
-//     char    *line;
-//     pid_t   pid;
-//     int     here_doc_fd[2];
+void pipe_next_cmd(t_token_lst *lst);
+void redir_next_cmd(t_token_lst *lst);
+static int here_doc_redirect(const char *eof);
+static void write_to_here_doc(int write_fd, const char *eof);
+void  close_not_used_fd(t_token *t);
 
-//     if (pipe(here_doc_fd) == -1)
-//         perror("pipe");
-//     while (1)
-//     {
-//         line = readline(">");
-//         if (!line)
-//             exit(EXIT_FAILURE);
-//         if (!ft_strcmp(line, eof))
-//         {
-//             free(line);
-//             break;
-//         }
-//         write(here_doc_fd[1], line, ft_strlen(line));
-//         write(here_doc_fd[1], "\n", 1);
-//         free(line);
-//     }
-//     close(here_doc_fd[1]);
-//     return(here_doc_fd[0]);
-// }
+void pipe_next_cmd(t_token_lst *lst)
+{
+  t_token *current;
+  t_token *nxt_command;
+  t_token *curr_command;
+  int fd[2];
 
-// void static close_all_files(t_command *cmd)
-// {
-    
-// }
+  current = lst->head;
+  if (!current)
+    return ;
+  nxt_command = NULL;
+  curr_command = NULL;
+  while (current && !nxt_command)
+  {
+    if (current->type == COMMAND && !curr_command)
+      curr_command = current;
+    if (curr_command && current->type == COMMAND && curr_command != current)
+      nxt_command = current;
+    current = current->next;
+  }
+  if (curr_command && nxt_command && nxt_command->prev && nxt_command->prev->type == PIPE)
+  {
+    pipe(fd);
+    curr_command->fd[1] = fd[1];
+    nxt_command->fd[0] = fd[0];
+    curr_command->piped = 1;
+  }
+}
 
-// void handle_output_redirect(t_command **cmd)
-// {
-//     int fd_in;
-//     int fd_out;
-//     t_command *current_cmd;
+void redir_next_cmd(t_token_lst *lst)
+{
+  t_token *curr;
+  t_token *nxt_cmd;
+  t_token *curr_cmd;
 
-//     fd_in = STDIN_FILENO;
-//     fd_out = STDOUT_FILENO;
-//     current_cmd = *cmd;
+  curr = lst->head;
+  if (!curr)
+    return ;
+  curr_cmd = NULL;
+  nxt_cmd = NULL;
+  while (curr && !nxt_cmd)
+  {
+    if (curr->type == COMMAND && !curr_cmd)
+      curr_cmd = curr;
+    if (curr_cmd && curr->type == COMMAND && curr_cmd != curr)
+      nxt_cmd = curr;
+    if (curr->type == DOCUMENT || curr->type == HERE_DOC_EOF)
+    {
+      if (curr_cmd->piped)
+      {
+        close_not_used_fd(curr_cmd);
+        curr_cmd->piped = 0;
+      }
+      if (curr->prev->type == REDIR_OUT)
+        curr_cmd->fd[1] = open(curr->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+      else if (curr->prev->type == REDIR_IN)
+        curr_cmd->fd[0] = open(curr->word, O_RDONLY);
+      else if (curr->prev->type == APPEND)
+        curr_cmd->fd[1] = open(curr->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
+      else if (curr->prev->type == HERE_DOC)
+        curr_cmd->fd[0] = here_doc_redirect(curr->word);
+    }
+    curr = curr->next;
+  }
+}
 
-//     while (current_cmd && check_separator(">>", *cmd) || check_separator(">", *cmd) || check_separator("<", *cmd) || check_separator("<<", *cmd))
-//     {
-//         if (check_separator(">>", current_cmd))
-//             fd_out = open(current_cmd->doc, O_CREAT | O_WRONLY | O_APPEND, 0644);
-//         else if (check_separator(">", current_cmd))
-//         {
-//             fd_out = open(current_cmd->doc, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-//             if (current_cmd->fd[0] != STDIN_FILENO)
-//                 close(current_cmd->fd[0]);
-//             if (current_cmd->fd[1] != STDOUT_FILENO)
-//                 close(current_cmd->fd[1]);
+static int here_doc_redirect(const char *eof)
+{
+  int here_doc_fd[2];
+  char *line;
+  int pid;
+  int status;
 
-//         }
-//         else if (check_separator("<<", current_cmd))
-//             fd_in = here_doc_redirect(current_cmd->doc);
-//         else if (check_separator("<", current_cmd))
-//             fd_in = open(current_cmd->doc, O_RDONLY);
-//         else if (check_separator("|", current_cmd))
-//         if (fd_out < 0 || fd_in < 0)
-//             exit(EXIT_FAILURE);
-//         current_cmd->fd[0] = fd_in;
-//         current_cmd->fd[1] = fd_out;
-//         if (!current_cmd->next)
-//         {
-//             current_cmd->flags = copy_lst((*cmd)->flags);
-//             if (!current_cmd->instruction)
-//                 current_cmd->instruction = ft_strdup((*cmd)->instruction);
-//             current_cmd->args = copy_lst((*cmd)->args);
-//             break ;
-//         }
-//         current_cmd = current_cmd->next;
-//     }
-//     (*cmd) = current_cmd;
-// }
+  pipe(here_doc_fd);
+  pid = fork();
+  if (pid == 0)
+  {
+    close(here_doc_fd[0]);
+    write_to_here_doc(here_doc_fd[1], eof);
+    close(here_doc_fd[1]);
+    exit(0);
+  }
+  else
+  {
+    close(here_doc_fd[1]);
+    waitpid(pid, &status, 0);
+    return here_doc_fd[0];
+  }
+}
+
+static void write_to_here_doc(int write_fd, const char *eof)
+{
+  char *line;
+
+  while (1)
+  {
+    line = readline("> ");
+    if (!line)
+      break;
+    if (!ft_strcmp(line, eof))
+    {
+      free(line);
+      break;
+    }
+    write(write_fd, line, strlen(line));
+    write(write_fd, "\n", 1);
+    free(line);
+  }
+  close(write_fd);
+}
+
+void close_not_used_fd(t_token *t)
+{
+  if (t->fd[0] != STDIN_FILENO)
+    close(t->fd[0]);
+  if (t->fd[1] != STDOUT_FILENO)
+    close(t->fd[1]);
+}
