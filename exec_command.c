@@ -40,7 +40,8 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
     else
       t = t->next;
   }
-  t = lst->head;
+  //unica mudança nesse arquivo
+  while(wait(NULL) > 0);
 }
 
 static void exec_command(t_token_lst *l, t_hashmap *envs)
@@ -75,7 +76,6 @@ static void handle_main_process(t_token **t, t_token_lst *lst)
 {
   t_token *tmp;
 
-  wait(NULL);
   close_not_used_fd(*t);
   tmp = (*t)->next;
   consume_token(lst, *t);

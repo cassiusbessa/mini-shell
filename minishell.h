@@ -92,5 +92,6 @@ char  **build_args(t_token_lst l);
 void pipe_next_cmd(t_token_lst *lst);
 void redir_next_cmd(t_token_lst *lst);
 void  close_not_used_fd(t_token *t);
+void  pipe_all_cmds(t_token_lst *lst);
 
 #endif
