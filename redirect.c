@@ -64,6 +64,18 @@ void  pipe_all_cmds(t_token_lst *lst)
 	}
 }
 
+int	handle_redir_types(t_token *curr, t_token *curr_cmd)
+{
+	if (curr->prev->type == REDIR_OUT)
+		curr_cmd->fd[1] = open(curr->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	else if (curr->prev->type == REDIR_IN)
+		curr_cmd->fd[0] = open(curr->word, O_RDONLY);
+	else if (curr->prev->type == APPEND)
+		curr_cmd->fd[1] = open(curr->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	else if (curr->prev->type == HERE_DOC)
+		curr_cmd->fd[0] = here_doc_redirect(curr->word);
+}
+
 void redir_next_cmd(t_token_lst *lst)
 {
 	t_token *curr;
@@ -88,14 +100,7 @@ void redir_next_cmd(t_token_lst *lst)
 				close_not_used_fd(curr_cmd);
 				curr_cmd->piped = 0;
 			}
-			if (curr->prev->type == REDIR_OUT)
-				curr_cmd->fd[1] = open(curr->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			else if (curr->prev->type == REDIR_IN)
-				curr_cmd->fd[0] = open(curr->word, O_RDONLY);
-			else if (curr->prev->type == APPEND)
-				curr_cmd->fd[1] = open(curr->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
-			else if (curr->prev->type == HERE_DOC)
-				curr_cmd->fd[0] = here_doc_redirect(curr->word);
+			handle_redir_types(curr, curr_cmd);
 		}
 		curr = curr->next;
 	}
