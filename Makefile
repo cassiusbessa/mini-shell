@@ -6,7 +6,7 @@
 #    By: cassius <cassius@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/20 19:50:42 by caqueiro          #+#    #+#              #
-#    Updated: 2024/10/05 23:53:17 by cassius          ###   ########.fr        #
+#    Updated: 2024/10/10 00:16:57 by cassius          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ SRCS =		main.c\
 			env.c\
 			args.c\
 			get_env_key.c\
-			expand_env.c
+			expand_env.c\
+			signal.c
 
 
 LIBFT = utils/libft/libft.a
