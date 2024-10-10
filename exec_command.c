@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/09 20:55:45 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/09 22:36:47 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
   pid_t pid;
 
   t = lst->head;
+	unquotes_all_words(lst);
 	pipe_all_cmds(lst);
   while (t)
   {
@@ -88,4 +89,12 @@ static void handle_main_process(t_token **t, t_token_lst *lst)
     consume_token(lst, *t);
     *t = tmp;
   }
+}
+
+void close_not_used_fd(t_token *t)
+{
+	if (t->fd[0] != STDIN_FILENO)
+		close(t->fd[0]);
+	if (t->fd[1] != STDOUT_FILENO)
+		close(t->fd[1]);
 }

@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/06 01:07:20 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/09 22:27:56 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void		destroy_token_lst(t_token_lst **lst);
 void    	type_tokens(t_token_lst *lst);
 int 		sintax_validation(t_token_lst lst);
 int 		validate_quotes(char *w);
+void    unquotes_all_words(t_token_lst *lst);
 void		exec_all_commands(t_token_lst *lst, t_hashmap *envs);
 void    consume_token(t_token_lst *lst, t_token *t);
 

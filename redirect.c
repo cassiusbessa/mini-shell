@@ -1,46 +1,17 @@
 #include "minishell.h"
 
-void pipe_next_cmd(t_token_lst *lst);
-void redir_next_cmd(t_token_lst *lst);
-static int here_doc_redirect(const char *eof);
-static void write_to_here_doc(int write_fd, const char *eof);
-void  close_not_used_fd(t_token *t);
+void				pipe_all_cmds(t_token_lst *lst);
+void				redir_next_cmd(t_token_lst *lst);
+static int	here_doc_redirect(const char *eof);
+static void	write_to_here_doc(int write_fd, const char *eof);
+static void	handle_redir_types(t_token *curr, t_token *curr_cmd);
 
-void pipe_next_cmd(t_token_lst *lst)
+void	pipe_all_cmds(t_token_lst *lst)
 {
-	t_token *current;
-	t_token *nxt_command;
-	t_token *curr_command;
-	int fd[2];
-
-	current = lst->head;
-	if (!current)
-		return ;
-	nxt_command = NULL;
-	curr_command = NULL;
-	while (current && !nxt_command)
-	{
-		if (current->type == COMMAND && !curr_command)
-			curr_command = current;
-		if (curr_command && current->type == COMMAND && curr_command != current)
-			nxt_command = current;
-		current = current->next;
-	}
-	if (curr_command && nxt_command && nxt_command->prev && nxt_command->prev->type == PIPE)
-	{
-		pipe(fd);
-		curr_command->fd[1] = fd[1];
-		nxt_command->fd[0] = fd[0];
-		curr_command->piped = 1;
-	}
-}
-
-void  pipe_all_cmds(t_token_lst *lst)
-{
-	t_token *cur;
-	t_token *cur_cmd;
-	t_token *nxt_cmd;
-	int fd[2];
+	t_token	*cur;
+	t_token	*cur_cmd;
+	t_token	*nxt_cmd;
+	int			fd[2];
 
 	cur = lst->head;
 	cur_cmd = NULL;
@@ -64,7 +35,7 @@ void  pipe_all_cmds(t_token_lst *lst)
 	}
 }
 
-int	handle_redir_types(t_token *curr, t_token *curr_cmd)
+static void	handle_redir_types(t_token *curr, t_token *curr_cmd)
 {
 	if (curr->prev->type == REDIR_OUT)
 		curr_cmd->fd[1] = open(curr->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -76,15 +47,13 @@ int	handle_redir_types(t_token *curr, t_token *curr_cmd)
 		curr_cmd->fd[0] = here_doc_redirect(curr->word);
 }
 
-void redir_next_cmd(t_token_lst *lst)
+void	redir_next_cmd(t_token_lst *lst)
 {
-	t_token *curr;
-	t_token *nxt_cmd;
-	t_token *curr_cmd;
+	t_token	*curr;
+	t_token	*nxt_cmd;
+	t_token	*curr_cmd;
 
 	curr = lst->head;
-	if (!curr)
-		return ;
 	curr_cmd = NULL;
 	nxt_cmd = NULL;
 	while (curr && !nxt_cmd)
@@ -106,12 +75,12 @@ void redir_next_cmd(t_token_lst *lst)
 	}
 }
 
-static int here_doc_redirect(const char *eof)
+static int	here_doc_redirect(const char *eof)
 {
-	int here_doc_fd[2];
-	char *line;
-	int pid;
-	int status;
+	int		here_doc_fd[2];
+	char	*line;
+	int		pid;
+	int		status;
 
 	pipe(here_doc_fd);
 	pid = fork();
@@ -126,35 +95,27 @@ static int here_doc_redirect(const char *eof)
 	{
 		close(here_doc_fd[1]);
 		waitpid(pid, &status, 0);
-		return here_doc_fd[0];
+		return (here_doc_fd[0]);
 	}
 }
 
-static void write_to_here_doc(int write_fd, const char *eof)
+static void	write_to_here_doc(int write_fd, const char *eof)
 {
-	char *line;
+	char	*line;
 
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
-			break;
+			break ;
 		if (!ft_strcmp(line, eof))
 		{
 			free(line);
-			break;
+			break ;
 		}
 		write(write_fd, line, strlen(line));
 		write(write_fd, "\n", 1);
 		free(line);
 	}
 	close(write_fd);
-}
-
-void close_not_used_fd(t_token *t)
-{
-	if (t->fd[0] != STDIN_FILENO)
-		close(t->fd[0]);
-	if (t->fd[1] != STDOUT_FILENO)
-		close(t->fd[1]);
 }
