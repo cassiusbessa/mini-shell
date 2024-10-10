@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/06 00:22:25 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/09 20:55:45 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
   pid_t pid;
 
   t = lst->head;
+	pipe_all_cmds(lst);
   while (t)
   {
-    pipe_next_cmd(lst);
     redir_next_cmd(lst);
     if (t->type == COMMAND)
     {
@@ -40,7 +40,6 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
     else
       t = t->next;
   }
-  //unica mudança nesse arquivo
   while(wait(NULL) > 0);
 }
 
@@ -48,15 +47,12 @@ static void exec_command(t_token_lst *l, t_hashmap *envs)
 {
   char **args;
   char *path;
-  int   i;
+	t_token *t;
 
   if (l->head->type != COMMAND)
     return ;
   args = build_args(*l);
-  path = find_cmd_path(l->head, envs);
-  i = 0;
-  while (args[i])
-    i++;  
+  path = find_cmd_path(l->head, envs); 
   if (!path)
     exit(EXIT_FAILURE);
   if (l->head->fd[0] != STDIN_FILENO)
@@ -69,6 +65,12 @@ static void exec_command(t_token_lst *l, t_hashmap *envs)
     dup2(l->head->fd[1], STDOUT_FILENO);
     close(l->head->fd[1]);   
   }
+	t = l->head;
+	while (t)
+	{
+		close_not_used_fd(t);
+		t = t->next;
+	}
   execve(path, args, to_envp(*envs));
 }
 
