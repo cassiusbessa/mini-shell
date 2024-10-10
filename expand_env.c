@@ -12,7 +12,7 @@ void  expand_all_envs(t_hashmap *envs, t_token_lst *lst)
   t = lst->head;
   while (t)
   {
-    if (t->type == ARGUMMENT)
+    if (t->type == ARGUMMENT || t->type == COMMAND)
       expand_envs(envs, t);
     t = t->next;
   }
