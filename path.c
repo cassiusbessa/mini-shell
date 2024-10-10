@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 19:37:54 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/04/11 18:28:40 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/10/10 00:03:28 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*absolute_path(t_token *cmd, t_hashmap *envs);
+static char	*join_path(char const *s1, char const *s2);
+static char	*find_cmd_path(t_token *cmd, t_hashmap *envs);
+
+char	*absolute_path(t_token *cmd, t_hashmap *envs)
+{
+	if (access(cmd->word, F_OK) == 0)
+		return (ft_strdup(cmd->word));
+	return (find_cmd_path(cmd, envs));
+}
 
 static char	*join_path(char const *s1, char const *s2)
 {
@@ -41,7 +52,7 @@ static char	*join_path(char const *s1, char const *s2)
 	return (join);
 }
 
-char	*find_cmd_path(t_token *cmd, t_hashmap *envs)
+static char	*find_cmd_path(t_token *cmd, t_hashmap *envs)
 {
 	char				**env_path;
 	char				*cmd_path;

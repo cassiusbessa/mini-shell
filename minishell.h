@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/09 22:27:56 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/10 00:03:53 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_token
 } t_token;
 
 t_token	*new_token(char *word);
-char	*find_cmd_path(t_token *cmd, t_hashmap *envs);
+char	*absolute_path(t_token *cmd, t_hashmap *envs);
 
 typedef struct s_token_lst
 {

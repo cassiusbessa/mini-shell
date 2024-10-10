@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/09 22:36:47 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/10 00:05:20 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void exec_command(t_token_lst *l, t_hashmap *envs)
   if (l->head->type != COMMAND)
     return ;
   args = build_args(*l);
-  path = find_cmd_path(l->head, envs); 
+  path = absolute_path(l->head, envs);
   if (!path)
     exit(EXIT_FAILURE);
   if (l->head->fd[0] != STDIN_FILENO)
