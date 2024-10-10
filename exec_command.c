@@ -6,20 +6,22 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/10 00:05:20 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/10 01:10:01 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static  void exec_command(t_token_lst *l, t_hashmap *envs);
-static  void handle_main_process(t_token **t, t_token_lst *lst);
+static void exec_command(t_token_lst *l, t_hashmap *envs);
+static void handle_main_process(t_token **t, t_token_lst *lst);
+static void	update_last_status(t_hashmap *envs, int status);
 
 void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
 {
   t_token *t;
   t_token *tmp;
-  pid_t pid;
+  pid_t 	pid;
+	int 		status;
 
   t = lst->head;
 	unquotes_all_words(lst);
@@ -41,7 +43,11 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
     else
       t = t->next;
   }
-  while(wait(NULL) > 0);
+  while (wait(&status) > 0)
+  {
+    if (WIFEXITED(status))
+			update_last_status(envs, WEXITSTATUS(status));
+  }
 }
 
 static void exec_command(t_token_lst *l, t_hashmap *envs)
@@ -55,7 +61,10 @@ static void exec_command(t_token_lst *l, t_hashmap *envs)
   args = build_args(*l);
   path = absolute_path(l->head, envs);
   if (!path)
-    exit(EXIT_FAILURE);
+	{
+		ft_printf("%s: command not found\n", l->head->word);
+		exit(127);
+	}
   if (l->head->fd[0] != STDIN_FILENO)
   {
     dup2(l->head->fd[0], STDIN_FILENO);
@@ -97,4 +106,13 @@ void close_not_used_fd(t_token *t)
 		close(t->fd[0]);
 	if (t->fd[1] != STDOUT_FILENO)
 		close(t->fd[1]);
+}
+
+static void	update_last_status(t_hashmap *envs, int status)
+{
+	char	*str;
+
+	str = ft_itoa(status);
+	insert_pair(&envs, create_pair("?", str));
+	free(str);
 }

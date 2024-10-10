@@ -51,6 +51,7 @@ void    insert_pair(t_hashmap **map, t_key_value *p)
         {
             free(current->value);
             current->value = ft_strdup(p->value);
+						destroy_pair(p);
             return ;
         }
         if (current->next == NULL)

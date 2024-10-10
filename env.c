@@ -26,6 +26,7 @@ t_hashmap	*build_envs(char **envp)
 		free(v);
 		envp++;
 	}
+	insert_pair(&envs, create_pair("?", "0"));
 	return (envs);
 }
 

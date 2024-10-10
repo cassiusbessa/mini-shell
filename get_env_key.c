@@ -52,13 +52,15 @@ t_part find_env(char *w)
         quotes = handle_quotes(w[i], quotes);
         if (w[i] == '$' && !quotes)
         {
-            i++;
-            if (ft_isdigit(w[i]))
-                return (p.start = i, p.end = -1, p);
-            if (w[i] == '{')
-                return find_variable_brackets(w, &i);
-            else if (ft_isalpha(w[i]) || w[i] == '_')
-                return find_variable_name(w, &i);
+					i++;
+					if (w[i] == '?')
+						return (t_part){.start = i, .end = i + 1};
+					if (ft_isdigit(w[i]))
+						return (p.start = i, p.end = -1, p);
+					if (w[i] == '{')
+						return find_variable_brackets(w, &i);
+					else if (ft_isalpha(w[i]) || w[i] == '_')
+						return find_variable_name(w, &i);
         }
         i++;
     }
