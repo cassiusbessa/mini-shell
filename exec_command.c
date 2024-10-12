@@ -15,6 +15,7 @@
 static void exec_command(t_token_lst *l, t_hashmap *envs);
 static void handle_main_process(t_token **t, t_token_lst *lst);
 static void	update_last_status(t_hashmap *envs, int status);
+static void consume_to_next_cmd(t_token **t, t_token_lst *lst);
 
 void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
 {
@@ -29,7 +30,7 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
   while (t)
   {
     redir_next_cmd(lst);
-    if (t->type == COMMAND)
+    if (t && t->type == COMMAND)
     {
       pid = fork();
       if (pid == 0)
@@ -41,7 +42,7 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
         handle_main_process(&t, lst);
     }
     else
-      t = t->next;
+      consume_to_next_cmd(&t, lst);
   }
   while (wait(&status) > 0)
   {
@@ -86,9 +87,15 @@ static void exec_command(t_token_lst *l, t_hashmap *envs)
 
 static void handle_main_process(t_token **t, t_token_lst *lst)
 {
+  ft_printf("entrei\n");
+  close_not_used_fd(*t);
+  consume_to_next_cmd(t, lst);
+}
+
+static void consume_to_next_cmd(t_token **t, t_token_lst *lst)
+{
   t_token *tmp;
 
-  close_not_used_fd(*t);
   tmp = (*t)->next;
   consume_token(lst, *t);
   *t = tmp;

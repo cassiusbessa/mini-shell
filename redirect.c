@@ -35,18 +35,6 @@ void	pipe_all_cmds(t_token_lst *lst)
 	}
 }
 
-static void	handle_redir_types(t_token *curr, t_token *curr_cmd)
-{
-	if (curr->prev->type == REDIR_OUT)
-		curr_cmd->fd[1] = open(curr->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	else if (curr->prev->type == REDIR_IN)
-		curr_cmd->fd[0] = open(curr->word, O_RDONLY);
-	else if (curr->prev->type == APPEND)
-		curr_cmd->fd[1] = open(curr->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	else if (curr->prev->type == HERE_DOC)
-		curr_cmd->fd[0] = here_doc_redirect(curr->word);
-}
-
 void	redir_next_cmd(t_token_lst *lst)
 {
 	t_token	*curr;
@@ -62,9 +50,9 @@ void	redir_next_cmd(t_token_lst *lst)
 			curr_cmd = curr;
 		if (curr_cmd && curr->type == COMMAND && curr_cmd != curr)
 			nxt_cmd = curr;
-		if (curr->type == DOCUMENT || curr->type == HERE_DOC_EOF)
+		if (curr && (curr->type == DOCUMENT || curr->type == HERE_DOC_EOF))
 		{
-			if (curr_cmd->piped)
+			if (curr_cmd && curr_cmd->piped)
 			{
 				close_not_used_fd(curr_cmd);
 				curr_cmd->piped = 0;
@@ -73,7 +61,60 @@ void	redir_next_cmd(t_token_lst *lst)
 		}
 		curr = curr->next;
 	}
+	ft_printf("vou sair do redir\n");
 }
+
+static void	handle_redir_types(t_token *curr, t_token *curr_cmd)
+{
+	int	has_cmd;
+	int	fd;
+
+	has_cmd = 0;
+	if (!curr)
+		return ;
+	if (curr_cmd)
+		has_cmd = 1;
+	fd = 0;
+	if (curr->prev->type == REDIR_OUT)
+	{
+		fd = open(curr->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (has_cmd)
+			curr_cmd->fd[1] = fd;
+		else
+			close(fd);
+	}
+	else if (curr->prev->type == REDIR_IN)
+	{
+		fd = open(curr->word, O_RDONLY);
+		if (fd == -1)
+		{
+			close(fd);
+			ft_printf("minishell: %s: No such file or directory\n");
+			return ;
+		}
+		if (has_cmd)
+			curr_cmd->fd[0] = fd;
+		else
+			close(fd);
+	}
+	else if (curr->prev->type == APPEND)
+	{
+		fd = open(curr->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (has_cmd)
+			curr_cmd->fd[1] = fd;
+		else
+			close(fd);
+	}
+	else if (curr->prev->type == HERE_DOC)
+	{
+		fd = here_doc_redirect(curr->word);
+		if (has_cmd)
+			curr_cmd->fd[0] = fd;
+		else
+			close(fd);
+	}
+}
+
 
 static int	here_doc_redirect(const char *eof)
 {
