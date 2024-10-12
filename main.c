@@ -19,7 +19,7 @@ int	main(int argc, char **argv, char **envp)
   char        *str;
   t_hashmap   *envs;
 
-	setup_sigint_handler();
+	setup_sigaction_handler();
   envs = build_envs(envp);
   token_lst = new_token_lst();
   read = readline("minishell% ");

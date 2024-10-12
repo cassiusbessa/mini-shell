@@ -1,21 +1,27 @@
 #include "minishell.h"
 #include <signal.h>
-#include <bits/sigaction.h>
-#include <asm-generic/signal-defs.h>
 
-void	handle_sigint(int sig)
+static void	handle_sigaction(int signum, siginfo_t *info, void *context)
 {
-	(void)sig;
-	write(1, "\nminishell% ", 12);
+	if (signum == 2 && info->si_pid == 0)
+		exit(130);
+	else
+	{
+		write(1, "\n", 1);
+        rl_replace_line("", 0);
+        rl_on_new_line();
+        rl_redisplay(); 
+	}
+
 }
 
-void	setup_sigint_handler(void)
+void	setup_sigaction_handler(void)
 {
 	struct sigaction sa;
 
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
-	sa.sa_handler = handle_sigint;
+	sa.sa_flags = SA_SIGINFO; // Usa sa_sigaction para mais informações
+	sa.sa_sigaction = handle_sigaction;
 
 	sigaction(SIGINT, &sa, NULL);
 }

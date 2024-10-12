@@ -96,6 +96,7 @@ void  close_not_used_fd(t_token *t);
 void  pipe_all_cmds(t_token_lst *lst);
 
 
-void	setup_sigint_handler(void);
+void	setup_sigaction_handler(void);
+
 
 #endif
