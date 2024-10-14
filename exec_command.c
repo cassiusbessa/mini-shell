@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/10 02:05:33 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/14 20:40:39 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,18 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
   t = lst->head;
 	unquotes_all_words(lst);
 	pipe_all_cmds(lst);
+	print_token_lst(lst);
+	redir_all_cmds(lst);
+	print_token_lst(lst);
   while (t)
   {
-    redir_next_cmd(lst);
+    // redir_next_cmd(lst);
     if (t && t->type == COMMAND)
     {
       pid = fork();
       if (pid == 0)
       {
+				setup_sigaction_child();
         exec_command(lst, envs);
         exit(0);
       }
@@ -49,6 +53,7 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
     if (WIFEXITED(status))
 			update_last_status(envs, WEXITSTATUS(status));
   }
+	setup_sigaction_handler();
 }
 
 static void exec_command(t_token_lst *l, t_hashmap *envs)
@@ -87,7 +92,6 @@ static void exec_command(t_token_lst *l, t_hashmap *envs)
 
 static void handle_main_process(t_token **t, t_token_lst *lst)
 {
-  ft_printf("entrei\n");
   close_not_used_fd(*t);
   consume_to_next_cmd(t, lst);
 }

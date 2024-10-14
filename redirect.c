@@ -35,6 +35,34 @@ void	pipe_all_cmds(t_token_lst *lst)
 	}
 }
 
+void	redir_all_cmds(t_token_lst *lst)
+{
+	t_token	*curr;
+	t_token	*nxt_cmd;
+	t_token	*curr_cmd;
+
+	curr = lst->head;
+	curr_cmd = NULL;
+	nxt_cmd = NULL;
+	while (curr)
+	{
+		if (curr->type == COMMAND && !curr_cmd)
+			curr_cmd = curr;
+		if (curr_cmd && curr->type == COMMAND && curr_cmd != curr)
+			nxt_cmd = curr;
+		if (curr && (curr->type == DOCUMENT || curr->type == HERE_DOC_EOF))
+		{
+			if (curr_cmd && curr_cmd->piped)
+			{
+				close_not_used_fd(curr_cmd);
+				curr_cmd->piped = 0;
+			}
+			handle_redir_types(curr, curr_cmd);
+		}
+		curr = curr->next;
+	}
+}
+
 void	redir_next_cmd(t_token_lst *lst)
 {
 	t_token	*curr;
@@ -54,6 +82,7 @@ void	redir_next_cmd(t_token_lst *lst)
 		{
 			if (curr_cmd && curr_cmd->piped)
 			{
+				ft_printf("entrei\n");
 				close_not_used_fd(curr_cmd);
 				curr_cmd->piped = 0;
 			}
@@ -61,7 +90,6 @@ void	redir_next_cmd(t_token_lst *lst)
 		}
 		curr = curr->next;
 	}
-	ft_printf("vou sair do redir\n");
 }
 
 static void	handle_redir_types(t_token *curr, t_token *curr_cmd)
@@ -160,3 +188,5 @@ static void	write_to_here_doc(int write_fd, const char *eof)
 	}
 	close(write_fd);
 }
+
+

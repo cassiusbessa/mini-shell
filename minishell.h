@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/10 00:16:44 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/14 20:38:51 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-#include <fcntl.h>
+# include <fcntl.h>
+# include <sys/ioctl.h>
 # define CH_SEP "&><|!();"
 
 
@@ -94,9 +95,11 @@ void pipe_next_cmd(t_token_lst *lst);
 void redir_next_cmd(t_token_lst *lst);
 void  close_not_used_fd(t_token *t);
 void  pipe_all_cmds(t_token_lst *lst);
+void	redir_all_cmds(t_token_lst *lst);
 
 
 void	setup_sigaction_handler(void);
+void	setup_sigaction_child(void);
 
 
 #endif
