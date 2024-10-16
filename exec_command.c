@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/14 20:40:39 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/15 21:58:11 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void exec_command(t_token_lst *l, t_hashmap *envs);
 static void handle_main_process(t_token **t, t_token_lst *lst);
 static void	update_last_status(t_hashmap *envs, int status);
 static void consume_to_next_cmd(t_token **t, t_token_lst *lst);
+static void close_all_tokens_fd(t_token_lst *lst);
 
 void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
 {
@@ -27,9 +28,7 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
   t = lst->head;
 	unquotes_all_words(lst);
 	pipe_all_cmds(lst);
-	print_token_lst(lst);
 	redir_all_cmds(lst);
-	print_token_lst(lst);
   while (t)
   {
     // redir_next_cmd(lst);
@@ -117,6 +116,21 @@ void close_not_used_fd(t_token *t)
 		close(t->fd[0]);
 	if (t->fd[1] != STDOUT_FILENO)
 		close(t->fd[1]);
+}
+
+static void close_all_tokens_fd(t_token_lst *lst)
+{
+	t_token *t;
+
+	t = lst->head;
+	while (t)
+	{
+		if (t->fd[0] != STDIN_FILENO)
+			close(t->fd[0]);
+		if (t->fd[1] != STDOUT_FILENO)
+			close(t->fd[1]);
+		t = t->next;
+	}
 }
 
 static void	update_last_status(t_hashmap *envs, int status)

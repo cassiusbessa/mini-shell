@@ -52,7 +52,8 @@ void	redir_all_cmds(t_token_lst *lst)
 			nxt_cmd = curr;
 		if (curr && (curr->type == DOCUMENT || curr->type == HERE_DOC_EOF))
 		{
-			if (curr_cmd && curr_cmd->piped)
+				// ft_printf("curr_cmd->word:%s, curr_cmd->fd[0]:%d, curr_cmd->fd[1]:%d\n", curr_cmd->word, curr_cmd->fd[0], curr_cmd->fd[1]);
+			if (curr_cmd->fd[0] != STDIN_FILENO || curr_cmd->fd[1] != STDOUT_FILENO)
 			{
 				close_not_used_fd(curr_cmd);
 				curr_cmd->piped = 0;
