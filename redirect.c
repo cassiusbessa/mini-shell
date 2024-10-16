@@ -46,14 +46,13 @@ void	redir_all_cmds(t_token_lst *lst)
 	nxt_cmd = NULL;
 	while (curr)
 	{
-		if (curr->type == COMMAND && !curr_cmd)
+		if (curr && curr->type == COMMAND && !curr_cmd)
 			curr_cmd = curr;
-		if (curr_cmd && curr->type == COMMAND && curr_cmd != curr)
+		if (curr && curr_cmd && curr->type == COMMAND && curr_cmd != curr)
 			nxt_cmd = curr;
 		if (curr && (curr->type == DOCUMENT || curr->type == HERE_DOC_EOF))
 		{
-				// ft_printf("curr_cmd->word:%s, curr_cmd->fd[0]:%d, curr_cmd->fd[1]:%d\n", curr_cmd->word, curr_cmd->fd[0], curr_cmd->fd[1]);
-			if (curr_cmd->fd[0] != STDIN_FILENO || curr_cmd->fd[1] != STDOUT_FILENO)
+			if (curr_cmd && (curr_cmd->fd[0] != STDIN_FILENO || curr_cmd->fd[1] != STDOUT_FILENO))
 			{
 				close_not_used_fd(curr_cmd);
 				curr_cmd->piped = 0;
