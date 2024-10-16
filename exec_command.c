@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/15 21:58:11 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/16 12:05:52 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
 	redir_all_cmds(lst);
   while (t)
   {
-    // redir_next_cmd(lst);
     if (t && t->type == COMMAND)
     {
       pid = fork();
@@ -49,6 +48,8 @@ void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
   }
   while (wait(&status) > 0)
   {
+		if (WIFSIGNALED(status))
+			update_last_status(envs, 128 + WTERMSIG(status));
     if (WIFEXITED(status))
 			update_last_status(envs, WEXITSTATUS(status));
   }

@@ -6,11 +6,13 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:42:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/14 18:48:22 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/16 11:12:47 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char *global_status;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -21,6 +23,8 @@ int	main(int argc, char **argv, char **envp)
 
 	setup_sigaction_handler();
   envs = build_envs(envp);
+	global_status = get_value(envs, "?");
+	ft_printf("global_status: %s\n", global_status);
   token_lst = new_token_lst();
   read = readline("minishell% ");
   while (read)

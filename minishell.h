@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/14 20:38:51 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/16 11:06:46 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/ioctl.h>
 # define CH_SEP "&><|!();"
 
+extern char *global_status;
 
 char	*get_next_token(char *input);
 
