@@ -6,13 +6,11 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:42:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/16 11:12:47 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/16 18:17:45 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char *global_status;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -23,8 +21,6 @@ int	main(int argc, char **argv, char **envp)
 
 	setup_sigaction_handler();
   envs = build_envs(envp);
-	global_status = get_value(envs, "?");
-	ft_printf("global_status: %s\n", global_status);
   token_lst = new_token_lst();
   read = readline("minishell% ");
   while (read)
@@ -50,49 +46,3 @@ int	main(int argc, char **argv, char **envp)
   rl_clear_history();
 	return (0);
 }
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <unistd.h>
-
-// int main() {
-//     int pipefd[2];
-//     char buffer[256];
-//     pid_t pid;
-
-//     // Cria o pipe
-//     if (pipe(pipefd) == -1) {
-//         perror("Erro ao criar o pipe");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     // Cria um novo processo filho
-//     pid = fork();
-
-//     if (pid == -1) {
-//         perror("Erro ao criar o processo filho");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     if (pid == 0) { // Processo filho
-// 	    // Fecha a extremidade de escrita do pipe
-//         close(pipefd[1]);
-//         // Lê a mensagem do pipe
-//         read(pipefd[0], buffer, sizeof(buffer));
-//         // Imprime a mensagem lida
-//         printf("filho leu:%s\n", buffer);
-//         // Fecha a extremidade de leitura do pipe
-//         close(pipefd[0]);
-//     } else { // Processo pai
-// 		// Fecha a extremidade de leitura do pipe
-//         close(pipefd[0]);
-//         // Escreve a mensagem no pipe
-//         write(pipefd[1], "Eu sou o pai\n", 13);
-//         // Fecha a extremidade de escrita do pipe
-//         close(pipefd[1]);
-// 		wait(NULL);
-//         // Encerra o processo pai
-//         exit(EXIT_SUCCESS);
-//     }
-
-//     return 0;
-// }

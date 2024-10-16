@@ -82,7 +82,6 @@ void	redir_next_cmd(t_token_lst *lst)
 		{
 			if (curr_cmd && curr_cmd->piped)
 			{
-				ft_printf("entrei\n");
 				close_not_used_fd(curr_cmd);
 				curr_cmd->piped = 0;
 			}

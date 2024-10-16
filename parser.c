@@ -12,36 +12,24 @@ char    *get_next_token(char *input)
 
 	if (!input)
 		return (NULL);
-    // pular espaços
     skip_spaces(input, &part.start);
     part.end = part.start;
-    
-    // andar até encontrar um caracter de "finalização"
     while (*(input + part.end) && (!ft_strchr(" \t\n<>|", *(input + part.end))))
         if (!skip_quote(input, &part.end))
             part.end++;
-            
-    // caso encontre '<', '>', '|'
     if (part.end == part.start && *(input + part.start))
     {
         if (ft_strchr("<>", *(input + part.end)) && *(input + part.end) == *(input + part.end + 1))
             part.end++;
         part.end++;
     }
-        
-    // Pegar nova string
-    token_str = ft_substr(input, part.start, (part.end - part.start));
-    // ft_printf ("FOUND PART (%d) ~ (%d): [%s]\n", part.start, part.end, token_str);
-    
-    // Caso encontre string vazia (final da string)
+    token_str = ft_substr(input, part.start, (part.end - part.start));    
     if (part.start == part.end)
     {
         free(token_str);
         token_str = NULL;
         ft_memset(&part, 0, sizeof(part));
     }
-
-    // Atualizar start para quando chamar de novo
     part.start = part.end;
     return (token_str);
 }
