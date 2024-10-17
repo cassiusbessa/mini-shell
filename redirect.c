@@ -52,7 +52,7 @@ void	redir_all_cmds(t_token_lst *lst)
 			nxt_cmd = curr;
 		if (curr && (curr->type == DOCUMENT || curr->type == HERE_DOC_EOF))
 		{
-			if (curr_cmd && (curr_cmd->fd[0] != STDIN_FILENO || curr_cmd->fd[1] != STDOUT_FILENO))
+			if (curr_cmd && (curr_cmd->fd[0] != STDIN_FILENO || curr_cmd->fd[1] != STDOUT_FILENO) && !curr_cmd->here_doc)
 			{
 				close_not_used_fd(curr_cmd);
 				curr_cmd->piped = 0;
@@ -139,6 +139,7 @@ static void	handle_redir_types(t_token *curr, t_token *curr_cmd)
 			curr_cmd->fd[0] = fd;
 		else
 			close(fd);
+		curr_cmd->here_doc = 1;
 	}
 }
 

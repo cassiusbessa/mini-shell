@@ -50,7 +50,8 @@ typedef struct s_token
 	char			*word;
 	t_word_type		type;
 	int				fd[2];
-  int       piped;
+	int       		piped;
+	int				here_doc;
 	struct	s_token	*next;
 
 } t_token;
