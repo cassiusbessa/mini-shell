@@ -1,0 +1,17 @@
+b >> a
+minishell% ^C
+minishell% ^Z>> a
+minishell% ^Z>> a
+minishell% >> a
+minishell% 
+minishell% 
+minishell% 
+minishell% 
+minishell% 
+minishell% 
+minishell% 
+minishell% 
+minishell% 
+minishell% 
+minishell% 
+minishell% ^Z

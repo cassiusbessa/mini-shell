@@ -14,14 +14,13 @@
 
 int	main(int argc, char **argv, char **envp)
 {
+  t_main      main;
 	char        *read;
-  t_token_lst *token_lst;
   char        *str;
-  t_hashmap   *envs;
 
 	setup_sigaction_handler();
-  envs = build_envs(envp);
-  token_lst = new_token_lst();
+  main.envs = build_envs(envp);
+  main.token_lst = new_token_lst();
   read = readline("minishell% ");
   while (read)
   {
@@ -29,20 +28,20 @@ int	main(int argc, char **argv, char **envp)
     str = get_next_token(read);
     while (str != NULL)
     {
-      add_token(new_token(str), &token_lst); 
+      add_token(new_token(str), &main); 
       str = get_next_token(read);
     }
-    type_tokens(token_lst);
-    expand_all_envs(envs, token_lst);
-    exec_all_commands(token_lst, envs);
+    type_tokens(&main);
+    expand_all_envs(&main);
+    exec_all_commands(&main);
     rl_on_new_line();
-    destroy_token_lst(&token_lst);
+    destroy_token_lst(&main);
     free(read);
     read = readline("minishell% ");
-    token_lst = new_token_lst();
+    main.token_lst = new_token_lst();
   }
-  destroy_token_lst(&token_lst);
-  destroy_hashmap(envs);
+  destroy_token_lst(&main);
+  destroy_hashmap(main.envs);
   rl_clear_history();
 	return (0);
 }

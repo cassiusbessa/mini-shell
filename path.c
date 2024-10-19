@@ -12,15 +12,15 @@
 
 #include "minishell.h"
 
-char	*absolute_path(t_token *cmd, t_hashmap *envs);
+char	*absolute_path(t_main *main);
 static char	*join_path(char const *s1, char const *s2);
-static char	*find_cmd_path(t_token *cmd, t_hashmap *envs);
+static char	*find_cmd_path(t_main *main);
 
-char	*absolute_path(t_token *cmd, t_hashmap *envs)
+char	*absolute_path(t_main *main)
 {
-	if (access(cmd->word, F_OK) == 0)
-		return (ft_strdup(cmd->word));
-	return (find_cmd_path(cmd, envs));
+	if (access(main->token_lst->head->word, F_OK) == 0)
+		return (ft_strdup(main->token_lst->head->word));
+	return (find_cmd_path(main));//alterar função head e main
 }
 
 static char	*join_path(char const *s1, char const *s2)
@@ -52,7 +52,7 @@ static char	*join_path(char const *s1, char const *s2)
 	return (join);
 }
 
-static char	*find_cmd_path(t_token *cmd, t_hashmap *envs)
+static char	*find_cmd_path(t_main *main)
 {
 	char				**env_path;
 	char				*cmd_path;
@@ -60,10 +60,10 @@ static char	*find_cmd_path(t_token *cmd, t_hashmap *envs)
 	int					i;
 
 	i = 0;
-	env_path = ft_split(get_value(envs, "PATH"), ':');
+	env_path = ft_split(get_value(main->envs, "PATH"), ':');
 	while (env_path[i])
 	{
-		cmd_path = join_path(env_path[i], cmd->word);
+		cmd_path = join_path(env_path[i], main->token_lst->head->word);
 
 		if (stat(cmd_path, &file_stat) >= 0)
 		{
