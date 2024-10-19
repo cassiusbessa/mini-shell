@@ -1,19 +1,19 @@
 #include "minishell.h"
 
-void				pipe_all_cmds(t_main *main);
+void				pipe_all_cmds(t_token_lst *lst);
 void				redir_next_cmd(t_main *main);
 static int	here_doc_redirect(const char *eof);
 static void	write_to_here_doc(int write_fd, const char *eof);
 static void	handle_redir_types(t_token *curr, t_token *curr_cmd);
 
-void	pipe_all_cmds(t_main *main)
+void	pipe_all_cmds(t_token_lst *lst)
 {
 	t_token	*cur;
 	t_token	*cur_cmd;
 	t_token	*nxt_cmd;
 	int			fd[2];
 
-	cur = main->token_lst->head;
+	cur = lst->head;
 	cur_cmd = NULL;
 	nxt_cmd = NULL;
 	while (cur)
@@ -32,6 +32,62 @@ void	pipe_all_cmds(t_main *main)
 			nxt_cmd = NULL;
 		}
 		cur = cur->next;
+	}
+}
+
+void	redir_all_cmds(t_token_lst *lst)
+{
+	t_token	*curr;
+	t_token	*nxt_cmd;
+	t_token	*curr_cmd;
+
+	curr = lst->head;
+	curr_cmd = NULL;
+	nxt_cmd = NULL;
+	while (curr)
+	{
+		if (curr && curr->type == COMMAND && !curr_cmd)
+			curr_cmd = curr;
+		if (curr && curr_cmd && curr->type == COMMAND && curr_cmd != curr)
+			nxt_cmd = curr;
+		if (curr && (curr->type == DOCUMENT || curr->type == HERE_DOC_EOF))
+		{
+			if (curr_cmd && (curr_cmd->fd[0] != STDIN_FILENO || curr_cmd->fd[1] != STDOUT_FILENO) && !curr_cmd->here_doc)
+			{
+				close_not_used_fd(curr_cmd);
+				curr_cmd->piped = 0;
+			}
+			handle_redir_types(curr, curr_cmd);
+		}
+		curr = curr->next;
+	}
+}
+
+void	redir_all_cmds(t_token_lst *lst)
+{
+	t_token	*curr;
+	t_token	*nxt_cmd;
+	t_token	*curr_cmd;
+
+	curr = lst->head;
+	curr_cmd = NULL;
+	nxt_cmd = NULL;
+	while (curr)
+	{
+		if (curr && curr->type == COMMAND && !curr_cmd)
+			curr_cmd = curr;
+		if (curr && curr_cmd && curr->type == COMMAND && curr_cmd != curr)
+			nxt_cmd = curr;
+		if (curr && (curr->type == DOCUMENT || curr->type == HERE_DOC_EOF))
+		{
+			if (curr_cmd && (curr_cmd->fd[0] != STDIN_FILENO || curr_cmd->fd[1] != STDOUT_FILENO) && !curr_cmd->here_doc)
+			{
+				close_not_used_fd(curr_cmd);
+				curr_cmd->piped = 0;
+			}
+			handle_redir_types(curr, curr_cmd);
+		}
+		curr = curr->next;
 	}
 }
 
@@ -111,6 +167,7 @@ static void	handle_redir_types(t_token *curr, t_token *curr_cmd)
 			curr_cmd->fd[0] = fd;
 		else
 			close(fd);
+		curr_cmd->here_doc = 1;
 	}
 }
 
@@ -159,3 +216,5 @@ static void	write_to_here_doc(int write_fd, const char *eof)
 	}
 	close(write_fd);
 }
+
+

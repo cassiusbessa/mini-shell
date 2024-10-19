@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/10 02:05:33 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/16 12:05:52 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void exec_command(t_main *main);
 static void handle_main_process(t_token **t, t_main *main);
 static void	update_last_status(t_main *main, int status);
 static void consume_to_next_cmd(t_token **t, t_main *main);
+static void close_all_tokens_fd(t_token_lst *lst);
 
 void exec_all_commands(t_main *main)
 {
@@ -25,13 +26,14 @@ void exec_all_commands(t_main *main)
 	int 		status;
 
   t = main->token_lst->head;
-	unquotes_all_words(main);
-	pipe_all_cmds(main);
+	unquotes_all_words(main->token_lst);
+	pipe_all_cmds(main->token_lst);
+	redir_all_cmds(main->token_lst);
   while (t)
   {
-    redir_next_cmd(main);
     if (t && t->type == COMMAND)
     {
+      pid = fork();
       if (!builtins(main))
       {
         printf("entrei no if\n");
@@ -52,9 +54,12 @@ void exec_all_commands(t_main *main)
   }
   while (wait(&status) > 0)
   {
+		if (WIFSIGNALED(status))
+			update_last_status(main->envs, 128 + WTERMSIG(status));
     if (WIFEXITED(status))
 			update_last_status(main, WEXITSTATUS(status));
   }
+	setup_sigaction_handler();
 }
 
 static void exec_command(t_main *main)
@@ -118,6 +123,36 @@ void close_not_used_fd(t_token *t)
 		close(t->fd[0]);
 	if (t->fd[1] != STDOUT_FILENO)
 		close(t->fd[1]);
+}
+
+static void close_all_tokens_fd(t_token_lst *lst)
+{
+	t_token *t;
+
+	t = lst->head;
+	while (t)
+	{
+		if (t->fd[0] != STDIN_FILENO)
+			close(t->fd[0]);
+		if (t->fd[1] != STDOUT_FILENO)
+			close(t->fd[1]);
+		t = t->next;
+	}
+}
+
+static void close_all_tokens_fd(t_token_lst *lst)
+{
+	t_token *t;
+
+	t = lst->head;
+	while (t)
+	{
+		if (t->fd[0] != STDIN_FILENO)
+			close(t->fd[0]);
+		if (t->fd[1] != STDOUT_FILENO)
+			close(t->fd[1]);
+		t = t->next;
+	}
 }
 
 static void	update_last_status(t_main *main, int status)

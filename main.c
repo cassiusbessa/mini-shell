@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:42:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/10 00:22:12 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/16 18:17:45 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,49 +45,3 @@ int	main(int argc, char **argv, char **envp)
   rl_clear_history();
 	return (0);
 }
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <unistd.h>
-
-// int main() {
-//     int pipefd[2];
-//     char buffer[256];
-//     pid_t pid;
-
-//     // Cria o pipe
-//     if (pipe(pipefd) == -1) {
-//         perror("Erro ao criar o pipe");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     // Cria um novo processo filho
-//     pid = fork();
-
-//     if (pid == -1) {
-//         perror("Erro ao criar o processo filho");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     if (pid == 0) { // Processo filho
-// 	    // Fecha a extremidade de escrita do pipe
-//         close(pipefd[1]);
-//         // Lê a mensagem do pipe
-//         read(pipefd[0], buffer, sizeof(buffer));
-//         // Imprime a mensagem lida
-//         printf("filho leu:%s\n", buffer);
-//         // Fecha a extremidade de leitura do pipe
-//         close(pipefd[0]);
-//     } else { // Processo pai
-// 		// Fecha a extremidade de leitura do pipe
-//         close(pipefd[0]);
-//         // Escreve a mensagem no pipe
-//         write(pipefd[1], "Eu sou o pai\n", 13);
-//         // Fecha a extremidade de escrita do pipe
-//         close(pipefd[1]);
-// 		wait(NULL);
-//         // Encerra o processo pai
-//         exit(EXIT_SUCCESS);
-//     }
-
-//     return 0;
-// }

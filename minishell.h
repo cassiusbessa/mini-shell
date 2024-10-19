@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/10 00:16:44 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/16 13:46:20 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,14 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <fcntl.h>
+#  include <fcntl.h>
+# include <sys/ioctl.h>
 # include <limits.h>
 # define CH_SEP "&><|!();"
+
+char	*get_next_token(char *input);
+
+void	print_double_pointer(char **arr);
 # define NOFREE	0
 # define FREE	1
 
@@ -48,7 +53,8 @@ typedef struct s_token
 	char			*word;
 	t_word_type		type;
 	int				fd[2];
-  int       piped;
+	int       		piped;
+	int				here_doc;
 	struct	s_token	*next;
 
 } t_token;
@@ -106,10 +112,12 @@ char  **build_args(t_main *main);
 void pipe_next_cmd(t_token_lst *lst);
 void redir_next_cmd(t_main *main);
 void  close_not_used_fd(t_token *t);
-void  pipe_all_cmds(t_main *main);
+void  pipe_all_cmds(t_token_lst *lst);
+void	redir_all_cmds(t_token_lst *lst);
 
 
 void	setup_sigaction_handler(void);
+void	setup_sigaction_child(void);
 
 
 int	builtins(t_main	*main);
