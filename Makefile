@@ -18,6 +18,7 @@ CURSIVE		=	\e[33;3m
 
 SRCS =		main.c\
 			exec_command.c\
+			exec_command_helpers.c\
 			path.c\
 			redirect.c\
 			print.c\

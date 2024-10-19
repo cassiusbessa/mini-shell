@@ -32,15 +32,15 @@ void	print_double_pointer(char **arr);
 
 typedef enum e_word_type {
 
-	UNKNOWN = 0, //
-	PIPE = 1, //
-	REDIR_OUT = 2, //
-	REDIR_IN = 3, //
-	HERE_DOC = 4, //
-	APPEND = 5, //
+	UNKNOWN = 0,
+	PIPE = 1,
+	REDIR_OUT = 2,
+	REDIR_IN = 3,
+	HERE_DOC = 4,
+	APPEND = 5,
 	COMMAND = 6,
-	DOCUMENT = 7, //
-	HERE_DOC_EOF = 8, //
+	DOCUMENT = 7,
+	HERE_DOC_EOF = 8,
 	ARGUMMENT = 9
 } t_word_type;
 
@@ -89,10 +89,11 @@ typedef struct s_part
 t_part	find_env(char *w);
 char    *get_env_key(char *w, t_part p);
 void	expand_all_envs(t_hashmap *envs, t_token_lst *lst);
+void	pre_exec(t_token_lst *lst);
+void	update_status(int status, t_hashmap *envs);
+
 
 char  **build_args(t_token_lst l);
-void pipe_next_cmd(t_token_lst *lst);
-void redir_next_cmd(t_token_lst *lst);
 void  close_not_used_fd(t_token *t);
 void  pipe_all_cmds(t_token_lst *lst);
 void	redir_all_cmds(t_token_lst *lst);

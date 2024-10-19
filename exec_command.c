@@ -12,103 +12,99 @@
 
 #include "minishell.h"
 
-static void exec_command(t_token_lst *l, t_hashmap *envs);
-static void handle_main_process(t_token **t, t_token_lst *lst);
-static void	update_last_status(t_hashmap *envs, int status);
-static void consume_to_next_cmd(t_token **t, t_token_lst *lst);
-static void close_all_tokens_fd(t_token_lst *lst);
+static void	exec_command(t_token_lst *l, t_hashmap *envs);
+static void	handle_main_process(t_token **t, t_token_lst *lst);
+static void	handle_child_process(t_token_lst *lst, t_hashmap *envs);
+static void	consume_to_next_cmd(t_token **t, t_token_lst *lst);
+static void	close_all_tokens_fd(t_token_lst *lst);
 
-void exec_all_commands(t_token_lst *lst, t_hashmap *envs)
+void	exec_all_commands(t_token_lst *lst, t_hashmap *envs)
 {
-  t_token *t;
-  t_token *tmp;
-  pid_t 	pid;
-	int 		status;
+	t_token	*t;
+	t_token	*tmp;
+	pid_t		pid;
+	int			status;
 
-  t = lst->head;
-	unquotes_all_words(lst);
-	pipe_all_cmds(lst);
-	redir_all_cmds(lst);
-  while (t)
-  {
-    if (t && t->type == COMMAND)
-    {
-      pid = fork();
-      if (pid == 0)
-      {
-				setup_sigaction_child();
-        exec_command(lst, envs);
-        exit(0);
-      }
-      else
-        handle_main_process(&t, lst);
-    }
-    else
-      consume_to_next_cmd(&t, lst);
-  }
-  while (wait(&status) > 0)
-  {
-		if (WIFSIGNALED(status))
-			update_last_status(envs, 128 + WTERMSIG(status));
-    if (WIFEXITED(status))
-			update_last_status(envs, WEXITSTATUS(status));
-  }
+	t = lst->head;
+	pre_exec(lst);
+	while (t)
+	{
+		if (t && t->type == COMMAND)
+		{
+			pid = fork();
+			if (pid == 0)
+				handle_child_process(lst, envs);
+			else
+				handle_main_process(&t, lst);
+		}
+		else
+			consume_to_next_cmd(&t, lst);
+	}
+	while (wait(&status) > 0)
+		update_status(status, envs);
 	setup_sigaction_handler();
+}
+
+static void	handle_child_process(t_token_lst *lst, t_hashmap *envs)
+{
+	setup_sigaction_child();
+	exec_command(lst, envs);
+	exit(0);
 }
 
 static void exec_command(t_token_lst *l, t_hashmap *envs)
 {
-  char **args;
-  char *path;
+	char **args;
+	char *path;
 	t_token *t;
 
-  if (l->head->type != COMMAND)
-    return ;
-  args = build_args(*l);
-  path = absolute_path(l->head, envs);
-  if (!path)
+	if (l->head->type != COMMAND)
+		return ;
+	args = build_args(*l);
+	path = absolute_path(l->head, envs);
+	if (!path)
 	{
 		ft_printf("%s: command not found\n", l->head->word);
 		exit(127);
 	}
-  if (l->head->fd[0] != STDIN_FILENO)
-  {
-    dup2(l->head->fd[0], STDIN_FILENO);
-    close(l->head->fd[0]);
-  }
-  if (l->head->fd[1] != STDOUT_FILENO)
-  {
-    dup2(l->head->fd[1], STDOUT_FILENO);
-    close(l->head->fd[1]);   
-  }
+	if (l->head->fd[0] != STDIN_FILENO)
+	{
+		dup2(l->head->fd[0], STDIN_FILENO);
+		close(l->head->fd[0]);
+	}
+	if (l->head->fd[1] != STDOUT_FILENO)
+	{
+		dup2(l->head->fd[1], STDOUT_FILENO);
+		close(l->head->fd[1]);   
+	}
 	t = l->head;
 	while (t)
 	{
 		close_not_used_fd(t);
 		t = t->next;
 	}
-  execve(path, args, to_envp(*envs));
+	execve(path, args, to_envp(*envs));
 }
 
 static void handle_main_process(t_token **t, t_token_lst *lst)
 {
-  close_not_used_fd(*t);
-  consume_to_next_cmd(t, lst);
+	close_not_used_fd(*t);
+	consume_to_next_cmd(t, lst);
 }
 
 static void consume_to_next_cmd(t_token **t, t_token_lst *lst)
 {
-  t_token *tmp;
+	t_token *tmp;
 
-  tmp = (*t)->next;
-  consume_token(lst, *t);
-  *t = tmp;
-  while (*t && (*t)->type != COMMAND)
-  {
-    tmp = (*t)->next;
-    consume_token(lst, *t);
-    *t = tmp;
-  }
+	tmp = (*t)->next;
+	consume_token(lst, *t);
+	*t = tmp;
+	while (*t && (*t)->type != COMMAND)
+	{
+		tmp = (*t)->next;
+		consume_token(lst, *t);
+		*t = tmp;
+	}
 }
 
 void close_not_used_fd(t_token *t)
@@ -132,13 +128,4 @@ static void close_all_tokens_fd(t_token_lst *lst)
 			close(t->fd[1]);
 		t = t->next;
 	}
-}
-
-static void	update_last_status(t_hashmap *envs, int status)
-{
-	char	*str;
-
-	str = ft_itoa(status);
-	insert_pair(&envs, create_pair("?", str));
-	free(str);
 }

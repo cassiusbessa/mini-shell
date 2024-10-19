@@ -2,7 +2,7 @@
 
 char	**build_args(t_token_lst l)
 {
-	t_token	*tmp;
+	t_token		*tmp;
 	int			i;
 	char		**args;
 
