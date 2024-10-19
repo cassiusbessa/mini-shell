@@ -30,7 +30,9 @@ SRCS =		main.c\
 			args.c\
 			get_env_key.c\
 			expand_env.c\
-			signal.c
+			signal.c\
+			builtins.c\
+			cd.c
 
 
 LIBFT = utils/libft/libft.a

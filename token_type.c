@@ -14,11 +14,11 @@ int exist_command(t_token_lst *lst)
     return (0);
 }
 
-int exist_pipe(t_token_lst *lst)
+int exist_pipe(t_main *main)
 {
     t_token *current;
 
-    current = lst->head;
+    current = main->token_lst->head;
     while (current)
     {
         if (current->type == PIPE)
@@ -28,15 +28,15 @@ int exist_pipe(t_token_lst *lst)
     return (0);
 }
 
-void  type_document_argumment(t_token_lst *lst)
+void  type_document_argumment(t_main *main)
 {
     int     command;
     int     pipe;
     t_token *current;
 
     command = 0;
-    pipe = exist_pipe(lst);
-    current = lst->head;
+    pipe = exist_pipe(main);
+    current = main->token_lst->head;
     while (current)
     {
         if (current->type == UNKNOWN && command)
@@ -53,13 +53,13 @@ void  type_document_argumment(t_token_lst *lst)
 
 }
 
-void    type_tokens(t_token_lst *lst)
+void    type_tokens(t_main *main)
 {
     t_token *current;
     t_token *next;
 
 
-    current = lst->head;
+    current = main->token_lst->head;
     while(current)
     {
         next = current->next;
@@ -81,6 +81,6 @@ void    type_tokens(t_token_lst *lst)
             current->type = DOCUMENT;
         current = next;
     }
-    type_document_argumment(lst);
+    type_document_argumment(main);
 }
 

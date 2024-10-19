@@ -5,15 +5,15 @@ static char *expand_env(t_hashmap *envs, char *key, t_part p, char *w);
 static void expand_envs(t_hashmap *envs, t_token *t);
 static char *handle_start_with_number_key(char *key, t_part p, char *w);
 
-void  expand_all_envs(t_hashmap *envs, t_token_lst *lst)
+void  expand_all_envs(t_main  *main)
 {
   t_token *t;
 
-  t = lst->head;
+  t = main->token_lst->head;
   while (t)
   {
     if (t->type == ARGUMMENT || t->type == COMMAND)
-      expand_envs(envs, t);
+      expand_envs(main->envs, t);
     t = t->next;
   }
 }

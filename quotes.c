@@ -3,7 +3,7 @@
 static int size_without_quotes(const char *w);
 int validate_quotes(char *w);
 char    *unquotes_word(t_token t);
-void		unquotes_all_words(t_token_lst *lst);
+void		unquotes_all_words(t_main *main);
 
 char    *unquotes_word(t_token t)
 {
@@ -70,12 +70,12 @@ int validate_quotes(char *w)
     return (type);
 }
 
-void    unquotes_all_words(t_token_lst *lst)
+void    unquotes_all_words(t_main *main)
 {
 	t_token *t;
 	char		*tmp;
 
-	t = lst->head;
+	t = main->token_lst->head;
 	while (t)
 	{
 		tmp = unquotes_word(*t);

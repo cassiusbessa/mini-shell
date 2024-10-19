@@ -3,7 +3,7 @@
 t_hashmap		*build_envs(char **envp);
 static int	find_equals(char *s);
 static char	*build_line(t_key_value *kv);
-char				**to_envp(t_hashmap map);
+char				**to_envp(t_hashmap *envs);
 
 t_hashmap	*build_envs(char **envp)
 {
@@ -66,19 +66,19 @@ static char	*build_line(t_key_value *kv)
 	return (env);
 }
 
-char	**to_envp(t_hashmap map)
+char	**to_envp(t_hashmap *envs)
 {
 	char				**envp;
 	t_part			i;
 	t_key_value	*current;
 
 	current = NULL;
-	envp = (char **)ft_calloc(map.size + 1, sizeof(char *));
+	envp = (char **)ft_calloc(envs->size + 1, sizeof(char *));
 	i.start = 0;
 	i.end = 0;
 	while (i.start < TABLE_SIZE)
 	{
-		current = map.table[i.start];
+		current = envs->table[i.start];
 		while (current)
 		{
 			envp[i.end++] = build_line(current);

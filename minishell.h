@@ -22,13 +22,11 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-#include <fcntl.h>
+# include <fcntl.h>
+# include <limits.h>
 # define CH_SEP "&><|!();"
-
-
-char	*get_next_token(char *input);
-
-void	print_double_pointer(char **arr);
+# define NOFREE	0
+# define FREE	1
 
 typedef enum e_word_type {
 
@@ -55,29 +53,44 @@ typedef struct s_token
 
 } t_token;
 
-t_token	*new_token(char *word);
-char	*absolute_path(t_token *cmd, t_hashmap *envs);
-
 typedef struct s_token_lst
 {
 	t_token	*head;
 	t_token	*tail;
 }	t_token_lst;
 
+typedef struct s_main
+{
+	t_token_lst	*token_lst;
+	t_hashmap   *envs;
+}	t_main;
+
+char	*get_next_token(char *input);
+
+void	print_double_pointer(char **arr);
+
+
+
+
+t_token	*new_token(char *word);
+char	*absolute_path(t_main *main);
+
+
+
 
 t_token_lst *new_token_lst(void);
-void    	add_token(t_token *token, t_token_lst **lst);
+void    	add_token(t_token *token, t_main *main);
 void		print_token_lst(t_token_lst *lst);
-void		destroy_token_lst(t_token_lst **lst);
-void    	type_tokens(t_token_lst *lst);
+void		destroy_token_lst(t_main *main);
+void    	type_tokens(t_main *main);
 int 		sintax_validation(t_token_lst lst);
 int 		validate_quotes(char *w);
-void    unquotes_all_words(t_token_lst *lst);
-void		exec_all_commands(t_token_lst *lst, t_hashmap *envs);
+void    unquotes_all_words(t_main *main);
+void		exec_all_commands(t_main *main);
 void    consume_token(t_token_lst *lst, t_token *t);
 
 t_hashmap   *build_envs(char **envp);
-char    	**to_envp(t_hashmap map);
+char    	**to_envp(t_hashmap *envs);
 
 typedef struct s_part
 {
@@ -87,16 +100,19 @@ typedef struct s_part
 
 t_part	find_env(char *w);
 char    *get_env_key(char *w, t_part p);
-void	expand_all_envs(t_hashmap *envs, t_token_lst *lst);
+void	expand_all_envs(t_main *main);
 
-char  **build_args(t_token_lst l);
+char  **build_args(t_main *main);
 void pipe_next_cmd(t_token_lst *lst);
-void redir_next_cmd(t_token_lst *lst);
+void redir_next_cmd(t_main *main);
 void  close_not_used_fd(t_token *t);
-void  pipe_all_cmds(t_token_lst *lst);
+void  pipe_all_cmds(t_main *main);
 
 
 void	setup_sigaction_handler(void);
 
+
+int	builtins(t_main	*main);
+int	cd_cmd(t_main	*main);
 
 #endif
