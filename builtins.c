@@ -114,16 +114,6 @@ void	echo_cmd(t_main *main)
 
 int	builtins(t_main *main)
 {
-	if (main->token_lst->head->fd[0] != STDIN_FILENO)
-	{
-		dup2(main->token_lst->head->fd[0], STDIN_FILENO);
-		close(main->token_lst->head->fd[0]);
-	}
-	if (main->token_lst->head->fd[1] != STDOUT_FILENO)
-	{
-    dup2(main->token_lst->head->fd[1], STDOUT_FILENO);
-    close(main->token_lst->head->fd[1]);   
-	}
 	if (!ft_strcmp(main->token_lst->head->word, "exit"))
 		return(exit_cmd(main->token_lst), 1);
 	/*else if (!ft_strcmp(main->token_lst, "env"))
