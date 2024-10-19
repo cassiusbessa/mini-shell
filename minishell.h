@@ -91,7 +91,7 @@ void		destroy_token_lst(t_main *main);
 void    	type_tokens(t_main *main);
 int 		sintax_validation(t_token_lst lst);
 int 		validate_quotes(char *w);
-void    unquotes_all_words(t_main *main);
+void    unquotes_all_words(t_token_lst	*lst);
 void		exec_all_commands(t_main *main);
 void    consume_token(t_token_lst *lst, t_token *t);
 

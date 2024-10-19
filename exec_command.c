@@ -14,7 +14,7 @@
 
 static void exec_command(t_main *main);
 static void handle_main_process(t_token **t, t_main *main);
-static void	update_last_status(t_main *main, int status);
+static void	update_last_status(t_hashmap  *env, int status);
 static void consume_to_next_cmd(t_token **t, t_main *main);
 static void close_all_tokens_fd(t_token_lst *lst);
 
@@ -33,18 +33,15 @@ void exec_all_commands(t_main *main)
   {
     if (t && t->type == COMMAND)
     {
+      printf("entrei no if\n");
       pid = fork();
-      if (!builtins(main))
+      if (pid == 0)
       {
-        printf("entrei no if\n");
-        pid = fork();
-        if (pid == 0)
-        {
-          exec_command(main);
-          exit(0);
-        }
+        exec_command(main);
+        exit(0);
       }
-      handle_main_process(&t, main);
+      else
+        handle_main_process(&t, main);
     }
     else
     {
@@ -57,7 +54,7 @@ void exec_all_commands(t_main *main)
 		if (WIFSIGNALED(status))
 			update_last_status(main->envs, 128 + WTERMSIG(status));
     if (WIFEXITED(status))
-			update_last_status(main, WEXITSTATUS(status));
+			update_last_status(main->envs, WEXITSTATUS(status));
   }
 	setup_sigaction_handler();
 }
@@ -140,26 +137,11 @@ static void close_all_tokens_fd(t_token_lst *lst)
 	}
 }
 
-static void close_all_tokens_fd(t_token_lst *lst)
-{
-	t_token *t;
-
-	t = lst->head;
-	while (t)
-	{
-		if (t->fd[0] != STDIN_FILENO)
-			close(t->fd[0]);
-		if (t->fd[1] != STDOUT_FILENO)
-			close(t->fd[1]);
-		t = t->next;
-	}
-}
-
-static void	update_last_status(t_main *main, int status)
+static void	update_last_status(t_hashmap  *env, int status)
 {
 	char	*str;
 
 	str = ft_itoa(status);
-	insert_pair(&main->envs, create_pair("?", str));
+	insert_pair(&env, create_pair("?", str));
 	free(str);
 }

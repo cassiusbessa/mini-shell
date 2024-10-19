@@ -63,62 +63,6 @@ void	redir_all_cmds(t_token_lst *lst)
 	}
 }
 
-void	redir_all_cmds(t_token_lst *lst)
-{
-	t_token	*curr;
-	t_token	*nxt_cmd;
-	t_token	*curr_cmd;
-
-	curr = lst->head;
-	curr_cmd = NULL;
-	nxt_cmd = NULL;
-	while (curr)
-	{
-		if (curr && curr->type == COMMAND && !curr_cmd)
-			curr_cmd = curr;
-		if (curr && curr_cmd && curr->type == COMMAND && curr_cmd != curr)
-			nxt_cmd = curr;
-		if (curr && (curr->type == DOCUMENT || curr->type == HERE_DOC_EOF))
-		{
-			if (curr_cmd && (curr_cmd->fd[0] != STDIN_FILENO || curr_cmd->fd[1] != STDOUT_FILENO) && !curr_cmd->here_doc)
-			{
-				close_not_used_fd(curr_cmd);
-				curr_cmd->piped = 0;
-			}
-			handle_redir_types(curr, curr_cmd);
-		}
-		curr = curr->next;
-	}
-}
-
-void	redir_next_cmd(t_main *main)
-{
-	t_token	*curr;
-	t_token	*nxt_cmd;
-	t_token	*curr_cmd;
-
-	curr = main->token_lst->head;
-	curr_cmd = NULL;
-	nxt_cmd = NULL;
-	while (curr && !nxt_cmd)
-	{
-		if (curr->type == COMMAND && !curr_cmd)
-			curr_cmd = curr;
-		if (curr_cmd && curr->type == COMMAND && curr_cmd != curr)
-			nxt_cmd = curr;
-		if (curr && (curr->type == DOCUMENT || curr->type == HERE_DOC_EOF))
-		{
-			if (curr_cmd && curr_cmd->piped)
-			{
-				close_not_used_fd(curr_cmd);
-				curr_cmd->piped = 0;
-			}
-			handle_redir_types(curr, curr_cmd);
-		}
-		curr = curr->next;
-	}
-}
-
 static void	handle_redir_types(t_token *curr, t_token *curr_cmd)
 {
 	int	has_cmd;
