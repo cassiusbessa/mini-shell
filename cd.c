@@ -91,6 +91,5 @@ int	cd_cmd(t_main   *main)
 		chdir(tmp->word);
 	getcwd(new_pwd, sizeof(new_pwd));
 	printf("%s\n", new_pwd);
-        printf("%s\n", tmp->word);
 	return (0);
 }

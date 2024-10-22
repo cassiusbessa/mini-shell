@@ -122,8 +122,14 @@ void	redir_all_cmds(t_token_lst *lst);
 void	setup_sigaction_handler(void);
 void	setup_sigaction_child(void);
 
-
-int	builtins(t_main	*main);
-int	cd_cmd(t_main	*main);
+//BUILTINS
+int		cd_cmd(t_main		*main);
+int		env_cmd(t_main		*main);
+int		pwd_cmd(t_main		*main);
+int		echo_cmd(t_main		*main);
+int		unset_cmd(t_main	*main);
+int		export_cmd(t_main	*main);
+int		builtins(t_main		*main);
+char 	**static_env(char **new_envp, int clear);
 
 #endif

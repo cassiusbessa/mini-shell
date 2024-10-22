@@ -84,7 +84,7 @@ int	check_flag(t_token *token)
 	return (0);
 }
 
-void	echo_cmd(t_main *main)
+int	echo_cmd(t_main *main)
 {
 	int	i;
 	int	space;
@@ -110,25 +110,16 @@ void	echo_cmd(t_main *main)
 	}
 	if (newline)
 		printf("\n");
+	return (1);
 }
 
 int	builtins(t_main *main)
 {
-	if (main->token_lst->head->fd[0] != STDIN_FILENO)
-	{
-		dup2(main->token_lst->head->fd[0], STDIN_FILENO);
-		close(main->token_lst->head->fd[0]);
-	}
-	if (main->token_lst->head->fd[1] != STDOUT_FILENO)
-	{
-    dup2(main->token_lst->head->fd[1], STDOUT_FILENO);
-    close(main->token_lst->head->fd[1]);   
-	}
 	if (!ft_strcmp(main->token_lst->head->word, "exit"))
 		return(exit_cmd(main->token_lst), 1);
-	/*else if (!ft_strcmp(main->token_lst, "env"))
-		return(env_cmd(main->token_lst), 1);
-	else if (!ft_strcmp(main->token_lst, "pwd"))
+	else if (!ft_strcmp(main->token_lst->head->word, "env"))
+		return(env_cmd(main), 1);
+	/*else if (!ft_strcmp(main->token_lst, "pwd"))
 		return(pwd_cmd(), 1);*/
 	else if (!ft_strcmp(main->token_lst->head->word, "echo"))
 		return(echo_cmd(main), 1);

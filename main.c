@@ -33,7 +33,8 @@ int	main(int argc, char **argv, char **envp)
     }
     type_tokens(&main);
     expand_all_envs(&main);
-    exec_all_commands(&main);
+    builtins(&main);
+    //exec_all_commands(&main);
     rl_on_new_line();
     destroy_token_lst(&main);
     free(read);

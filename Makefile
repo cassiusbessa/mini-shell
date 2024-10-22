@@ -33,7 +33,8 @@ SRCS =		main.c\
 			expand_env.c\
 			signal.c\
 			builtins.c\
-			cd.c
+			cd.c\
+			builtins_env.c
 
 
 LIBFT = utils/libft/libft.a

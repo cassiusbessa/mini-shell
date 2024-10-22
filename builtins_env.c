@@ -1,18 +1,49 @@
 #include "minishell.h"
 
-void	env_cmd(char **token)
+int	last_status(int new_status)
 {
-	int	i;
-	char	**env;
+	static int	status;
 
-	if (token[1])
+	if (new_status > -1)
+		status = new_status;
+	return (status);
+}
+
+void	err(char *s)
+{
+	write(STDERR_FILENO, s, ft_strlen(s));
+}
+
+void	error_env(char *cmd)
+{
+	err("env: '");
+	err(cmd);
+	err("': No such file or directory\n");
+}
+
+int	env_cmd(t_main	*main)
+{
+	t_token		*tmp;
+
+	tmp = main->token_lst->head;
+
+	while (tmp->next)
 	{
-		//| Tem que dar erro porque ENV não aceita nenhuma flag.
-		printf("Error!\n","\tenv does not accept flags.\n");
-		return ;
+		
+		if (!ft_strcmp(tmp->word, "env"))
+			tmp = tmp->next;
+		else
+		{
+			error_env(tmp->word);
+			last_status(127);
+			return (0);
+		}
 	}
-	env = static_env(NULL, NOFREE);
-	i = -1;
-	while (env[++i])
-		printf("%s\n", env[i]);
+	while (main->envs->table)
+	{
+		printf("%s\n", main->envs->table);
+	}
+	printf("aq\n");
+	last_status(0);
+	return (1);
 }
