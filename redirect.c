@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/21 22:55:16 by caqueiro          #+#    #+#             */
+/*   Updated: 2024/10/21 23:00:32 by caqueiro         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void				pipe_all_cmds(t_token_lst *lst);
-void				redir_next_cmd(t_main *main);
+void		pipe_all_cmds(t_token_lst *lst);
 static int	here_doc_redirect(const char *eof);
 static void	write_to_here_doc(int write_fd, const char *eof);
 static void	handle_redir_types(t_token *curr, t_token *curr_cmd);
@@ -11,7 +22,7 @@ void	pipe_all_cmds(t_token_lst *lst)
 	t_token	*cur;
 	t_token	*cur_cmd;
 	t_token	*nxt_cmd;
-	int			fd[2];
+	int		fd[2];
 
 	cur = lst->head;
 	cur_cmd = NULL;
@@ -52,7 +63,8 @@ void	redir_all_cmds(t_token_lst *lst)
 			nxt_cmd = curr;
 		if (curr && (curr->type == DOCUMENT || curr->type == HERE_DOC_EOF))
 		{
-			if (curr_cmd && (curr_cmd->fd[0] != STDIN_FILENO || curr_cmd->fd[1] != STDOUT_FILENO) && !curr_cmd->here_doc)
+			if (curr_cmd && (curr_cmd->fd[0] != STDIN_FILENO
+					|| curr_cmd->fd[1] != STDOUT_FILENO) && !curr_cmd->here_doc)
 			{
 				close_not_used_fd(curr_cmd);
 				curr_cmd->piped = 0;
@@ -115,7 +127,6 @@ static void	handle_redir_types(t_token *curr, t_token *curr_cmd)
 	}
 }
 
-
 static int	here_doc_redirect(const char *eof)
 {
 	int		here_doc_fd[2];
@@ -160,5 +171,3 @@ static void	write_to_here_doc(int write_fd, const char *eof)
 	}
 	close(write_fd);
 }
-
-
