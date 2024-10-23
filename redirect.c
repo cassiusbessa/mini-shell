@@ -3,19 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 22:55:16 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/21 23:00:32 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/10/22 20:34:54 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 void		pipe_all_cmds(t_token_lst *lst);
-static int	here_doc_redirect(const char *eof);
-static void	write_to_here_doc(int write_fd, const char *eof);
-static void	handle_redir_types(t_token *curr, t_token *curr_cmd);
+void		redir_all_cmds(t_token_lst *lst);
 
 void	pipe_all_cmds(t_token_lst *lst)
 {
@@ -73,101 +71,4 @@ void	redir_all_cmds(t_token_lst *lst)
 		}
 		curr = curr->next;
 	}
-}
-
-static void	handle_redir_types(t_token *curr, t_token *curr_cmd)
-{
-	int	has_cmd;
-	int	fd;
-
-	has_cmd = 0;
-	if (!curr)
-		return ;
-	if (curr_cmd)
-		has_cmd = 1;
-	fd = 0;
-	if (curr->prev->type == REDIR_OUT)
-	{
-		fd = open(curr->word, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (has_cmd)
-			curr_cmd->fd[1] = fd;
-		else
-			close(fd);
-	}
-	else if (curr->prev->type == REDIR_IN)
-	{
-		fd = open(curr->word, O_RDONLY);
-		if (fd == -1)
-		{
-			close(fd);
-			ft_printf("minishell: %s: No such file or directory\n");
-			return ;
-		}
-		if (has_cmd)
-			curr_cmd->fd[0] = fd;
-		else
-			close(fd);
-	}
-	else if (curr->prev->type == APPEND)
-	{
-		fd = open(curr->word, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		if (has_cmd)
-			curr_cmd->fd[1] = fd;
-		else
-			close(fd);
-	}
-	else if (curr->prev->type == HERE_DOC)
-	{
-		fd = here_doc_redirect(curr->word);
-		if (has_cmd)
-			curr_cmd->fd[0] = fd;
-		else
-			close(fd);
-		curr_cmd->here_doc = 1;
-	}
-}
-
-static int	here_doc_redirect(const char *eof)
-{
-	int		here_doc_fd[2];
-	char	*line;
-	int		pid;
-	int		status;
-
-	pipe(here_doc_fd);
-	pid = fork();
-	if (pid == 0)
-	{
-		close(here_doc_fd[0]);
-		write_to_here_doc(here_doc_fd[1], eof);
-		close(here_doc_fd[1]);
-		exit(0);
-	}
-	else
-	{
-		close(here_doc_fd[1]);
-		waitpid(pid, &status, 0);
-		return (here_doc_fd[0]);
-	}
-}
-
-static void	write_to_here_doc(int write_fd, const char *eof)
-{
-	char	*line;
-
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-			break ;
-		if (!ft_strcmp(line, eof))
-		{
-			free(line);
-			break ;
-		}
-		write(write_fd, line, strlen(line));
-		write(write_fd, "\n", 1);
-		free(line);
-	}
-	close(write_fd);
 }
