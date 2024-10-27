@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/21 21:27:02 by caqueiro          #+#    #+#             */
+/*   Updated: 2024/10/21 21:28:00 by caqueiro         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_hashmap		*build_envs(char **envp);
-static int	find_equals(char *s);
-static char	*build_line(t_key_value *kv);
-char				**to_envp(t_hashmap *envs);
+static int		find_equals(char *s);
+static char		*build_line(t_key_value *kv);
+char			**to_envp(t_hashmap *envs);
 
 t_hashmap	*build_envs(char **envp)
 {

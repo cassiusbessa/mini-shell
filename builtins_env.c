@@ -24,9 +24,10 @@ void	error_env(char *cmd)
 int	env_cmd(t_main	*main)
 {
 	t_token		*tmp;
+	int			index;
 
 	tmp = main->token_lst->head;
-
+	index= 0;
 	while (tmp->next)
 	{
 		
@@ -35,15 +36,11 @@ int	env_cmd(t_main	*main)
 		else
 		{
 			error_env(tmp->word);
-			last_status(127);
+			update_last_status(main->envs, 127);
 			return (0);
 		}
 	}
-	while (main->envs->table)
-	{
-		printf("%s\n", main->envs->table);
-	}
-	printf("aq\n");
-	last_status(0);
+	print_hashmap(*main->envs);
+	update_last_status(main->envs, 0);
 	return (1);
 }

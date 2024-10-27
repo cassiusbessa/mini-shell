@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/16 13:46:20 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/19 01:42:54 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int 		validate_quotes(char *w);
 void    unquotes_all_words(t_token_lst	*lst);
 void		exec_all_commands(t_main *main);
 void    consume_token(t_token_lst *lst, t_token *t);
-
+void	update_last_status(t_hashmap *envs, int status);
 t_hashmap   *build_envs(char **envp);
 char    	**to_envp(t_hashmap *envs);
 
@@ -108,12 +108,11 @@ t_part	find_env(char *w);
 char    *get_env_key(char *w, t_part p);
 void	pre_exec(t_token_lst *lst);
 void	update_status(int status, t_hashmap *envs);
+void	dup_and_close(t_token *t);
 
 void	expand_all_envs(t_main *main);
 
 char  **build_args(t_main *main);
-void pipe_next_cmd(t_token_lst *lst);
-void redir_next_cmd(t_main *main);
 void  close_not_used_fd(t_token *t);
 void  pipe_all_cmds(t_token_lst *lst);
 void	redir_all_cmds(t_token_lst *lst);
@@ -123,6 +122,7 @@ void	setup_sigaction_handler(void);
 void	setup_sigaction_child(void);
 
 //BUILTINS
+int		pwd_cmd(t_main	*main);
 int		cd_cmd(t_main		*main);
 int		env_cmd(t_main		*main);
 int		pwd_cmd(t_main		*main);
@@ -130,6 +130,5 @@ int		echo_cmd(t_main		*main);
 int		unset_cmd(t_main	*main);
 int		export_cmd(t_main	*main);
 int		builtins(t_main		*main);
-char 	**static_env(char **new_envp, int clear);
 
 #endif

@@ -71,14 +71,12 @@ int	cd_cmd(t_main   *main)
 		return (1);
 	if (!tmp || ft_strcmp(tmp->word, "~") == 0)
 	{
-		if (!env_value("HOME"))
-			return (1);
-		path = env_value("HOME");
+		path = get_value(main->envs, "HOME");
 		chdir(path);
 	}
 	else if (ft_strcmp(tmp->word, "~") == 0)
 	{
-		path = env_value("HOME");
+		path = get_value(main->envs, "HOME");
 		if (path == NULL)
 		{
 			printf("cd error:%s\n", "HOME is not set");

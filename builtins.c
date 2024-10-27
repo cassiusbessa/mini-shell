@@ -89,27 +89,29 @@ int	echo_cmd(t_main *main)
 	int	i;
 	int	space;
 	int	newline;
+	int	only_flag;
 	t_token	*tmp;
 
+	only_flag = 0;
 	tmp = main->token_lst->head->next;
 	newline = 1;
-	while (check_flag(tmp))
+	//print_token_lst(main->token_lst);
+	while (tmp && check_flag(tmp))
 	{
 		tmp = tmp->next;
 		newline = 0;
 	}
 	space = 0;
-	while (tmp)
+	while (tmp && tmp->type != PIPE)
 	{
-		if (space)
-			printf(" ");
-		else
-			space++;
-		printf("%s", tmp->word);
+		if (tmp->type == ARGUMMENT)
+			write(main->token_lst->head->fd[1], tmp->word, strlen(tmp->word));
+		if (tmp && tmp->next != NULL && tmp->type != PIPE && tmp->type == ARGUMMENT && tmp->next->type == ARGUMMENT)
+			write(main->token_lst->head->fd[1], " ", 1);
 		tmp = tmp->next;
 	}
 	if (newline)
-		printf("\n");
+		write(main->token_lst->head->fd[1], "\n", 1);
 	return (1);
 }
 
@@ -119,8 +121,8 @@ int	builtins(t_main *main)
 		return(exit_cmd(main->token_lst), 1);
 	else if (!ft_strcmp(main->token_lst->head->word, "env"))
 		return(env_cmd(main), 1);
-	/*else if (!ft_strcmp(main->token_lst, "pwd"))
-		return(pwd_cmd(), 1);*/
+	else if (!ft_strcmp(main->token_lst->head->word, "pwd"))
+		return(pwd_cmd(main), 1);
 	else if (!ft_strcmp(main->token_lst->head->word, "echo"))
 		return(echo_cmd(main), 1);
 	else if (!strcmp(main->token_lst->head->word, "cd"))
