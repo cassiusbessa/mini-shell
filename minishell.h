@@ -98,6 +98,7 @@ t_part				find_env(char *w);
 char				*get_env_key(char *w, t_part p);
 void				pre_exec(t_token_lst *lst);
 void				update_status(int status, t_hashmap *envs);
+void				update_last_status(t_hashmap *envs, int status);
 void				dup_and_close(t_token *t);
 
 void				expand_all_envs(t_main *main);
