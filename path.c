@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
+/*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 19:37:54 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/10 00:03:28 by cassius          ###   ########.fr       */
+/*   Updated: 2024/10/21 22:52:13 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*absolute_path(t_main *main);
+char		*absolute_path(t_main *main);
 static char	*join_path(char const *s1, char const *s2);
 static char	*find_cmd_path(t_main *main);
 
@@ -20,7 +20,7 @@ char	*absolute_path(t_main *main)
 {
 	if (access(main->token_lst->head->word, F_OK) == 0)
 		return (ft_strdup(main->token_lst->head->word));
-	return (find_cmd_path(main));//alterar função head e main
+	return (find_cmd_path(main));
 }
 
 static char	*join_path(char const *s1, char const *s2)
@@ -37,7 +37,7 @@ static char	*join_path(char const *s1, char const *s2)
 		i++;
 	while (s2[j])
 		j++;
-	join = malloc(sizeof (char) * (i + j) + 2);
+	join = malloc(sizeof(char) * (i + j) + 2);
 	if (!join)
 		return (NULL);
 	i = 0;
@@ -54,17 +54,16 @@ static char	*join_path(char const *s1, char const *s2)
 
 static char	*find_cmd_path(t_main *main)
 {
-	char				**env_path;
-	char				*cmd_path;
-	struct stat 		file_stat;
-	int					i;
+	char		**env_path;
+	char		*cmd_path;
+	struct stat	file_stat;
+	int			i;
 
 	i = 0;
 	env_path = ft_split(get_value(main->envs, "PATH"), ':');
 	while (env_path[i])
 	{
 		cmd_path = join_path(env_path[i], main->token_lst->head->word);
-
 		if (stat(cmd_path, &file_stat) >= 0)
 		{
 			destroy_2d((void **)env_path);

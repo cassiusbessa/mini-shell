@@ -6,7 +6,7 @@
 /*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 20:39:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/06/07 20:25:19 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/10/21 22:52:52 by caqueiro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	print_double_pointer(char **arr)
 	ft_printf("\n");
 }
 
-
 void	print_token(t_token *token)
 {
 	ft_printf("word:%s\n", token->word);
@@ -38,14 +37,14 @@ void	print_token(t_token *token)
 
 void	print_token_lst(t_token_lst *lst)
 {
-	t_token *current;
-	t_token *next;
+	t_token	*current;
+	t_token	*next;
 
-  current = lst->head;
-  while (current)
-  {
-    next = current->next;
-	print_token(current);
-    current = next;
-  }
+	current = lst->head;
+	while (current)
+	{
+		next = current->next;
+		print_token(current);
+		current = next;
+	}
 }

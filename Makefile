@@ -6,7 +6,7 @@
 #    By: cassius <cassius@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/20 19:50:42 by caqueiro          #+#    #+#              #
-#    Updated: 2024/10/10 00:16:57 by cassius          ###   ########.fr        #
+#    Updated: 2024/10/22 20:28:07 by cassius          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,8 @@ SRCS =		main.c\
 			exec_command_helpers.c\
 			path.c\
 			redirect.c\
+			redirect_helpers.c\
+			here_doc.c\
 			print.c\
 			token_lst.c\
 			token.c\

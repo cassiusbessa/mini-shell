@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/22 20:37:51 by cassius           #+#    #+#             */
+/*   Updated: 2024/10/22 20:37:52 by cassius          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <signal.h>
 
@@ -13,7 +25,7 @@ static void	handle_sigaction_main(int signum)
 
 void	setup_sigaction_handler(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
@@ -23,12 +35,10 @@ void	setup_sigaction_handler(void)
 
 void	setup_sigaction_child(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
-	// sa.sa_sigaction = SIG_DFL;
 	sa.sa_handler = SIG_DFL;
-
 	sigaction(SIGINT, &sa, NULL);
 }
