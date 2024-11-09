@@ -127,9 +127,10 @@ int	builtins(t_main *main)
 		return(echo_cmd(main), 1);
 	else if (!strcmp(main->token_lst->head->word, "cd"))
 		return(cd_cmd(main), 1);
+	/*else if (!ft_strcmp(main->token_lst->head->word, "unset"))
+		return(unset_cmd(main), 1);*/
 	/*else if (!strcmp(main->token_lst, "export"))
 		export_cmd(main->token_lst);*/
-	/*else if (!ft_strcmp(main->token_lst, "unset"))
-		unset_cmd(main->token_lst);*/
+
 return (0);
 }

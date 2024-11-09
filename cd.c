@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+void	update_pwd_oldpwd(t_main *main);
+
 void    free_matrix(char ***matrix)
 {
         int     i;
@@ -85,8 +87,10 @@ int	cd_cmd(t_main   *main)
 		new_path = ft_strjoin(path, (tmp->word + 1));
 		chdir(new_path);
 	}
-	else
-		chdir(tmp->word);
+        /*else if (chdir(tmp->word) == -1)   
+                return (printf("No such file or directory\n"), 1);*/
+        else
+                chdir(tmp->word);
 	getcwd(new_pwd, sizeof(new_pwd));
 	printf("%s\n", new_pwd);
 	return (0);

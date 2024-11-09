@@ -37,7 +37,8 @@ SRCS =		main.c\
 			builtins.c\
 			cd.c\
 			builtins_env.c\
-			pwd.c
+			pwd.c\
+			unset.c
 
 
 LIBFT = utils/libft/libft.a

@@ -113,7 +113,7 @@ int					here_doc_redirect(const char *eof);
 void				setup_sigaction_handler(void);
 void				setup_sigaction_child(void);
 //BUILTINS
-int						pwd_cmd(t_main *main);
+void	start_pwd(t_main *main);
 int						cd_cmd(t_main 	*main);
 int				env_cmd(t_main		*main);
 int						pwd_cmd(t_main		*main);
@@ -121,6 +121,8 @@ int		echo_cmd(t_main		*main);
 int		unset_cmd(t_main	*main);
 int		export_cmd(t_main	*main);
 int		builtins(t_main		*main);
+void	err(char *s);
+
 
 void				print_double_pointer(char **arr);
 

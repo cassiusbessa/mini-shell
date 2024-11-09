@@ -21,6 +21,7 @@ int	main(int argc, char **argv, char **envp)
 
 	setup_sigaction_handler();
 	main.envs = build_envs(envp);
+	//start_pwd(&main);
 	main.token_lst = new_token_lst();
 	read = readline("minishell% ");
 	shell_loop(read, &main);
