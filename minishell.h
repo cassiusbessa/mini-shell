@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:30:36 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/22 20:34:33 by cassius          ###   ########.fr       */
+/*   Updated: 2024/11/09 19:37:32 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void				consume_token(t_token_lst *lst, t_token *t);
 t_hashmap			*build_envs(char **envp);
 char				**to_envp(t_hashmap *envs);
 
+int					find_equals(char *s);
 t_part				find_env(char *w);
 char				*get_env_key(char *w, t_part p);
 void				pre_exec(t_token_lst *lst);
@@ -112,17 +113,16 @@ int					here_doc_redirect(const char *eof);
 
 void				setup_sigaction_handler(void);
 void				setup_sigaction_child(void);
-//BUILTINS
-void	start_pwd(t_main *main);
-int						cd_cmd(t_main 	*main);
-int				env_cmd(t_main		*main);
-int						pwd_cmd(t_main		*main);
-int		echo_cmd(t_main		*main);
-int		unset_cmd(t_main	*main);
-int		export_cmd(t_main	*main);
-int		builtins(t_main		*main);
-void	err(char *s);
-
+// BUILTINS
+void				start_pwd(t_main *main);
+int					cd_cmd(t_main *main);
+int					env_cmd(t_main *main);
+int					pwd_cmd(t_main *main);
+int					echo_cmd(t_main *main);
+int					unset_cmd(t_main *main);
+int					export_cmd(t_main *main);
+int					builtins(t_main *main);
+void				err(char *s);
 
 void				print_double_pointer(char **arr);
 

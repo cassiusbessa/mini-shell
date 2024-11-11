@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_env.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/09 20:44:39 by cassius           #+#    #+#             */
+/*   Updated: 2024/11/09 20:46:33 by cassius          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	last_status(int new_status)
@@ -27,10 +39,9 @@ int	env_cmd(t_main	*main)
 	int			index;
 
 	tmp = main->token_lst->head;
-	index= 0;
+	index = 0;
 	while (tmp->next)
 	{
-		
 		if (!ft_strcmp(tmp->word, "env"))
 			tmp = tmp->next;
 		else

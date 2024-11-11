@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:42:51 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/21 21:56:13 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/11/09 20:46:57 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	main(int argc, char **argv, char **envp)
 
 	setup_sigaction_handler();
 	main.envs = build_envs(envp);
-	//start_pwd(&main);
 	main.token_lst = new_token_lst();
 	read = readline("minishell% ");
 	shell_loop(read, &main);

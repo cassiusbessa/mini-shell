@@ -1,97 +1,95 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/09 20:59:32 by cassius           #+#    #+#             */
+/*   Updated: 2024/11/11 01:42:40 by cassius          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	update_pwd_oldpwd(t_main *main);
+static int	home_cd(t_main *main, t_token *tmp);
+static int	oldpwd_cd(t_main *main, t_token *tmp);
+static int	cd(t_main *main, t_token *tmp);
 
-void    free_matrix(char ***matrix)
+int	cd_cmd(t_main *main)
 {
-        int     i;
+	t_token	*tmp;
 
-        //| Caso não tenha matrix, só retorna.
-        if (!*matrix)
-                return ;
-        i = -1;
-        while ((*matrix)[++i])
-        {
-                free((*matrix)[i]); //| Free direto no endereço.
-                (*matrix)[i] = NULL;//| Setando para NULL para não ter double free.
-        }
-        free(*matrix); //| Libera a matrix.
-        *matrix = NULL;
-}
-
-char **static_env(char **new_envp, int clear)
-{
-        //| Static para poder acessar em outras partes do programa.
-        static char **env;
-
-        //| Caso tenha um novo ENV, limpa o antigo.
-        if (new_envp && env)
-                free_matrix(&env);
-        //| Atualiza o antigo ENV para o novo.
-        if (new_envp)
-                env = new_envp;
-        //| Caso precise limpar o ENV.
-        if (env && clear)
-                free_matrix(&env);
-        return (env);
-}
-
-char *catch_env(char *find)
-{
-        int i;
-        char **env;
-
-        env = static_env(NULL, 0);
-        i = -1;
-        while (env[++i])
-        {
-                if (!ft_strncmp(env[i], find, ft_strlen(env[i]) - ft_strlen(ft_strchr(env[i], '='))))
-                        return (env[i]);
-        }
-        return (NULL);
-}
-
-char *env_value(char *find)
-{
-        char *env;
-
-        env = catch_env(find);
-        if (!env)
-                return (NULL);
-        return (env + ft_strlen(find) + 1);
-}
-
-int	cd_cmd(t_main   *main)
-{
-    t_token *tmp;
-	char	*path;
-	char	*new_path;
-	char	new_pwd[1024];
-
-    tmp = main->token_lst->head->next;
-	if (tmp && tmp->next)
+	tmp = main->token_lst->head->next;
+	if (home_cd(main, tmp))
 		return (1);
-	if (!tmp || ft_strcmp(tmp->word, "~") == 0)
+	if (tmp && tmp->next && tmp->next->type == ARGUMMENT)
 	{
-		path = get_value(main->envs, "HOME");
-		chdir(path);
+		ft_printf("cd: too many arguments\n");
+		update_last_status(main->envs, 1);
+		return (1);
 	}
-	else if (ft_strcmp(tmp->word, "~") == 0)
+	if (oldpwd_cd(main, tmp))
+		return (1);
+	return (cd(main, tmp));
+}
+
+static int	home_cd(t_main *main, t_token *tmp)
+{
+	char		*path;
+	char		*current_path;
+
+	if (!tmp || ft_strcmp(tmp->word, "~") == 0)
 	{
 		path = get_value(main->envs, "HOME");
 		if (path == NULL)
 		{
-			printf("cd error:%s\n", "HOME is not set");
-			return (1);
+			ft_printf("cd error:%s\n", "HOME is not set");
+			update_last_status(main->envs, 1);
 		}
-		new_path = ft_strjoin(path, (tmp->word + 1));
-		chdir(new_path);
+		current_path = getcwd(NULL, 0);
+		chdir(path);
+		insert_pair(&main->envs, create_pair("OLDPWD", current_path));
+		free(current_path);
+		update_last_status(main->envs, 0);
+		return (1);
 	}
-        /*else if (chdir(tmp->word) == -1)   
-                return (printf("No such file or directory\n"), 1);*/
-        else
-                chdir(tmp->word);
-	getcwd(new_pwd, sizeof(new_pwd));
-	printf("%s\n", new_pwd);
 	return (0);
+}
+
+static int	oldpwd_cd(t_main *main, t_token *tmp)
+{
+	char		*path;
+	char		*current_path;
+
+	if (ft_strcmp(tmp->word, "-") == 0)
+	{
+		path = get_value(main->envs, "OLDPWD");
+		if (path == NULL)
+		{
+			ft_printf("cd error:%s\n", "OLDPWD is not set");
+			update_last_status(main->envs, 1);
+		}
+		current_path = getcwd(NULL, 0);
+		chdir(path);
+		insert_pair(&main->envs, create_pair("OLDPWD", current_path));
+		free(current_path);
+		update_last_status(main->envs, 0);
+		return (1);
+	}
+	return (0);
+}
+
+static int	cd(t_main *main, t_token *tmp)
+{
+	char		*path;
+	char		*current_path;
+
+	if (chdir(tmp->word) == -1)
+		ft_printf("cd: %s: No such file or directory\n", tmp->word);
+	update_last_status(main->envs, 0);
+	current_path = getcwd(NULL, 0);
+	insert_pair(&main->envs, create_pair("OLDPWD", current_path));
+	free(current_path);
+	return (1);
 }

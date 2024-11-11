@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 21:27:02 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/21 21:28:00 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/11/09 20:47:36 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_hashmap		*build_envs(char **envp);
-static int		find_equals(char *s);
-static char		*build_line(t_key_value *kv);
-char			**to_envp(t_hashmap *envs);
+t_hashmap	*build_envs(char **envp);
+int			find_equals(char *s);
+static char	*build_line(t_key_value *kv);
+char		**to_envp(t_hashmap *envs);
 
 t_hashmap	*build_envs(char **envp)
 {
-	int				i;
-	t_hashmap		*envs;
-	char			*k;
-	char			*v;
+	int			i;
+	t_hashmap	*envs;
+	char		*k;
+	char		*v;
 
 	envs = create_hash_map();
 	i = 0;
@@ -42,7 +42,7 @@ t_hashmap	*build_envs(char **envp)
 	return (envs);
 }
 
-static int	find_equals(char *s)
+int	find_equals(char *s)
 {
 	int	i;
 
@@ -63,8 +63,8 @@ static char	*build_line(t_key_value *kv)
 	env = NULL;
 	if (kv->value)
 	{
-		env = ft_calloc(ft_strlen(kv->key)
-				+ ft_strlen(kv->value) + 2, sizeof(char));
+		env = ft_calloc(ft_strlen(kv->key) + ft_strlen(kv->value) + 2,
+				sizeof(char));
 		ft_strlcpy(env, kv->key, ft_strlen(kv->key) + 1);
 		ft_strlcat(env, "=", ft_strlen(env) + 2);
 		ft_strlcat(env, kv->value, ft_strlen(env) + ft_strlen(kv->value) + 1);

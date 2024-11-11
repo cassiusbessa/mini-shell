@@ -6,7 +6,7 @@
 #    By: cassius <cassius@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/20 19:50:42 by caqueiro          #+#    #+#              #
-#    Updated: 2024/10/22 20:28:07 by cassius          ###   ########.fr        #
+#    Updated: 2024/11/09 13:29:32 by cassius          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ SRCS =		main.c\
 			cd.c\
 			builtins_env.c\
 			pwd.c\
-			unset.c
+			unset_export.c
 
 
 LIBFT = utils/libft/libft.a

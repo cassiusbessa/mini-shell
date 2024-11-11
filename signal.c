@@ -6,7 +6,7 @@
 /*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 20:37:51 by cassius           #+#    #+#             */
-/*   Updated: 2024/10/22 20:37:52 by cassius          ###   ########.fr       */
+/*   Updated: 2024/11/09 19:30:29 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,14 @@ void	setup_sigaction_handler(void)
 {
 	struct sigaction	sa;
 
+	signal(SIGQUIT, SIG_IGN);
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = handle_sigaction_main;
 	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGTSTP, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
 void	setup_sigaction_child(void)
