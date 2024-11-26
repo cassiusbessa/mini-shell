@@ -38,6 +38,7 @@ SRCS =		main.c\
 			cd.c\
 			builtins_env.c\
 			pwd.c\
+			exit.c\
 			unset_export.c
 
 

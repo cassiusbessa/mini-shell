@@ -38,7 +38,7 @@ void	exec_all_commands(t_main *main)
 			consume_to_next_cmd(&t, main);
 	}
 	while (wait(&status) > 0)
-		update_status(status, main->envs);
+		update_last_status(main->envs, status);
 	setup_sigaction_handler();
 }
 

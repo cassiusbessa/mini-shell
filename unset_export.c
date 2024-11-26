@@ -25,12 +25,13 @@ int	unset_cmd(t_main *main)
 		{
 			ft_printf("unset: %s: not a valid identifier\n", temp->word);
 			update_last_status(main->envs, 0);
-			return (1);
+			return (0);
 		}
 		remove_key(&main->envs, temp->word);
 		temp = temp->next;
 	}
 	update_last_status(main->envs, 0);
+	return (1);
 }
 
 int	export_cmd(t_main *main)
@@ -47,7 +48,7 @@ int	export_cmd(t_main *main)
 		{
 			ft_printf("export: %s: not a valid identifier\n", temp->word);
 			update_last_status(main->envs, 0);
-			return (1);
+			return (0);
 		}
 		i = find_equals(temp->word);
 		k = ft_substr(temp->word, 0, i);
