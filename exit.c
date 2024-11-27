@@ -63,11 +63,11 @@ int	is_long(char *word)
 	return (1);
 }
 
-void	exit_cmd(t_token_lst *lst)
+void	exit_cmd(t_main *main)
 {
 	t_token	*tmp;
 
-	tmp = lst->head->next;
+	tmp = main->token_lst->head->next;
 	if (tmp && (!only_number(tmp->word) || !is_long(tmp->word)))
 	{
 		printf("exit\n");
