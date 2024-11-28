@@ -55,7 +55,7 @@ void	update_last_status(t_hashmap *envs, int status)
 {
 	char	*str;
 
-	str = ft_itoa(status);
+	str = ft_itoa(WEXITSTATUS(status));
 	insert_pair(&envs, create_pair("?", str));
 	free(str);
 }
