@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caqueiro <caqueiro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cassius <cassius@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 21:12:19 by caqueiro          #+#    #+#             */
-/*   Updated: 2024/10/21 21:06:55 by caqueiro         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:25:24 by cassius          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 static void	exec_command(t_main *main);
 static void	handle_main_process(t_token **t, t_main *main);
-static void	handle_child_process(t_main *main);
+static void	handle_child_process(t_main *main, pid_t *last);
 static void	consume_to_next_cmd(t_token **t, t_main *main);
 
 void	exec_all_commands(t_main *main)
 {
 	t_token	*t;
-	t_token	*tmp;
 	pid_t	pid;
 	int		status;
+	pid_t	last;
 
 	t = main->token_lst->head;
 	pre_exec(main->token_lst);
@@ -31,19 +31,41 @@ void	exec_all_commands(t_main *main)
 		if (t && t->type == COMMAND)
 		{
 			if (!builtins(main))
-				handle_child_process(main);
+				handle_child_process(main, &last);
 			handle_main_process(&t, main);
 		}
 		else
 			consume_to_next_cmd(&t, main);
 	}
-	while (wait(&status) > 0)
-		update_status(status, main->envs);
+	pid = waitpid(-1, &status, 0);
+	while (pid > 0)
+	{
+		if (pid == last)
+			update_status(status, main->envs);
+		pid = waitpid(-1, &status, 0);
+	}
 	setup_sigaction_handler();
 }
 
-static void	handle_child_process(t_main *main)
+static void	handle_child_process(t_main *main, pid_t *last)
 {
+	t_token	*t;
+
+	t = main->token_lst->head->next;
+	while (t && t->type != COMMAND)
+		t = t->next;
+	if (!t)
+	{
+		*last = fork();
+		if (*last == 0)
+		{
+			setup_sigaction_child();
+			exec_command(main);
+			exit(0);
+		}
+		else
+			return ;
+	}
 	if (fork() == 0)
 	{
 		setup_sigaction_child();
